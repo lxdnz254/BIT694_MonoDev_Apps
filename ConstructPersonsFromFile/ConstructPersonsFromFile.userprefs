@@ -1,1 +1,14 @@
-﻿<Properties StartupItem="ConstructPersonsFromFile.csproj" />
+﻿<Properties StartupItem="ConstructPersonsFromFile.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Program.cs">
+    <Files>
+      <File FileName="Program.cs" Line="8" Column="2" />
+      <File FileName="Person.cs" Line="5" Column="30" />
+      <File FileName="ReadFromFile.cs" Line="17" Column="20" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
