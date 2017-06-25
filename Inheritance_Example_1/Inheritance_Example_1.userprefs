@@ -1,0 +1,15 @@
+﻿<Properties StartupItem="Inheritance_Example_1.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Customer.cs">
+    <Files>
+      <File FileName="Program.cs" Line="24" Column="22" />
+      <File FileName="Person.cs" Line="13" Column="12" />
+      <File FileName="Customer.cs" Line="32" Column="1" />
+      <File FileName="Employee.cs" Line="24" Column="25" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
