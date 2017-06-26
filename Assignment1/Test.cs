@@ -18,6 +18,9 @@ namespace Assignment1
 			// Create some Customer Classes and test methods
 			Customer c = new Customer ("John", "Key", "09-08-1961", 1111, 200.50);
 			VIPCustomer v = new VIPCustomer ("The", "Pope", "06-06-1950", 333, 12.00);
+			// Test displayInfo()
+			c.displayInfo();
+			v.displayInfo();
 			// check customer deposit and activity counter
 			c.deposit (100);
 			Console.WriteLine ("Customer deposited $100.00, the balance is now >> " + c.AccessBalance);
@@ -40,7 +43,19 @@ namespace Assignment1
 			Console.WriteLine ("VIP activity count is >> " + v.AccessActivityCounter);
 
 			//end of tests
-			Console.WriteLine("End of testing, press any key to continue ...");
+			Console.WriteLine("End of testing customers, press any key to continue ...");
+			Console.ReadKey ();
+		}
+
+		public void testReadFile(String fileLocation, int fileLines)
+		{
+			Console.WriteLine ("Testing Read From File");
+			Customer[] customerArray = ReadFromFile.customerList (fileLocation, fileLines);
+			customerArray [0].displayInfo ();
+			customerArray [fileLines - 1].displayInfo ();
+
+			// end of test
+			Console.WriteLine("End of testing read file, press any key to continue ....");
 			Console.ReadKey ();
 		}
 	}

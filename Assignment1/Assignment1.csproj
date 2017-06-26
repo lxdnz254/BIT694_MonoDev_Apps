@@ -38,6 +38,10 @@
     <Compile Include="Customer.cs" />
     <Compile Include="VIPCustomer.cs" />
     <Compile Include="Test.cs" />
+    <Compile Include="ReadFromFile.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="input_assignment1.txt" />
+  </ItemGroup>
 </Project>

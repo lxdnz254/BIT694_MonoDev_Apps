@@ -32,7 +32,7 @@ namespace Assignment1
 			if (bal < 0) {
 				Console.WriteLine (" Transaction Cancelled! \n The deposit is not enough to cover the transaction fee");
 			} else {
-				AccessActivityCounter++;
+				activityCounter++;
 				AccessBalance = bal;
 			}
 		}
@@ -44,9 +44,21 @@ namespace Assignment1
 			if (bal < 0) {
 				Console.WriteLine (" Transaction Cancelled!\n Not enough money in account to make withdrawl");
 			} else {
-				AccessActivityCounter++;
+				activityCounter++;
 				AccessBalance = bal;
 			}
+		}
+
+		public virtual void displayInfo()
+		{
+			String format = "{0,-15} {1}";
+			Console.WriteLine (String.Format(format, "ID:", accountID));
+			Console.WriteLine (String.Format(format, "Name:", firstName + " " + lastName));
+			// Format date of birth .. a helper method here could be useful!
+			String[] dates = dob.Split('-');
+			Console.WriteLine (String.Format(format, "Birth Date:", dates [0] + "/" + dates [1] + "/" + dates [2]));
+			Console.WriteLine (String.Format(format, "Balance:", String.Format ("{0:$0.00}", balance)));
+
 		}
 
 		public double AccessBalance {
