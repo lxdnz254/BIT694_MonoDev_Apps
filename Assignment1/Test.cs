@@ -14,13 +14,12 @@ namespace Assignment1
 
 		public void testCustomers()
 		{
-			Console.WriteLine ("Testing Customer class methods");
+			Console.WriteLine ("\nTesting Customer class methods\n");
 			// Create some Customer Classes and test methods
 			Customer c = new Customer ("John", "Key", "09-08-1961", 1111, 200.50);
 			VIPCustomer v = new VIPCustomer ("The", "Pope", "06-06-1950", 333, 12.00);
 			// Test displayInfo()
 			c.displayInfo();
-			v.displayInfo();
 			// check customer deposit and activity counter
 			c.deposit (100);
 			Console.WriteLine ("Customer deposited $100.00, the balance is now >> " + c.AccessBalance);
@@ -34,6 +33,7 @@ namespace Assignment1
 			Console.WriteLine ("Customer balance is >> " + c.AccessBalance);
 			Console.WriteLine ("Customer activity count is >> " + c.AccessActivityCounter);
 			// Check VIP transactions
+			v.displayInfo();
 			v.deposit(10);
 			Console.WriteLine ("VIP deposited $10.00, balance is now >> " + v.AccessBalance);
 			Console.WriteLine ("VIP activity count is >> " + v.AccessActivityCounter);
@@ -43,20 +43,61 @@ namespace Assignment1
 			Console.WriteLine ("VIP activity count is >> " + v.AccessActivityCounter);
 
 			//end of tests
-			Console.WriteLine("End of testing customers, press any key to continue ...");
+			Console.WriteLine("\nEnd of testing customers, press any key to continue ...\n");
 			Console.ReadKey ();
 		}
 
 		public void testReadFile(String fileLocation, int fileLines)
 		{
-			Console.WriteLine ("Testing Read From File");
+			Console.WriteLine ("Testing Read From File\n");
 			Customer[] customerArray = ReadFromFile.customerList (fileLocation, fileLines);
 			customerArray [0].displayInfo ();
 			customerArray [fileLines - 1].displayInfo ();
 
 			// end of test
-			Console.WriteLine("End of testing read file, press any key to continue ....");
+			Console.WriteLine("\nEnd of testing read file, press any key to continue ....\n");
 			Console.ReadKey ();
+		}
+
+		public void testDateUtilities()
+		{
+			Console.WriteLine ("Testing Date Utilities\nDate Formats\n");
+			String[] testQuery = { 	"12-08-2003", 
+									"12th August 2003",
+									"2003-8-12",
+									"August 12 2003",
+									"2003/08/12",
+									"12/8/2003",
+									"August 12th 2003",
+									"12th, August, 2003",
+									"12-Aug-2003",
+									"12-Aug-03",
+									"Aug-12-03",
+									"12-8-03",
+									"12/08/03" };
+			for (int i = 0; i < testQuery.Length; i++) {
+				Console.Write (testQuery[i] + " >> " + DateUtilities.dateFormat (testQuery[i]));
+				if (DateUtilities.dateFormat (testQuery[i]).Equals ("12/08/2003")) {
+					Console.Write (" >> OK\n");
+				} else {
+					Console.Write (" >> ERROR\n");
+				}
+			}
+			Console.WriteLine ("\nLeap Years\n");
+			String[] leapQuery = { "12-08-2000", "1900/08/12", "12-Aug-04", "12-08-1975" };
+			for (int i = 0; i < leapQuery.Length; i++)
+			{
+				Console.WriteLine (leapQuery [i] + " >> " + DateUtilities.isLeapYear(leapQuery[i]));
+			}
+			Console.WriteLine ("\nBirthdays\n");
+			DateTime today = DateTime.Now;
+			String[] birthdayQuery = {	today.Day + "/" + today.Month + "/" + today.Year,
+										today.Day + "/" + today.Month + "/2008",
+										today.Day + "/01/" + today.Year,
+										"1/" + today.Month + "/09" 	};
+			for (int i = 0; i < birthdayQuery.Length; i++) {
+				Console.WriteLine (birthdayQuery [i] + " >> " + DateUtilities.isBirthday (birthdayQuery [i]));
+			}
 		}
 	}
 }

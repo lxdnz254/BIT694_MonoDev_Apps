@@ -12,8 +12,8 @@ namespace Assignment1
 		private String lastName;
 		private String dob; //date of birth
 		private int accountID; // bank account ID
-		private double balance; // bank account balance
-		private int activityCounter; // keeps count of transactions
+		protected double balance; // bank account balance
+		protected int activityCounter; // keeps count of transactions
 
 		public Customer (String firstName, String lastName, String dob, int id, double balance)
 		{
@@ -33,7 +33,7 @@ namespace Assignment1
 				Console.WriteLine (" Transaction Cancelled! \n The deposit is not enough to cover the transaction fee");
 			} else {
 				activityCounter++;
-				AccessBalance = bal;
+				balance = bal;
 			}
 		}
 
@@ -45,7 +45,7 @@ namespace Assignment1
 				Console.WriteLine (" Transaction Cancelled!\n Not enough money in account to make withdrawl");
 			} else {
 				activityCounter++;
-				AccessBalance = bal;
+				balance = bal;
 			}
 		}
 
@@ -55,10 +55,8 @@ namespace Assignment1
 			Console.WriteLine (String.Format(format, "ID:", accountID));
 			Console.WriteLine (String.Format(format, "Name:", firstName + " " + lastName));
 			// Format date of birth .. a helper method here could be useful!
-			String[] dates = dob.Split('-');
-			Console.WriteLine (String.Format(format, "Birth Date:", dates [0] + "/" + dates [1] + "/" + dates [2]));
-			Console.WriteLine (String.Format(format, "Balance:", String.Format ("{0:$0.00}", balance)));
-
+			Console.WriteLine (String.Format(format, "Birth Date:", DateUtilities.dateFormat(dob)));
+			Console.WriteLine (String.Format(format, "Balance:", String.Format ("{0:C}", balance)));
 		}
 
 		public double AccessBalance {
@@ -70,6 +68,10 @@ namespace Assignment1
 			set { this.activityCounter = value; }
 			get { return this.activityCounter; }
 		}
+
+		public String AccessDob {
+			get { return this.dob; }
+				}
 	}
 }
 

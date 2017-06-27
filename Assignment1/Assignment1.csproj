@@ -39,6 +39,7 @@
     <Compile Include="VIPCustomer.cs" />
     <Compile Include="Test.cs" />
     <Compile Include="ReadFromFile.cs" />
+    <Compile Include="DateUtilities.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

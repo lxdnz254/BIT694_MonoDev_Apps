@@ -16,14 +16,14 @@ namespace Assignment1
 
 		public override void deposit (double amount)
 		{
-			AccessBalance = AccessBalance + amount;
-			AccessActivityCounter++;
+			balance = balance + amount;
+			activityCounter++;
 		}
 
 		public override void withdraw (double amount)
 		{
-			AccessBalance = AccessBalance - amount;
-			AccessActivityCounter++;
+			balance = balance - amount;
+			activityCounter++;
 		}
 
 		public override void displayInfo ()
