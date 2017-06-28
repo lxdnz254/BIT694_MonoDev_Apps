@@ -70,6 +70,34 @@ namespace Assignment1
 		{
 			displayTitle ("Deposit");
 
+			Console.Write ("Enter account ID: ");
+			String id = Console.ReadLine ();
+			int result;
+			if (int.TryParse (id, out result)) {
+				int customerPos = -1;
+				for (int i = 0; i < array.Length; i++) {
+					if (array [i].AccessID == result) {
+						customerPos = i;
+					}
+				}
+				if (customerPos >= 0) {
+					Console.Write ("Depositing into account of " + array [customerPos].AccessFullName + ". ");
+					Console.WriteLine ("Current balance: " + String.Format ("{0:C}", array [customerPos].AccessBalance));
+					Console.Write ("\nEnter the amount to deposit: $");
+					String deposit = Console.ReadLine ();
+					double dep;
+					if (double.TryParse (deposit, out dep)) {
+						array [customerPos].deposit (dep);
+						Console.WriteLine ("\nSuccesfully deposited {0:C}. Current Balance is {1:C}", dep, array [customerPos].AccessBalance); 
+					} else {
+						Console.WriteLine("\nInvalid input for deposit");
+					}
+				} else {
+					Console.WriteLine ("\nNo ID match in customer array");
+				}
+			} else {
+				Console.WriteLine ("\nNot a valid ID format");
+			}
 			waitForKey ();
 		}
 
@@ -78,6 +106,35 @@ namespace Assignment1
 		{
 			displayTitle ("Withdrawl");
 
+			Console.Write ("Enter account ID: ");
+			String id = Console.ReadLine ();
+			int result;
+			if (int.TryParse (id, out result)) {
+				int customerPos = -1;
+				for (int i = 0; i < array.Length; i++) {
+					if (array [i].AccessID == result) {
+						customerPos = i;
+					}
+				}
+				if (customerPos >= 0) {
+					Console.Write ("Withdrawing from account of " + array [customerPos].AccessFullName + ". ");
+					Console.WriteLine ("Current balance: " + String.Format ("{0:C}", array [customerPos].AccessBalance));
+					Console.Write ("\nEnter the amount to withdraw: $");
+					String withdraw = Console.ReadLine ();
+					double wdraw;
+					if (double.TryParse (withdraw, out wdraw)) {
+						array [customerPos].withdraw (wdraw);
+						Console.WriteLine ("\nSuccesfully withdrew {0:C}. Current Balance is {1:C}", wdraw, array [customerPos].AccessBalance); 
+					} else {
+						Console.WriteLine("\nInvalid input for withdraw");
+					}
+				} else {
+					Console.WriteLine ("\nNo ID match in customer array");
+				}
+			} else {
+				Console.WriteLine ("\nNot a valid ID format");
+			}
+
 			waitForKey ();
 		}
 
@@ -85,7 +142,19 @@ namespace Assignment1
 		static void getMaximumBalance(Customer[] array)
 		{
 			displayTitle ("Max Balance Customer");
-
+			// set initial customer position
+			int pos = 0;
+			for (int i = 1; i < array.Length; i++) {
+				if (array [i].AccessBalance > array [pos].AccessBalance) {
+					pos = i;
+				}
+			}
+			// display the customer with max balance
+			array[pos].displayInfo();
+			// is it their birthday?
+			if (DateUtilities.isBirthday (array [pos].AccessDob)) {
+				Console.WriteLine ("\nHappy Birthday!");
+			}
 			waitForKey ();
 		}
 
@@ -93,7 +162,16 @@ namespace Assignment1
 		static void getMostActive(Customer[] array)
 		{
 			displayTitle ("Most Active Customer");
-
+			// set initial customer position
+			int pos = 0;
+			// iterate over array
+			for (int i = 1; i < array.Length; i++) {
+				if (array [i].AccessActivityCounter > array [pos].AccessActivityCounter) {
+					pos = i;
+				}
+			}
+			// display the max Active customer
+			array [pos].displayInfo ();
 			waitForKey ();
 		}
 
@@ -162,7 +240,7 @@ namespace Assignment1
 				}
 			} // end of Menu loop
 
-			Console.WriteLine ("End of program, press any key to continue ...");
+			Console.WriteLine ("\nEnd of program, press any key to continue ...");
 			Console.ReadKey ();
 		} // end of Main method
 	} // end of MainClass

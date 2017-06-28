@@ -72,6 +72,14 @@ namespace Assignment1
 		public String AccessDob {
 			get { return this.dob; }
 				}
+
+		public int AccessID {
+			get { return this.accountID; }
+		}
+
+		public String AccessFullName {
+			get { return this.firstName + " " + this.lastName; }
+		}
 	}
 }
 
