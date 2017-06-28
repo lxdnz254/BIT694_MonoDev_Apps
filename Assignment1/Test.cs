@@ -98,6 +98,11 @@ namespace Assignment1
 			for (int i = 0; i < birthdayQuery.Length; i++) {
 				Console.WriteLine (birthdayQuery [i] + " >> " + DateUtilities.isBirthday (birthdayQuery [i]));
 			}
+			Console.WriteLine ("\nZodiac Signs\n");
+			String[] zodiacQuery = { "01/01/2000", "01-02-1967", "23rd March 1952", "12-Sep-07" };
+			for (int i = 0; i < zodiacQuery.Length; i++) {
+				Console.WriteLine (zodiacQuery [i] + " >> " + DateUtilities.getZodiac (zodiacQuery [i]));
+			}
 		}
 	}
 }

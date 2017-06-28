@@ -42,7 +42,7 @@ namespace Assignment1
 			// Try and parse the rDate into the DateTime object
 			if (DateTime.TryParse (rDate, out parsedDate)) 
 			{
-				int year = int.Parse (parsedDate.Year + "");
+				int year = parsedDate.Year;
 				if (((year % 400) == 0) || (((year % 4) == 0) && ((year % 100) != 0)))
 				{
 					return true;
@@ -102,6 +102,110 @@ namespace Assignment1
 			}
 
 			return pos;
+		}
+
+		public static String getZodiac(String date)
+		{
+			String zDate = dateRegEx (date);
+			String zodiacSign = "";
+			DateTime parsedDate;
+			if (DateTime.TryParse (zDate, out parsedDate))
+				{
+					int day = parsedDate.Day;
+					int month = parsedDate.Month;
+					switch (month) 
+					{
+				case 1:
+					if (day <= 19) {
+						zodiacSign = "Capricorn";
+					} else {
+						zodiacSign = "Aquarius";
+					}
+					break;
+				case 2:
+					if (day <= 18) {
+						zodiacSign = "Aquarius";
+					} else {
+						zodiacSign = "Pisces";
+					}
+					break;
+				case 3:
+					if (day <= 20) {
+						zodiacSign = "Pisces";
+					} else {
+						zodiacSign = "Aries";
+					}
+					break;
+				case 4:
+					if (day <= 19) {
+						zodiacSign = "Aries";
+					} else {
+						zodiacSign = "Taurus";
+					}
+					break;
+				case 5:
+					if (day <= 20) {
+						zodiacSign = "Taurus";
+					} else {
+						zodiacSign = "Gemini";
+					}
+					break;
+				case 6:
+					if (day <= 20) {
+						zodiacSign = "Gemini";
+					} else {
+						zodiacSign = "Cancer";
+					}
+					break;
+				case 7:
+					if (day <= 22) {
+						zodiacSign = "Cancer";
+					} else {
+						zodiacSign = "Leo";
+					}
+					break;
+				case 8:
+					if (day <= 22) {
+						zodiacSign = "Leo";
+					} else {
+						zodiacSign = "Virgo";
+					}
+					break;
+				case 9:
+					if (day <= 22) {
+						zodiacSign = "Virgo";
+					} else {
+						zodiacSign = "Libra";
+					}
+					break;
+				case 10:
+					if (day <= 22) {
+						zodiacSign = "Libra";
+					} else {
+						zodiacSign = "Scorpio";
+					}
+					break;
+				case 11:
+					if (day <= 21) {
+						zodiacSign = "Scorpio";
+					} else {
+						zodiacSign = "Saggitarius";
+					}
+					break;
+				case 12:
+					if (day <= 21) {
+						zodiacSign = "Saggitarius";
+					} else {
+						zodiacSign = "Capricorn";
+					}
+					break;
+					}
+				}
+				else {
+					Console.WriteLine ("Error trying to parse date: " + zDate);
+					zodiacSign = "";
+				}
+			return zodiacSign;
 		}
 	}
 }
