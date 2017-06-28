@@ -8,24 +8,12 @@ namespace Assignment1
 {
 	class MainClass
 	{
+		// Constants for the main program
 		const String fileLocation = "../../input_assignment1.txt";
 		const int fileLines = 20;
 		const String titleLines = "----------------------------";
 
-		static void displayTitle(String title)
-		{
-			Console.Clear ();
-			Console.WriteLine (titleLines);
-			Console.WriteLine ("      "+title);
-			Console.WriteLine (titleLines + "\n");
-		}
-
-		static void waitForKey()
-		{
-			Console.WriteLine ("\nPress any key to continue ...");
-			Console.ReadKey ();
-		}
-
+		// Displays the main menu and returns an int, selected by user
 		static int displayMenu()
 		{
 			displayTitle ("Banking System");
@@ -51,16 +39,33 @@ namespace Assignment1
 				} else {
 					Console.WriteLine ("\nIncorrect number");
 					waitForKey ();
-					displayMenu ();
+					result = displayMenu ();
 				}
 			} else {
 				Console.WriteLine ("\nIncorrect input format");
 				waitForKey ();
-				displayMenu ();
+				result = displayMenu ();
 			}
 			return result;
 		}
 
+		// Formats the title display for each option
+		static void displayTitle(String title)
+		{
+			Console.Clear ();
+			Console.WriteLine (titleLines);
+			Console.WriteLine ("      "+title);
+			Console.WriteLine (titleLines + "\n");
+		}
+
+		// method for waiting for a key press.
+		static void waitForKey()
+		{
+			Console.WriteLine ("\nPress any key to continue ...");
+			Console.ReadKey ();
+		}
+
+		// Method to make a deposit for a Customer
 		static void makeDeposit(Customer[] array)
 		{
 			displayTitle ("Deposit");
@@ -68,6 +73,7 @@ namespace Assignment1
 			waitForKey ();
 		}
 
+		// Method to make a withdrawl for a Customer
 		static void makeWithdrawl(Customer[] array)
 		{
 			displayTitle ("Withdrawl");
@@ -75,6 +81,7 @@ namespace Assignment1
 			waitForKey ();
 		}
 
+		// Method to display the Customer with largest balance and display
 		static void getMaximumBalance(Customer[] array)
 		{
 			displayTitle ("Max Balance Customer");
@@ -82,6 +89,7 @@ namespace Assignment1
 			waitForKey ();
 		}
 
+		// Method to display the most active Customer
 		static void getMostActive(Customer[] array)
 		{
 			displayTitle ("Most Active Customer");
@@ -89,6 +97,7 @@ namespace Assignment1
 			waitForKey ();
 		}
 
+		// Method to display the Youngest customer
 		static void getYoungest(Customer[] array)
 		{
 			displayTitle ("Youngest Customer");
@@ -96,16 +105,23 @@ namespace Assignment1
 			waitForKey ();
 		}
 
+		// Method to display all customers born in a leap year and their zodiac signs
 		static void getLeapYearCustomers(Customer[] array)
 		{
 			displayTitle ("Leap Years and Zodiac Signs");
-
+			foreach (Customer customer in array)
+			{
+				if (DateUtilities.isLeapYear(customer.AccessDob))
+				{
+					customer.displayInfo ();
+					Console.WriteLine(String.Format("{0,-15} {1}", "Zodiac:",DateUtilities.getZodiac(customer.AccessDob)) + "\n");
+				}
+			}
 			waitForKey ();
 		}
 
 		public static void Main (string[] args)
 		{
-			Console.WriteLine ("Hello World!");
 			/*
 			Test t = new Test ();
 			t.testCustomers ();
@@ -144,13 +160,10 @@ namespace Assignment1
 					getLeapYearCustomers (customerArray);
 					break;
 				}
-			}
+			} // end of Menu loop
 
 			Console.WriteLine ("End of program, press any key to continue ...");
 			Console.ReadKey ();
-		}
-
-
-			
-	}
-}
+		} // end of Main method
+	} // end of MainClass
+} // end of namespace
