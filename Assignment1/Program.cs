@@ -87,9 +87,15 @@ namespace Assignment1
 					String deposit = Console.ReadLine ();
 					double dep;
 					if (double.TryParse (deposit, out dep)) {
-						array [customerPos].deposit (dep);
-						Console.WriteLine ("\nSuccesfully deposited {0:C}. Current Balance is {1:C}", dep, array [customerPos].AccessBalance); 
-					} else {
+						bool success = array [customerPos].deposit (dep);
+                        if (success)
+                        {
+                            Console.WriteLine("\nSuccesfully deposited {0:C}. Current Balance is {1:C}", dep, array[customerPos].AccessBalance);
+                        } else
+                        {
+                            Console.WriteLine("\nCurrent Balance is {0:C}", array[customerPos].AccessBalance);
+                        }
+                    } else {
 						Console.WriteLine("\nInvalid input for deposit");
 					}
 				} else {
@@ -123,8 +129,14 @@ namespace Assignment1
 					String withdraw = Console.ReadLine ();
 					double wdraw;
 					if (double.TryParse (withdraw, out wdraw)) {
-						array [customerPos].withdraw (wdraw);
-						Console.WriteLine ("\nSuccesfully withdrew {0:C}. Current Balance is {1:C}", wdraw, array [customerPos].AccessBalance); 
+						bool success = array [customerPos].withdraw (wdraw);
+                        if (success)
+                        {
+                            Console.WriteLine("\nSuccesfully withdrew {0:C}. Current Balance is {1:C}", wdraw, array[customerPos].AccessBalance);
+                        } else
+                        {
+                            Console.WriteLine("\nCurrent Balance is {0:C}", array[customerPos].AccessBalance);
+                        }
 					} else {
 						Console.WriteLine("\nInvalid input for withdraw");
 					}

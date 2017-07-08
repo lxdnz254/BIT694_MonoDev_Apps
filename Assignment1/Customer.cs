@@ -25,27 +25,31 @@ namespace Assignment1
 			this.activityCounter = 0;
 		}
 
-		public virtual void deposit(double amount)
+		public virtual Boolean deposit(double amount)
 		{
 			double bal = AccessBalance;
 			bal = bal + amount - 3;
 			if (bal < 0) {
 				Console.WriteLine (" Transaction Cancelled! \n The deposit is not enough to cover the transaction fee");
+                return false;
 			} else {
 				activityCounter++;
 				balance = bal;
+                return true;
 			}
 		}
 
-		public virtual void withdraw(double amount)
+		public virtual Boolean withdraw(double amount)
 		{
 			double bal = AccessBalance;
 			bal = bal - amount - 3;
 			if (bal < 0) {
 				Console.WriteLine (" Transaction Cancelled!\n Not enough money in account to make withdrawl");
+                return false;
 			} else {
 				activityCounter++;
 				balance = bal;
+                return true;
 			}
 		}
 
