@@ -14,16 +14,18 @@ namespace Assignment1
 			base(firstName, lastName, dob, id, balance)
 		{		}
 
-		public override void deposit (double amount)
+		public override Boolean deposit (double amount)
 		{
 			balance = balance + amount;
 			activityCounter++;
+            return true;
 		}
 
-		public override void withdraw (double amount)
+		public override Boolean withdraw (double amount)
 		{
 			balance = balance - amount;
 			activityCounter++;
+            return true;
 		}
 
 		public override void displayInfo ()
