@@ -1,9 +1,9 @@
 ﻿<Properties StartupItem="AddingAClass.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Person.cs">
     <Files>
       <File FileName="Program.cs" Line="20" Column="1" />
-      <File FileName="Person.cs" Line="17" Column="17" />
+      <File FileName="Person.cs" Line="23" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

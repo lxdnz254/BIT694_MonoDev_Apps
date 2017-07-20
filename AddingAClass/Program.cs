@@ -10,10 +10,16 @@ namespace AddingAClass
 	{
 		public static void Main (string[] args)
 		{
-			Console.WriteLine ("Hi, This is the monodev adding a new class app");
-			Person p = new Person ("John", "Key", "9-August-1961", 111);
-			Person q = p;
-			Console.WriteLine ("Created an object with two pointers p & q");
+			Console.WriteLine("Welcome to the first program with classes and ojects");
+			Person p = new Person("John", "Key", "9-August-1961", 111); //Creating the first object
+				Person q = new Person("Brain", " Adam", 2222);
+				Person r = new Person();
+				p.displayInfo(); //Calling the display method in person
+				p.myTwin.displayInfo();
+				q.displayInfo ();
+				r.displayInfo ();
+				Console.WriteLine("Press any key to continue.....");
+
 		}
 	}
 }
