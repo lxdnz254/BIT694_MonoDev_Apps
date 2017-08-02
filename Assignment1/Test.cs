@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assignment1
 {
+	// A test class for use in development to make sure methods are working as expected.
 	public class Test
 	{
 		public Test ()
@@ -62,6 +63,7 @@ namespace Assignment1
 		public void testDateUtilities()
 		{
 			Console.WriteLine ("Testing Date Utilities\nDate Formats\n");
+			// tests different forms of date inputs and makes sure they all convert to standard format "dd/mm/yyyy"
 			String[] testQuery = { 	"12-08-2003", 
 									"12th August 2003",
 									"2003-8-12",
@@ -84,12 +86,14 @@ namespace Assignment1
 				}
 			}
 			Console.WriteLine ("\nLeap Years\n");
+			// Test different date formats and different years for leap years
 			String[] leapQuery = { "12-08-2000", "1900/08/12", "12-Aug-04", "12-08-1975" };
 			for (int i = 0; i < leapQuery.Length; i++)
 			{
 				Console.WriteLine (leapQuery [i] + " >> " + DateUtilities.isLeapYear(leapQuery[i]));
 			}
 			Console.WriteLine ("\nBirthdays\n");
+			// Test the birthday utility isBirthday
 			DateTime today = DateTime.Now;
 			String[] birthdayQuery = {	today.Day + "/" + today.Month + "/" + today.Year,
 										today.Day + "/" + today.Month + "/2008",
@@ -99,6 +103,7 @@ namespace Assignment1
 				Console.WriteLine (birthdayQuery [i] + " >> " + DateUtilities.isBirthday (birthdayQuery [i]));
 			}
 			Console.WriteLine ("\nZodiac Signs\n");
+			// Tests different date formats and the getZodiac method
 			String[] zodiacQuery = { "01/01/2000", "01-02-1967", "23rd March 1952", "12-Sep-07" };
 			for (int i = 0; i < zodiacQuery.Length; i++) {
 				Console.WriteLine (zodiacQuery [i] + " >> " + DateUtilities.getZodiac (zodiacQuery [i]));

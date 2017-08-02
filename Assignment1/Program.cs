@@ -33,18 +33,19 @@ namespace Assignment1
 			Console.Write ("\nEnter Option (0-6) >> ");
 			String key = Console.ReadLine ();
 			int result;
+			// uses TryParse to only accept numbers 0-6 as a valid input.
 			if (int.TryParse (key, out result)) {
 				if (result >= 0 && result <= 6) {
 					 
 				} else {
 					Console.WriteLine ("\nIncorrect number");
 					waitForKey ();
-					result = displayMenu ();
+					result = displayMenu (); // on error return to main display after key press
 				}
 			} else {
 				Console.WriteLine ("\nIncorrect input format");
 				waitForKey ();
-				result = displayMenu ();
+				result = displayMenu (); // on error return to main display after key press
 			}
 			return result;
 		}
@@ -73,6 +74,7 @@ namespace Assignment1
 			Console.Write ("Enter account ID: ");
 			String id = Console.ReadLine ();
 			int result;
+			// uses TryParse to get a valid accountID input
 			if (int.TryParse (id, out result)) {
 				int customerPos = -1;
 				for (int i = 0; i < array.Length; i++) {

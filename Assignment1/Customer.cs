@@ -8,8 +8,8 @@ namespace Assignment1
 {
 	public class Customer
 	{
-		private String firstName;
-		private String lastName;
+		private String firstName; //the first name of a customer object
+		private String lastName;  //the last name of a customer object
 		private String dob; //date of birth
 		private int accountID; // bank account ID
 		protected double balance; // bank account balance
@@ -55,13 +55,16 @@ namespace Assignment1
 
 		public virtual void displayInfo()
 		{
-			String format = "{0,-15} {1}";
+			String format = "{0,-15} {1}"; // used to set the layout of the display
 			Console.WriteLine (String.Format(format, "ID:", accountID));
 			Console.WriteLine (String.Format(format, "Name:", firstName + " " + lastName));
-			// Format date of birth .. a helper method here could be useful!
+			// Format date of birth .. using the DateUtilities Class methods
 			Console.WriteLine (String.Format(format, "Birth Date:", DateUtilities.dateFormat(dob)));
+			// Format money using "{0:C}" which formats a number into currency ( e.g $1.00 ) 
 			Console.WriteLine (String.Format(format, "Balance:", String.Format ("{0:C}", balance)));
 		}
+
+		// Setters and getters used by other Classes to access Customer attributes
 
 		public double AccessBalance {
 			set { this.balance = value; }
