@@ -25,7 +25,7 @@ namespace Assignment1
 			this.activityCounter = 0;
 		}
 
-		public virtual Boolean deposit(double amount)
+		public virtual Boolean Deposit(double amount)
 		{
 			double bal = AccessBalance;
 			bal = bal + amount - 3;
@@ -39,7 +39,7 @@ namespace Assignment1
 			}
 		}
 
-		public virtual Boolean withdraw(double amount)
+		public virtual Boolean Withdraw(double amount)
 		{
 			double bal = AccessBalance;
 			bal = bal - amount - 3;
@@ -53,13 +53,13 @@ namespace Assignment1
 			}
 		}
 
-		public virtual void displayInfo()
+		public virtual void DisplayInfo()
 		{
 			String format = "{0,-15} {1}"; // used to set the layout of the display
 			Console.WriteLine (String.Format(format, "ID:", accountID));
 			Console.WriteLine (String.Format(format, "Name:", firstName + " " + lastName));
 			// Format date of birth .. using the DateUtilities Class methods
-			Console.WriteLine (String.Format(format, "Birth Date:", DateUtilities.dateFormat(dob)));
+			Console.WriteLine (String.Format(format, "Birth Date:", DateUtilities.DateFormat(dob)));
 			// Format money using "{0:C}" which formats a number into currency ( e.g $1.00 ) 
 			Console.WriteLine (String.Format(format, "Balance:", String.Format ("{0:C}", balance)));
 		}

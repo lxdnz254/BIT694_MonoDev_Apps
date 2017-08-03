@@ -14,9 +14,9 @@ namespace Assignment1
 		const String titleLines = "----------------------------";
 
 		// Displays the main menu and returns an int, selected by user
-		static int displayMenu()
+		static int DisplayMenu()
 		{
-			displayTitle ("Banking System");
+			DisplayTitle ("Banking System");
 			String[] options = {	"Exit", 
 									"Deposit", 
 									"Withdraw", 
@@ -32,26 +32,25 @@ namespace Assignment1
 
 			Console.Write ("\nEnter Option (0-6) >> ");
 			String key = Console.ReadLine ();
-			int result;
 			// uses TryParse to only accept numbers 0-6 as a valid input.
-			if (int.TryParse (key, out result)) {
+			if (int.TryParse (key, out int result)) {
 				if (result >= 0 && result <= 6) {
 					 
 				} else {
 					Console.WriteLine ("\nIncorrect number");
-					waitForKey ();
-					result = displayMenu (); // on error return to main display after key press
+					WaitForKey ();
+					result = DisplayMenu (); // on error return to main display after key press
 				}
 			} else {
 				Console.WriteLine ("\nIncorrect input format");
-				waitForKey ();
-				result = displayMenu (); // on error return to main display after key press
+				WaitForKey ();
+				result = DisplayMenu (); // on error return to main display after key press
 			}
 			return result;
 		}
 
 		// Formats the title display for each option
-		static void displayTitle(String title)
+		static void DisplayTitle(String title)
 		{
 			Console.Clear ();
 			Console.WriteLine (titleLines);
@@ -60,22 +59,21 @@ namespace Assignment1
 		}
 
 		// method for waiting for a key press.
-		static void waitForKey()
+		static void WaitForKey()
 		{
 			Console.WriteLine ("\nPress any key to continue ...");
 			Console.ReadKey ();
 		}
 
 		// Method to make a deposit for a Customer
-		static void makeDeposit(Customer[] array)
+		static void MakeDeposit(Customer[] array)
 		{
-			displayTitle ("Deposit");
+			DisplayTitle ("Deposit");
 
 			Console.Write ("Enter account ID: ");
 			String id = Console.ReadLine ();
-			int result;
 			// uses TryParse to get a valid accountID input
-			if (int.TryParse (id, out result)) {
+			if (int.TryParse (id, out int result)) {
 				int customerPos = -1;
 				for (int i = 0; i < array.Length; i++) {
 					if (array [i].AccessID == result) {
@@ -87,9 +85,8 @@ namespace Assignment1
 					Console.WriteLine ("Current balance: " + String.Format ("{0:C}", array [customerPos].AccessBalance));
 					Console.Write ("\nEnter the amount to deposit: $");
 					String deposit = Console.ReadLine ();
-					double dep;
-					if (double.TryParse (deposit, out dep)) {
-						bool success = array [customerPos].deposit (dep);
+					if (double.TryParse (deposit, out double dep)) {
+						bool success = array [customerPos].Deposit (dep);
                         if (success)
                         {
                             Console.WriteLine("\nSuccesfully deposited {0:C}. Current Balance is {1:C}", dep, array[customerPos].AccessBalance);
@@ -106,18 +103,17 @@ namespace Assignment1
 			} else {
 				Console.WriteLine ("\nNot a valid ID format");
 			}
-			waitForKey ();
+			WaitForKey ();
 		}
 
 		// Method to make a withdrawl for a Customer
-		static void makeWithdrawl(Customer[] array)
+		static void MakeWithdrawl(Customer[] array)
 		{
-			displayTitle ("Withdrawl");
+			DisplayTitle ("Withdrawl");
 
 			Console.Write ("Enter account ID: ");
 			String id = Console.ReadLine ();
-			int result;
-			if (int.TryParse (id, out result)) {
+			if (int.TryParse (id, out int result)) {
 				int customerPos = -1;
 				for (int i = 0; i < array.Length; i++) {
 					if (array [i].AccessID == result) {
@@ -129,9 +125,8 @@ namespace Assignment1
 					Console.WriteLine ("Current balance: " + String.Format ("{0:C}", array [customerPos].AccessBalance));
 					Console.Write ("\nEnter the amount to withdraw: $");
 					String withdraw = Console.ReadLine ();
-					double wdraw;
-					if (double.TryParse (withdraw, out wdraw)) {
-						bool success = array [customerPos].withdraw (wdraw);
+					if (double.TryParse (withdraw, out  double wdraw)) {
+						bool success = array [customerPos].Withdraw (wdraw);
                         if (success)
                         {
                             Console.WriteLine("\nSuccesfully withdrew {0:C}. Current Balance is {1:C}", wdraw, array[customerPos].AccessBalance);
@@ -149,107 +144,129 @@ namespace Assignment1
 				Console.WriteLine ("\nNot a valid ID format");
 			}
 
-			waitForKey ();
+			WaitForKey ();
 		}
 
 		// Method to display the Customer with largest balance and display
-		static void getMaximumBalance(Customer[] array)
+		static void GetMaximumBalance(Customer[] array)
 		{
-			displayTitle ("Max Balance Customer");
+			DisplayTitle ("Max Balance Customer");
 			// set initial customer position
-			int pos = 0;
+            double max = array[0].AccessBalance;
+            // finds the maximum balance
 			for (int i = 1; i < array.Length; i++) {
-				if (array [i].AccessBalance > array [pos].AccessBalance) {
-					pos = i;
+				if (array [i].AccessBalance >= max) {
+                    max = array[i].AccessBalance;
 				}
 			}
-			// display the customer with max balance
-			array[pos].displayInfo();
-			// is it their birthday?
-			if (DateUtilities.isBirthday (array [pos].AccessDob)) {
-				Console.WriteLine ("\nHappy Birthday!");
-			}
-			waitForKey ();
+            // iterate over customer array again outputting any customers with equal balance of the max
+            for (int i=0; i < array.Length; i++)
+            {
+                if (array[i].AccessBalance == max)
+                {
+                    // display the customers with max balance
+                    array[i].DisplayInfo();
+                    // is it their birthday?
+                    if (DateUtilities.IsBirthday(array[i].AccessDob))
+                    {
+                        Console.WriteLine("\nHappy Birthday!");
+                    }
+                    Console.WriteLine();
+                }
+            }
+			
+			WaitForKey ();
 		}
 
 		// Method to display the most active Customer
-		static void getMostActive(Customer[] array)
+		static void GetMostActive(Customer[] array)
 		{
-			displayTitle ("Most Active Customer");
+			DisplayTitle ("Most Active Customer");
 			// set initial customer position
-			int pos = 0;
+            int maxCount = array[0].AccessActivityCounter;
 			// iterate over array
 			for (int i = 1; i < array.Length; i++) {
-				if (array [i].AccessActivityCounter > array [pos].AccessActivityCounter) {
-					pos = i;
+				if (array [i].AccessActivityCounter >= maxCount) {
+                    maxCount = array[i].AccessActivityCounter;
 				}
 			}
-			// display the max Active customer
-			array [pos].displayInfo ();
-			waitForKey ();
+            // iterate over array again outputting any customers matching the maxCount
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i].AccessActivityCounter == maxCount)
+                {
+                    // display the max Active customer(s)
+                    array[i].DisplayInfo();
+                    Console.WriteLine();
+                }
+            }
+			
+			WaitForKey ();
 		}
 
 		// Method to display the Youngest customer
-		static void getYoungest(Customer[] array)
+		static void GetYoungest(Customer[] array)
 		{
-			displayTitle ("Youngest Customer");
-			array [DateUtilities.getYoungest (array)].displayInfo ();
-			waitForKey ();
+			DisplayTitle ("Youngest Customer");
+			array [DateUtilities.GetYoungest (array)].DisplayInfo ();
+			WaitForKey ();
 		}
 
 		// Method to display all customers born in a leap year and their zodiac signs
-		static void getLeapYearCustomers(Customer[] array)
+		static void GetLeapYearCustomers(Customer[] array)
 		{
-			displayTitle ("Leap Years and Zodiac Signs");
+			DisplayTitle ("Leap Years and Zodiac Signs");
 			foreach (Customer customer in array)
 			{
-				if (DateUtilities.isLeapYear(customer.AccessDob))
+				if (DateUtilities.IsLeapYear(customer.AccessDob))
 				{
-					customer.displayInfo ();
-					Console.WriteLine(String.Format("{0,-15} {1}", "Zodiac:",DateUtilities.getZodiac(customer.AccessDob)) + "\n");
+					customer.DisplayInfo ();
+					Console.WriteLine(String.Format("{0,-15} {1}", "Zodiac:",DateUtilities.GetZodiac(customer.AccessDob)) + "\n");
 				}
 			}
-			waitForKey ();
+			WaitForKey ();
 		}
 
 		public static void Main (string[] args)
 		{
 			/*
-			Test t = new Test ();
-			t.testCustomers ();
-			t.testReadFile (fileLocation, fileLines);
-			t.testDateUtilities ();
+             * Some Test methods, uncomment to test
+             * 
+			    Test t = new Test ();
+			    t.TestCustomers ();
+			    t.TestReadFile (fileLocation, fileLines);
+			    t.TestDateUtilities ();
 			*/
 
-			Customer[] customerArray = ReadFromFile.customerList (fileLocation, fileLines);
+			Customer[] customerArray = ReadFromFile.CustomerList (fileLocation, fileLines);
 
 			// Menu loop
 			bool running = true;
 
 			while (running) {
-				int option = displayMenu();	
+				int option = DisplayMenu();	
 
 				switch (option) {
 				case 0:
 					running = false;
 					break;
 				case 1:
-					makeDeposit (customerArray);
+					MakeDeposit (customerArray);
 					break;
 				case 2:
-					makeWithdrawl (customerArray);
+					MakeWithdrawl (customerArray);
 					break;
 				case 3:
-					getMaximumBalance (customerArray);
+					GetMaximumBalance (customerArray);
 					break;
 				case 4:
-					getMostActive (customerArray);
+					GetMostActive (customerArray);
 					break;
 				case 5:
-					getYoungest (customerArray);
+					GetYoungest (customerArray);
 					break;
 				case 6:
-					getLeapYearCustomers (customerArray);
+					GetLeapYearCustomers (customerArray);
 					break;
 				}
 			} // end of Menu loop

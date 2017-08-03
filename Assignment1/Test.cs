@@ -13,33 +13,33 @@ namespace Assignment1
 		{
 		}
 
-		public void testCustomers()
+		public void TestCustomers()
 		{
 			Console.WriteLine ("\nTesting Customer class methods\n");
 			// Create some Customer Classes and test methods
 			Customer c = new Customer ("John", "Key", "09-08-1961", 1111, 200.50);
 			VIPCustomer v = new VIPCustomer ("The", "Pope", "06-06-1950", 333, 12.00);
 			// Test displayInfo()
-			c.displayInfo();
+			c.DisplayInfo();
 			// check customer deposit and activity counter
-			c.deposit (100);
+			c.Deposit (100);
 			Console.WriteLine ("Customer deposited $100.00, the balance is now >> " + c.AccessBalance);
 			Console.WriteLine ("Customer activity count is now >> " + c.AccessActivityCounter);
 			// check customer withdraws and activity counter
-			c.withdraw (10);
+			c.Withdraw (10);
 			Console.WriteLine ("Customer withdrew $10.00, the balance is now >> " + c.AccessBalance);
 			Console.WriteLine ("Customer activity count is now >> " + c.AccessActivityCounter);
 			// check customer can go below zero and transactions dont take place
-			c.withdraw (350);
+			c.Withdraw (350);
 			Console.WriteLine ("Customer balance is >> " + c.AccessBalance);
 			Console.WriteLine ("Customer activity count is >> " + c.AccessActivityCounter);
 			// Check VIP transactions
-			v.displayInfo();
-			v.deposit(10);
+			v.DisplayInfo();
+			v.Deposit(10);
 			Console.WriteLine ("VIP deposited $10.00, balance is now >> " + v.AccessBalance);
 			Console.WriteLine ("VIP activity count is >> " + v.AccessActivityCounter);
 			// check VIP withdraw (and below zero)
-			v.withdraw(100);
+			v.Withdraw(100);
 			Console.WriteLine ("VIP withdrew $100.00, balance is now >> " + v.AccessBalance);
 			Console.WriteLine ("VIP activity count is >> " + v.AccessActivityCounter);
 
@@ -48,19 +48,19 @@ namespace Assignment1
 			Console.ReadKey ();
 		}
 
-		public void testReadFile(String fileLocation, int fileLines)
+		public void TestReadFile(String fileLocation, int fileLines)
 		{
 			Console.WriteLine ("Testing Read From File\n");
-			Customer[] customerArray = ReadFromFile.customerList (fileLocation, fileLines);
-			customerArray [0].displayInfo ();
-			customerArray [fileLines - 1].displayInfo ();
+			Customer[] customerArray = ReadFromFile.CustomerList (fileLocation, fileLines);
+			customerArray [0].DisplayInfo ();
+			customerArray [fileLines - 1].DisplayInfo ();
 
 			// end of test
 			Console.WriteLine("\nEnd of testing read file, press any key to continue ....\n");
 			Console.ReadKey ();
 		}
 
-		public void testDateUtilities()
+		public void TestDateUtilities()
 		{
 			Console.WriteLine ("Testing Date Utilities\nDate Formats\n");
 			// tests different forms of date inputs and makes sure they all convert to standard format "dd/mm/yyyy"
@@ -78,8 +78,8 @@ namespace Assignment1
 									"12-8-03",
 									"12/08/03" };
 			for (int i = 0; i < testQuery.Length; i++) {
-				Console.Write (testQuery[i] + " >> " + DateUtilities.dateFormat (testQuery[i]));
-				if (DateUtilities.dateFormat (testQuery[i]).Equals ("12/08/2003")) {
+				Console.Write (testQuery[i] + " >> " + DateUtilities.DateFormat (testQuery[i]));
+				if (DateUtilities.DateFormat (testQuery[i]).Equals ("12/08/2003")) {
 					Console.Write (" >> OK\n");
 				} else {
 					Console.Write (" >> ERROR\n");
@@ -90,7 +90,7 @@ namespace Assignment1
 			String[] leapQuery = { "12-08-2000", "1900/08/12", "12-Aug-04", "12-08-1975" };
 			for (int i = 0; i < leapQuery.Length; i++)
 			{
-				Console.WriteLine (leapQuery [i] + " >> " + DateUtilities.isLeapYear(leapQuery[i]));
+				Console.WriteLine (leapQuery [i] + " >> " + DateUtilities.IsLeapYear(leapQuery[i]));
 			}
 			Console.WriteLine ("\nBirthdays\n");
 			// Test the birthday utility isBirthday
@@ -100,13 +100,13 @@ namespace Assignment1
 										today.Day + "/01/" + today.Year,
 										"1/" + today.Month + "/09" 	};
 			for (int i = 0; i < birthdayQuery.Length; i++) {
-				Console.WriteLine (birthdayQuery [i] + " >> " + DateUtilities.isBirthday (birthdayQuery [i]));
+				Console.WriteLine (birthdayQuery [i] + " >> " + DateUtilities.IsBirthday (birthdayQuery [i]));
 			}
 			Console.WriteLine ("\nZodiac Signs\n");
 			// Tests different date formats and the getZodiac method
 			String[] zodiacQuery = { "01/01/2000", "01-02-1967", "23rd March 1952", "12-Sep-07" };
 			for (int i = 0; i < zodiacQuery.Length; i++) {
-				Console.WriteLine (zodiacQuery [i] + " >> " + DateUtilities.getZodiac (zodiacQuery [i]));
+				Console.WriteLine (zodiacQuery [i] + " >> " + DateUtilities.GetZodiac (zodiacQuery [i]));
 			}
 		}
 	}

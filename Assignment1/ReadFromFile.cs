@@ -9,7 +9,7 @@ namespace Assignment1
 {
 	public static class ReadFromFile
 	{
-		public static Customer[] customerList(String fileLocation, int fileLines)
+		public static Customer[] CustomerList(String fileLocation, int fileLines)
 		{
 			Customer[] customerArray = new Customer[fileLines]; // makes an array of Customers, length given by fileLines in constructor
 			int counter = 0; //used to assign an array pointer for each line of the file to the customerArray 

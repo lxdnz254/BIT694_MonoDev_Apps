@@ -9,7 +9,7 @@ namespace Assignment1
 {
 	public static class DateUtilities
 	{
-		static String dateRegEx(String date)
+		static String DateRegEx(String date)
 		{
 			// remove any day suffixes (st, nd, rd, th) - only if follows number!
 			String pattern = @"\b(\d+)(?:st|nd|rd|th)\b";
@@ -17,14 +17,12 @@ namespace Assignment1
 			return rgx.Replace (date, "$1");
 		}
 		
-		public static String dateFormat (String date)
+		public static String DateFormat (String date)
 		{
 			// Check the date format for st, nd, rd, th at end of day numbers and remove
-			String rDate = dateRegEx(date);
-			// set up a DateTime object
-			DateTime parsedDate;
-			// Try and parse the the rDate into the DateTime object
-			if (DateTime.TryParse (rDate, out parsedDate)) {
+			String rDate = DateRegEx(date);
+			// Try and parse the the rDate into a DateTime object
+			if (DateTime.TryParse (rDate, out DateTime parsedDate)) {
 				return parsedDate.Day + "/" + String.Format ("{0:D2}", parsedDate.Month) + "/" + parsedDate.Year;
 			} else {
 				// There must be something else wrong with the date format
@@ -33,14 +31,12 @@ namespace Assignment1
 			}
 		}
 
-		public static Boolean isLeapYear(String date)
+		public static Boolean IsLeapYear(String date)
 		{
 			// Check the date format for st,nd,rd,th at end of day numbers and remove
-			String rDate = dateRegEx (date);
-			// set up a DateTime object
-			DateTime parsedDate;
-			// Try and parse the rDate into the DateTime object
-			if (DateTime.TryParse (rDate, out parsedDate)) 
+			String rDate = DateRegEx (date);
+			// Try and parse the rDate into a DateTime object
+			if (DateTime.TryParse (rDate, out DateTime parsedDate)) 
 			{
 				int year = parsedDate.Year;
 				if (((year % 400) == 0) || (((year % 4) == 0) && ((year % 100) != 0)))
@@ -55,14 +51,12 @@ namespace Assignment1
 			}
 		}
 
-		public static Boolean isBirthday(String date)
+		public static Boolean IsBirthday(String date)
 		{
 			// Check the date format for st, nd, rd, th at end of day numbers and remove
-			String rDate = dateRegEx (date);
-			// set up a DateTime object
-			DateTime parsedDate;
-			// Try and parse the rDate into the DateTime object
-			if (DateTime.TryParse (rDate, out parsedDate)) 
+			String rDate = DateRegEx (date);
+			// Try and parse the rDate into  DateTime object
+			if (DateTime.TryParse (rDate, out DateTime parsedDate)) 
 			{
 				if (parsedDate.DayOfYear.Equals (DateTime.Now.DayOfYear)) {
 					return true;
@@ -75,17 +69,15 @@ namespace Assignment1
 			}
 		}
 
-		public static int getYoungest(Customer[] array)
+		public static int GetYoungest(Customer[] array)
 		{
 			int pos = 0;
 			for (int i = 1; i < array.Length; i++) 
 			{
-				String iDate = dateRegEx(array[i].AccessDob);
-				String posDate = dateRegEx (array [pos].AccessDob);
-				DateTime posParsedDate;
-				DateTime parsedDate;
-				if (DateTime.TryParse (iDate, out parsedDate)) {
-					if (DateTime.TryParse (posDate, out posParsedDate)) 
+				String iDate = DateRegEx(array[i].AccessDob);
+				String posDate = DateRegEx (array [pos].AccessDob);
+				if (DateTime.TryParse (iDate, out DateTime parsedDate)) {
+					if (DateTime.TryParse (posDate, out DateTime posParsedDate)) 
 					{
 						int diff = parsedDate.CompareTo (posParsedDate);
 						if (diff > 0) {
@@ -104,12 +96,11 @@ namespace Assignment1
 			return pos;
 		}
 
-		public static String getZodiac(String date)
+		public static String GetZodiac(String date)
 		{
-			String zDate = dateRegEx (date);
+			String zDate = DateRegEx (date);
 			String zodiacSign = "";
-			DateTime parsedDate;
-			if (DateTime.TryParse (zDate, out parsedDate))
+			if (DateTime.TryParse (zDate, out DateTime parsedDate))
 				{
 					int day = parsedDate.Day;
 					int month = parsedDate.Month;
