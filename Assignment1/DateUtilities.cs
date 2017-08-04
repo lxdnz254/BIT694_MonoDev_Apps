@@ -21,8 +21,9 @@ namespace Assignment1
 		{
 			// Check the date format for st, nd, rd, th at end of day numbers and remove
 			String rDate = DateRegEx(date);
+			DateTime parsedDate;
 			// Try and parse the the rDate into a DateTime object
-			if (DateTime.TryParse (rDate, out DateTime parsedDate)) {
+			if (DateTime.TryParse (rDate, out parsedDate)) {
 				return parsedDate.Day + "/" + String.Format ("{0:D2}", parsedDate.Month) + "/" + parsedDate.Year;
 			} else {
 				// There must be something else wrong with the date format
@@ -35,8 +36,9 @@ namespace Assignment1
 		{
 			// Check the date format for st,nd,rd,th at end of day numbers and remove
 			String rDate = DateRegEx (date);
+			DateTime parsedDate;
 			// Try and parse the rDate into a DateTime object
-			if (DateTime.TryParse (rDate, out DateTime parsedDate)) 
+			if (DateTime.TryParse (rDate, out parsedDate)) 
 			{
 				int year = parsedDate.Year;
 				if (((year % 400) == 0) || (((year % 4) == 0) && ((year % 100) != 0)))
@@ -55,8 +57,9 @@ namespace Assignment1
 		{
 			// Check the date format for st, nd, rd, th at end of day numbers and remove
 			String rDate = DateRegEx (date);
+			DateTime parsedDate;
 			// Try and parse the rDate into  DateTime object
-			if (DateTime.TryParse (rDate, out DateTime parsedDate)) 
+			if (DateTime.TryParse (rDate, out parsedDate)) 
 			{
 				if (parsedDate.DayOfYear.Equals (DateTime.Now.DayOfYear)) {
 					return true;
@@ -76,8 +79,10 @@ namespace Assignment1
 			{
 				String iDate = DateRegEx(array[i].AccessDob);
 				String posDate = DateRegEx (array [pos].AccessDob);
-				if (DateTime.TryParse (iDate, out DateTime parsedDate)) {
-					if (DateTime.TryParse (posDate, out DateTime posParsedDate)) 
+				DateTime parsedDate;
+				DateTime posParsedDate;
+				if (DateTime.TryParse (iDate, out parsedDate)) {
+					if (DateTime.TryParse (posDate, out posParsedDate)) 
 					{
 						int diff = parsedDate.CompareTo (posParsedDate);
 						if (diff > 0) {
@@ -100,7 +105,8 @@ namespace Assignment1
 		{
 			String zDate = DateRegEx (date);
 			String zodiacSign = "";
-			if (DateTime.TryParse (zDate, out DateTime parsedDate))
+			DateTime parsedDate;
+			if (DateTime.TryParse (zDate, out parsedDate))
 				{
 					int day = parsedDate.Day;
 					int month = parsedDate.Month;

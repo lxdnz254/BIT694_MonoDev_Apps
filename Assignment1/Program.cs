@@ -32,8 +32,9 @@ namespace Assignment1
 
 			Console.Write ("\nEnter Option (0-6) >> ");
 			String key = Console.ReadLine ();
+			int result;
 			// uses TryParse to only accept numbers 0-6 as a valid input.
-			if (int.TryParse (key, out int result)) {
+			if (int.TryParse (key, out result)) {
 				if (result >= 0 && result <= 6) {
 					 
 				} else {
@@ -72,8 +73,9 @@ namespace Assignment1
 
 			Console.Write ("Enter account ID: ");
 			String id = Console.ReadLine ();
+			int result;
 			// uses TryParse to get a valid accountID input
-			if (int.TryParse (id, out int result)) {
+			if (int.TryParse (id, out result)) {
 				int customerPos = -1;
 				for (int i = 0; i < array.Length; i++) {
 					if (array [i].AccessID == result) {
@@ -84,8 +86,9 @@ namespace Assignment1
 					Console.Write ("Depositing into account of " + array [customerPos].AccessFullName + ". ");
 					Console.WriteLine ("Current balance: " + String.Format ("{0:C}", array [customerPos].AccessBalance));
 					Console.Write ("\nEnter the amount to deposit: $");
+					double dep;
 					String deposit = Console.ReadLine ();
-					if (double.TryParse (deposit, out double dep)) {
+					if (double.TryParse (deposit, out dep)) {
 						bool success = array [customerPos].Deposit (dep);
                         if (success)
                         {
@@ -113,7 +116,8 @@ namespace Assignment1
 
 			Console.Write ("Enter account ID: ");
 			String id = Console.ReadLine ();
-			if (int.TryParse (id, out int result)) {
+			int result;
+			if (int.TryParse (id, out result)) {
 				int customerPos = -1;
 				for (int i = 0; i < array.Length; i++) {
 					if (array [i].AccessID == result) {
@@ -125,7 +129,8 @@ namespace Assignment1
 					Console.WriteLine ("Current balance: " + String.Format ("{0:C}", array [customerPos].AccessBalance));
 					Console.Write ("\nEnter the amount to withdraw: $");
 					String withdraw = Console.ReadLine ();
-					if (double.TryParse (withdraw, out  double wdraw)) {
+					double wdraw;
+					if (double.TryParse (withdraw, out wdraw)) {
 						bool success = array [customerPos].Withdraw (wdraw);
                         if (success)
                         {
