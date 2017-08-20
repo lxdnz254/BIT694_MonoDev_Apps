@@ -16,5 +16,16 @@ namespace Assignment_2
         {
             InitializeComponent();
         }
+
+        private void SelectFolder_Click(object sender, EventArgs e)
+        {
+            DialogResult result = folderBrowserDialog1.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                string folderPath = folderBrowserDialog1.SelectedPath;
+                FolderOutput.Clear();
+                FolderOutput.Text += folderPath;
+            }
+        }
     }
 }
