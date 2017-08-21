@@ -34,14 +34,10 @@ namespace Assignment_2
         {
             string folderPath = FolderOutput.Text; // get the folderPath from output TextBox 
             string[] searchTerms = SearchTerms.Text.Split(' '); // Get the search terms
-           
-            if (folderPath != "") // check a folderPath is inputted
-            {
-                if (searchTerms.Length < 2 && searchTerms[0] == "") // check a search query is inputted
-                {
-                    MessageBox.Show("No search query entered");
-                }
 
+            // check a folderPath is inputted and check a search query is inputted
+            if (folderPath != "" && !(searchTerms.Length < 2 && searchTerms[0] == ""))
+            {
                 FileOutput.Items.Clear(); // clear the file ListBox
 
                 // Add the main folder
@@ -72,7 +68,7 @@ namespace Assignment_2
 
                             foreach (string term in searchTerms)
                             {
-                                if (word.Equals(term))
+                                if (word.Equals(term.ToLower()))
                                 {
                                     isInFile[counter] = true; // mark this term as true
                                 }
@@ -89,8 +85,16 @@ namespace Assignment_2
                 }
             }
             else
-            {      
-                MessageBox.Show("No folder has been selected!");
+            {
+                if (folderPath == "")
+                {
+                    MessageBox.Show("No folder has been selected!");
+                }
+                else
+                {
+                    MessageBox.Show("No search query entered");
+                }
+                
             }
             
         }
