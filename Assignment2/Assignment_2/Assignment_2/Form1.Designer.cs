@@ -33,6 +33,9 @@
             this.SelectFolder = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.FileOutput = new System.Windows.Forms.ListBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.SearchTerms = new System.Windows.Forms.TextBox();
+            this.Search = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -48,12 +51,12 @@
             // 
             this.FolderOutput.Location = new System.Drawing.Point(37, 94);
             this.FolderOutput.Name = "FolderOutput";
-            this.FolderOutput.Size = new System.Drawing.Size(233, 20);
+            this.FolderOutput.Size = new System.Drawing.Size(302, 20);
             this.FolderOutput.TabIndex = 1;
             // 
             // SelectFolder
             // 
-            this.SelectFolder.Location = new System.Drawing.Point(276, 92);
+            this.SelectFolder.Location = new System.Drawing.Point(345, 94);
             this.SelectFolder.Name = "SelectFolder";
             this.SelectFolder.Size = new System.Drawing.Size(66, 23);
             this.SelectFolder.TabIndex = 2;
@@ -64,16 +67,46 @@
             // FileOutput
             // 
             this.FileOutput.FormattingEnabled = true;
-            this.FileOutput.Location = new System.Drawing.Point(37, 168);
+            this.FileOutput.Location = new System.Drawing.Point(37, 197);
             this.FileOutput.Name = "FileOutput";
-            this.FileOutput.Size = new System.Drawing.Size(305, 95);
+            this.FileOutput.ScrollAlwaysVisible = true;
+            this.FileOutput.Size = new System.Drawing.Size(374, 121);
             this.FileOutput.TabIndex = 3;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(37, 132);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(76, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Search Terms:";
+            // 
+            // SearchTerms
+            // 
+            this.SearchTerms.Location = new System.Drawing.Point(120, 132);
+            this.SearchTerms.Name = "SearchTerms";
+            this.SearchTerms.Size = new System.Drawing.Size(177, 20);
+            this.SearchTerms.TabIndex = 5;
+            // 
+            // Search
+            // 
+            this.Search.Location = new System.Drawing.Point(40, 168);
+            this.Search.Name = "Search";
+            this.Search.Size = new System.Drawing.Size(371, 23);
+            this.Search.TabIndex = 6;
+            this.Search.Text = "Search";
+            this.Search.UseVisualStyleBackColor = true;
+            this.Search.Click += new System.EventHandler(this.Search_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(580, 285);
+            this.ClientSize = new System.Drawing.Size(580, 347);
+            this.Controls.Add(this.Search);
+            this.Controls.Add(this.SearchTerms);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.FileOutput);
             this.Controls.Add(this.SelectFolder);
             this.Controls.Add(this.FolderOutput);
@@ -92,6 +125,9 @@
         private System.Windows.Forms.Button SelectFolder;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.ListBox FileOutput;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox SearchTerms;
+        private System.Windows.Forms.Button Search;
     }
 }
 
