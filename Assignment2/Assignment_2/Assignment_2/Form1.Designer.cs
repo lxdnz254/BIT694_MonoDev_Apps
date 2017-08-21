@@ -32,6 +32,7 @@
             this.FolderOutput = new System.Windows.Forms.TextBox();
             this.SelectFolder = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.FileOutput = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // label1
@@ -60,11 +61,20 @@
             this.SelectFolder.UseVisualStyleBackColor = true;
             this.SelectFolder.Click += new System.EventHandler(this.SelectFolder_Click);
             // 
+            // FileOutput
+            // 
+            this.FileOutput.FormattingEnabled = true;
+            this.FileOutput.Location = new System.Drawing.Point(37, 168);
+            this.FileOutput.Name = "FileOutput";
+            this.FileOutput.Size = new System.Drawing.Size(305, 95);
+            this.FileOutput.TabIndex = 3;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(580, 253);
+            this.ClientSize = new System.Drawing.Size(580, 285);
+            this.Controls.Add(this.FileOutput);
             this.Controls.Add(this.SelectFolder);
             this.Controls.Add(this.FolderOutput);
             this.Controls.Add(this.label1);
@@ -81,6 +91,7 @@
         private System.Windows.Forms.TextBox FolderOutput;
         private System.Windows.Forms.Button SelectFolder;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.ListBox FileOutput;
     }
 }
 
