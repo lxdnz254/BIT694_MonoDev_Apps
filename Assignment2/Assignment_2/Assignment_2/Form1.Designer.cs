@@ -80,6 +80,7 @@
             this.label9 = new System.Windows.Forms.Label();
             this.QueryEntryWord = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
+            this.CheckSynonyms = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.newWordsDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.wordsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.wordsBindingNavigator)).BeginInit();
@@ -528,11 +529,22 @@
             this.label10.TabIndex = 9;
             this.label10.Text = "Word:";
             // 
+            // CheckSynonyms
+            // 
+            this.CheckSynonyms.AutoSize = true;
+            this.CheckSynonyms.Location = new System.Drawing.Point(302, 209);
+            this.CheckSynonyms.Name = "CheckSynonyms";
+            this.CheckSynonyms.Size = new System.Drawing.Size(112, 17);
+            this.CheckSynonyms.TabIndex = 18;
+            this.CheckSynonyms.Text = "Include Synonyms";
+            this.CheckSynonyms.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(710, 511);
+            this.Controls.Add(this.CheckSynonyms);
             this.Controls.Add(this.QueryEntryBox);
             this.Controls.Add(this.UpdateEntryBox);
             this.Controls.Add(this.DeleteEntryBox);
@@ -620,6 +632,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox QueryEntryWord;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.CheckBox CheckSynonyms;
     }
 }
 

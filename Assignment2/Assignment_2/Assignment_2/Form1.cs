@@ -70,9 +70,26 @@ namespace Assignment_2
 
                             foreach (string term in searchTerms)
                             {
-                                if (word.Equals(term.ToLower()))
+                                if (CheckSynonyms.Checked)
                                 {
-                                    isInFile[counter] = true; // mark this term as true
+                                    // get list of synonyms
+                                    List<string> synonyms = Database.GetSynonyms(term, newWordsDataSet);
+                                    synonyms.Add(term.ToLower()); //add query term to list
+                                    // iterate over list
+                                    foreach (string s in synonyms)
+                                    {
+                                        if (word.Equals(s))
+                                        {
+                                            isInFile[counter] = true;
+                                        }
+                                    }
+                                } 
+                                else
+                                {
+                                    if (word.Equals(term.ToLower()))
+                                    {
+                                        isInFile[counter] = true; // mark this term as true
+                                    }
                                 }
                                 counter++;
                             }
@@ -171,27 +188,20 @@ namespace Assignment_2
 
         private void QueryEntry_Click(object sender, EventArgs e)
         {
-            try
+            List<string> queryList = Database.GetSynonyms(QueryEntryWord.Text, newWordsDataSet);
+
+            if (queryList != null)
             {
-                NewWordsDataSet.WordsRow wordsRow = newWordsDataSet.Words.FindByWord(QueryEntryWord.Text);
-                if (wordsRow != null)
+                string str = "";
+                foreach (string s in queryList)
                 {
-                    string[] strList = wordsRow.Synonyms.ToString().Split(',');
-                    string str = "";
-                    foreach (string s in strList)
-                    {
-                        str += s + "\r\n";
-                    }
-                    QueryEntrySynonyms.Text = str;
+                    str += s + "\r\n";
                 }
-                else
-                {
-                    QueryEntrySynonyms.Text = "No query results.";
-                }
-            } 
-            catch (Exception error)
+                QueryEntrySynonyms.Text = str;
+            }
+            else
             {
-                MessageBox.Show("An error occured: " + error);
+                QueryEntrySynonyms.Text = "No results returned.";
             }
         }
     }
