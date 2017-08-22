@@ -41,8 +41,10 @@ namespace Assignment_2
                 FileOutput.Items.Clear(); // clear the file ListBox
 
                 // Add the main folder
-                List<string> folders = new List<string>();
-                folders.Add(folderPath); // in case there are files inside the folder
+                List<string> folders = new List<string>
+                {
+                    folderPath // in case there are files inside the folder
+                };
 
                 // Add the folders inside the folder
                 string[] subFolders = Directory.GetDirectories(folderPath);
@@ -97,6 +99,100 @@ namespace Assignment_2
                 
             }
             
+        }
+
+        private void wordsBindingNavigatorSaveItem_Click(object sender, EventArgs e)
+        {
+            this.Validate();
+            this.wordsBindingSource.EndEdit();
+            this.tableAdapterManager.UpdateAll(this.newWordsDataSet);
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            // TODO: This line of code loads data into the 'newWordsDataSet.Words' table. You can move, or remove it, as needed.
+            this.wordsTableAdapter.Fill(this.newWordsDataSet.Words);
+
+        }
+
+        private void AddEntry_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DataRow newRow = newWordsDataSet.Tables["Words"].NewRow();
+                // ToLower() ensures the new entry is inserted in lower case
+                newRow["Word"] = AddEntryWord.Text.ToLower();
+                newRow["Synonyms"] = AddEntrySynonyms.Text.ToLower();
+                // Clear the entries
+                AddEntryWord.Text = "";
+                AddEntrySynonyms.Text = "";
+                // Add the newRow
+                newWordsDataSet.Tables["Words"].Rows.Add(newRow);
+                wordsTableAdapter.Update(newWordsDataSet);
+                MessageBox.Show("New entry added to the database!");
+            }
+            catch(Exception error)
+            {
+                MessageBox.Show("An error occured: " + error);
+            }
+        }
+
+        private void DeleteEntry_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                NewWordsDataSet.WordsRow wordsRow = newWordsDataSet.Words.FindByWord(DeleteEntryWord.Text);
+                wordsRow.Delete();
+                MessageBox.Show("Deleted entry!");
+                DeleteEntryWord.Text = "";
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show("An error occured: " + error);
+            }
+        }
+
+        private void UpdateEntry_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                NewWordsDataSet.WordsRow wordsRow = newWordsDataSet.Words.FindByWord(UpdateEntryWord.Text);
+                wordsRow.Synonyms = UpdateEntrySynonyms.Text;
+                MessageBox.Show("Updated entry!");
+                UpdateEntryWord.Text = "";
+                UpdateEntrySynonyms.Text = "";
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show("An error occured: " + error);
+            }
+        }
+
+        private void QueryEntry_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                NewWordsDataSet.WordsRow wordsRow = newWordsDataSet.Words.FindByWord(QueryEntryWord.Text);
+                if (wordsRow != null)
+                {
+                    string[] strList = wordsRow.Synonyms.ToString().Split(',');
+                    string str = "";
+                    foreach (string s in strList)
+                    {
+                        str += s + "\r\n";
+                    }
+                    QueryEntrySynonyms.Text = str;
+                }
+                else
+                {
+                    QueryEntrySynonyms.Text = "No query results.";
+                }
+            } 
+            catch (Exception error)
+            {
+                MessageBox.Show("An error occured: " + error);
+            }
         }
     }
 }
