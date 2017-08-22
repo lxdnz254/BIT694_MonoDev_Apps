@@ -80,7 +80,7 @@ namespace Assignment_2
                                     {
                                         if (word.Equals(s))
                                         {
-                                            isInFile[counter] = true;
+                                            isInFile[counter] = true; //mark this term or synonyms as true
                                         }
                                     }
                                 } 

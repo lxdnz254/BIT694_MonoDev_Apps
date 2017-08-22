@@ -34,8 +34,7 @@ namespace Assignment_2
             {
                 MessageBox.Show("An error has occured: " + error);
             }
-            
-
+           
             return list;
         }
     }
