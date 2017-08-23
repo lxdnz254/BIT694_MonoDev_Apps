@@ -86,17 +86,25 @@ namespace Assignment_2
                             {
                                 if (CheckSynonyms.Checked)
                                 {
+                                    List<string> checkList = new List<string> { term.ToLower() };
                                     // get list of synonyms
                                     List<string> synonyms = Database.GetSynonyms(term, newWordsDataSet);
-                                    synonyms.Add(term.ToLower()); //add query term to list
+                                    if (synonyms != null)
+                                    {
+                                        foreach (string s in synonyms)
+                                        {
+                                            checkList.Add(s);
+                                        }
+                                    }
+                                        
                                     // iterate over list
-                                    foreach (string s in synonyms)
+                                    foreach (string s in checkList)
                                     {
                                         if (word.Equals(s))
                                         {
                                             isInFile[counter] = true; //mark this term or synonyms as true
                                         }
-                                    }
+                                    } 
                                 } 
                                 else
                                 {
@@ -117,31 +125,13 @@ namespace Assignment_2
                 }
 
                 /*  Output from the Hashtable - query terms and their frequency, plus the 
-                            word in the entire collection with the highest frequency                        
-                        */
-                double max = 0;
-                string maxWord = "";
-
-                foreach (string word in wf.Keys)
-                {
-                    // maximum check
-                    if (double.Parse(wf[word].ToString()) > max)
-                    {
-                        maxWord = word;
-                        max = double.Parse(wf[word].ToString());
-                    }
-                    // check the query terms and output frequency
-                    for (int i = 0; i < searchTerms.Length; i++)
-                    {
-                        if (word.Equals(searchTerms[i].ToLower()))
-                        {
-                            FrequencyBox.Text += searchTerms[i].ToLower() 
-                                + ": " + double.Parse(wf[word].ToString()) + "\r\n";
-                        }
-                    }
-                }
+                    word in the entire collection with the highest frequency                        
+                */
+             
                 // output the maximum frequency word
-                MostFrequentBox.Text = maxWord + ": " + max;
+                MostFrequentBox.Text = HashtableOutput.GetMax(wf);
+                // output the query terms frequency (if they exist)
+                FrequencyBox.Text = HashtableOutput.QueryFrequency(wf, searchTerms);
             }
             else
             {
@@ -175,55 +165,27 @@ namespace Assignment_2
 
         private void AddEntry_Click(object sender, EventArgs e)
         {
-            try
-            {
-                DataRow newRow = newWordsDataSet.Tables["Words"].NewRow();
-                // ToLower() ensures the new entry is inserted in lower case
-                newRow["Word"] = AddEntryWord.Text.ToLower();
-                newRow["Synonyms"] = AddEntrySynonyms.Text.ToLower();
-                // Clear the entries
-                AddEntryWord.Text = "";
-                AddEntrySynonyms.Text = "";
-                // Add the newRow
-                newWordsDataSet.Tables["Words"].Rows.Add(newRow);
-                wordsTableAdapter.Update(newWordsDataSet);
-                MessageBox.Show("New entry added to the database!");
-            }
-            catch(Exception error)
-            {
-                MessageBox.Show("An error occured: " + error);
-            }
+            Database.AddEntry(AddEntryWord.Text, AddEntrySynonyms.Text, newWordsDataSet);
+            // Clear the entries
+            AddEntryWord.Text = "";
+            AddEntrySynonyms.Text = "";
+            // Update the Table adapter
+            wordsTableAdapter.Update(newWordsDataSet);
         }
 
         private void DeleteEntry_Click(object sender, EventArgs e)
         {
-            try
-            {
-                NewWordsDataSet.WordsRow wordsRow = newWordsDataSet.Words.FindByWord(DeleteEntryWord.Text);
-                wordsRow.Delete();
-                MessageBox.Show("Deleted entry!");
-                DeleteEntryWord.Text = "";
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show("An error occured: " + error);
-            }
+            Database.DeleteEntry(DeleteEntryWord.Text, newWordsDataSet);
+            // Clear the entry
+            DeleteEntryWord.Text = "";          
         }
 
         private void UpdateEntry_Click(object sender, EventArgs e)
         {
-            try
-            {
-                NewWordsDataSet.WordsRow wordsRow = newWordsDataSet.Words.FindByWord(UpdateEntryWord.Text);
-                wordsRow.Synonyms = UpdateEntrySynonyms.Text;
-                MessageBox.Show("Updated entry!");
-                UpdateEntryWord.Text = "";
-                UpdateEntrySynonyms.Text = "";
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show("An error occured: " + error);
-            }
+            Database.UpdateEntry(UpdateEntryWord.Text, UpdateEntrySynonyms.Text, newWordsDataSet);
+            // clear the entries
+            UpdateEntryWord.Text = "";
+            UpdateEntrySynonyms.Text = "";  
         }
 
         private void QueryEntry_Click(object sender, EventArgs e)
