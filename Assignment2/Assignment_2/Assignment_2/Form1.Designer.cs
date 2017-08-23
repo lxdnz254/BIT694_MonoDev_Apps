@@ -81,6 +81,10 @@
             this.QueryEntryWord = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.CheckSynonyms = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.FrequencyBox = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.MostFrequentBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.newWordsDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.wordsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.wordsBindingNavigator)).BeginInit();
@@ -539,11 +543,49 @@
             this.CheckSynonyms.Text = "Include Synonyms";
             this.CheckSynonyms.UseVisualStyleBackColor = true;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(43, 398);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(88, 13);
+            this.label5.TabIndex = 19;
+            this.label5.Text = "Query Frequency";
+            // 
+            // FrequencyBox
+            // 
+            this.FrequencyBox.Location = new System.Drawing.Point(40, 415);
+            this.FrequencyBox.Multiline = true;
+            this.FrequencyBox.Name = "FrequencyBox";
+            this.FrequencyBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.FrequencyBox.Size = new System.Drawing.Size(172, 79);
+            this.FrequencyBox.TabIndex = 20;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(255, 398);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(156, 13);
+            this.label11.TabIndex = 21;
+            this.label11.Text = "Collections Most Frequent Term";
+            // 
+            // MostFrequentBox
+            // 
+            this.MostFrequentBox.Location = new System.Drawing.Point(258, 426);
+            this.MostFrequentBox.Name = "MostFrequentBox";
+            this.MostFrequentBox.Size = new System.Drawing.Size(153, 20);
+            this.MostFrequentBox.TabIndex = 22;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(710, 511);
+            this.Controls.Add(this.MostFrequentBox);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.FrequencyBox);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.CheckSynonyms);
             this.Controls.Add(this.QueryEntryBox);
             this.Controls.Add(this.UpdateEntryBox);
@@ -633,6 +675,10 @@
         private System.Windows.Forms.TextBox QueryEntryWord;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.CheckBox CheckSynonyms;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox FrequencyBox;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox MostFrequentBox;
     }
 }
 

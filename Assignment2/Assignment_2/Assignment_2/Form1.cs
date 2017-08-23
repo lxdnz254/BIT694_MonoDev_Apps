@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -34,11 +35,13 @@ namespace Assignment_2
         {
             string folderPath = FolderOutput.Text; // get the folderPath from output TextBox 
             string[] searchTerms = SearchTerms.Text.Split(' '); // Get the search terms
-
+            Hashtable wf = new Hashtable(); // The Hashtable generated on search.
+            
             // check a folderPath is inputted and check a search query is inputted
             if (folderPath != "" && !(searchTerms.Length < 2 && searchTerms[0] == ""))
             {
                 FileOutput.Items.Clear(); // clear the file ListBox
+                FrequencyBox.Clear(); // clear the frequency TextBox
 
                 // Add the main folder
                 List<string> folders = new List<string>
@@ -66,6 +69,17 @@ namespace Assignment_2
 
                         foreach (string word in fileWords)
                         {
+                            // create the Hashtable for the collection
+                            if (wf.ContainsKey(word))
+                            {
+                                wf[word] = double.Parse(wf[word].ToString()) + 1;
+                            }
+                            else
+                            {
+                                wf.Add(word, 1.0);
+                            }
+
+                            // Search word over terms
                             int counter = 0; // counter for boolean array
 
                             foreach (string term in searchTerms)
@@ -98,10 +112,36 @@ namespace Assignment_2
                         if(isInFile.All(x => x)) // tests if ALL search terms are true
                         {
                             FileOutput.Items.Add(file); // add file to the listBox if true
-                        }
-                        
+                        }          
                     }
                 }
+
+                /*  Output from the Hashtable - query terms and their frequency, plus the 
+                            word in the entire collection with the highest frequency                        
+                        */
+                double max = 0;
+                string maxWord = "";
+
+                foreach (string word in wf.Keys)
+                {
+                    // maximum check
+                    if (double.Parse(wf[word].ToString()) > max)
+                    {
+                        maxWord = word;
+                        max = double.Parse(wf[word].ToString());
+                    }
+                    // check the query terms and output frequency
+                    for (int i = 0; i < searchTerms.Length; i++)
+                    {
+                        if (word.Equals(searchTerms[i].ToLower()))
+                        {
+                            FrequencyBox.Text += searchTerms[i].ToLower() 
+                                + ": " + double.Parse(wf[word].ToString()) + "\r\n";
+                        }
+                    }
+                }
+                // output the maximum frequency word
+                MostFrequentBox.Text = maxWord + ": " + max;
             }
             else
             {
