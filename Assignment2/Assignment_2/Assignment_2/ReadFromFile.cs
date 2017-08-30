@@ -32,7 +32,11 @@ namespace Assignment_2
 
                     foreach (string word in words)
                     {
-                        fileWords.Add(word);
+                        if (word != "")
+                        {
+                            fileWords.Add(word);
+                        }
+                       
                     }
 
                 } // end of reading the file
