@@ -13,8 +13,12 @@ namespace GenerateRandomTextFiles
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Random Text File Generator - version 1");
+            Console.WriteLine("Random Text File Generator - version 1, press any key to start");
+            Console.ReadKey();
 
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            // the code that you want to measure comes here
+           
             Random random = new Random();
             string script;
             int folderNo;
@@ -124,7 +128,10 @@ namespace GenerateRandomTextFiles
                 Console.WriteLine("Text:" + script);
 
             }
-
+            // end the timer
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+            Console.WriteLine("Speed of processing: " + elapsedMs.ToString());
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
         
