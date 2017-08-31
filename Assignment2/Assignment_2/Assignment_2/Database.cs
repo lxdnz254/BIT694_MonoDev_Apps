@@ -58,6 +58,30 @@ namespace Assignment_2
             }
         }
 
+        public static string QueryEntry(string term, NewWordsDataSet dataSet)
+        {
+            string str;
+
+            List<string> queryList = Database.GetSynonyms(term, dataSet);
+
+            if (queryList != null)
+            {
+                str = "";
+                foreach (string s in queryList)
+                {
+                    str += s + "\r\n";
+                }
+                
+            }
+            else
+            {
+                str = "No results returned.";
+            }
+
+            return str;
+
+        }
+
         public static List<string> GetSynonyms(string term, NewWordsDataSet dataSet)
         {
             List<string> list = new List<string>();

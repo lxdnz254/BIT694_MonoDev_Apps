@@ -19,6 +19,12 @@ namespace Assignment_2
             InitializeComponent();
         }
 
+        /*
+         * The search query section, select collection folder 
+         * & search for terms in collection
+         */ 
+
+        // Select collection Folder
         private void SelectFolder_Click(object sender, EventArgs e)
         {
             DialogResult result = folderBrowserDialog1.ShowDialog();
@@ -31,11 +37,13 @@ namespace Assignment_2
             }
         }
 
+
+        // Search collection for terms
         private void Search_Click(object sender, EventArgs e)
         {
             string folderPath = FolderOutput.Text; // get the folderPath from output TextBox 
             string[] searchTerms = SearchTerms.Text.Split(' '); // Get the search terms
-            Hashtable wf = new Hashtable(); // The Hashtable generated on search.
+            
             
             // check a folderPath is inputted and check a search query is inputted
             if (folderPath != "" && !(searchTerms.Length < 2 && searchTerms[0] == ""))
@@ -43,85 +51,18 @@ namespace Assignment_2
                 FileOutput.Items.Clear(); // clear the file ListBox
                 FrequencyBox.Clear(); // clear the frequency TextBox
 
-                // Add the main folder
-                List<string> folders = new List<string>
+                /*
+                 * Modularised methods to get querys
+                 */
+
+                Hashtable wf = HashtableOutput.GetHashtable(folderPath); //the Hashtable generated on search.
+
+                // Get the files containing the search terms and output
+                List<string> containFiles = ScanFolder.GetFilesContainingTerms(folderPath, searchTerms, 
+                                                                    CheckSynonyms.Checked, newWordsDataSet);
+                foreach(string file in containFiles)
                 {
-                    folderPath // in case there are files inside the folder
-                };
-
-                // Add the folders inside the folder
-                string[] subFolders = Directory.GetDirectories(folderPath);
-                foreach (string sub in subFolders)
-                {
-                    folders.Add(sub);
-                }
-
-                // iterate over each folder
-                foreach (string folder in folders)
-                {
-                    // get the list of files from each folder
-                    string[] files = Directory.GetFiles(folder);
-
-                    foreach (string file in files)
-                    {                       
-                        bool[] isInFile = new bool[searchTerms.Length]; // array for true/false search terms
-                        List<string> fileWords = ReadFromFile.GetWords(file); // Read the file and return list of words
-
-                        foreach (string word in fileWords)
-                        {
-                            // create the Hashtable for the collection
-                            if (wf.ContainsKey(word))
-                            {
-                                wf[word] = double.Parse(wf[word].ToString()) + 1;
-                            }
-                            else
-                            {
-                                wf.Add(word, 1.0);
-                            }
-
-                            // Search word over terms
-                            int counter = 0; // counter for boolean array
-
-                            foreach (string term in searchTerms)
-                            {
-                                if (CheckSynonyms.Checked)
-                                {
-                                    List<string> checkList = new List<string> { term.ToLower() };
-                                    // get list of synonyms
-                                    List<string> synonyms = Database.GetSynonyms(term, newWordsDataSet);
-                                    if (synonyms != null)
-                                    {
-                                        foreach (string s in synonyms)
-                                        {
-                                            checkList.Add(s);
-                                        }
-                                    }
-                                        
-                                    // iterate over list
-                                    foreach (string s in checkList)
-                                    {
-                                        if (word.Equals(s))
-                                        {
-                                            isInFile[counter] = true; //mark this term or synonyms as true
-                                        }
-                                    } 
-                                } 
-                                else
-                                {
-                                    if (word.Equals(term.ToLower()))
-                                    {
-                                        isInFile[counter] = true; // mark this term as true
-                                    }
-                                }
-                                counter++;
-                            }
-                        }
-
-                        if(isInFile.All(x => x)) // tests if ALL search terms are true
-                        {
-                            FileOutput.Items.Add(file); // add file to the listBox if true
-                        }          
-                    }
+                    FileOutput.Items.Add(file);
                 }
 
                 /*  Output from the Hashtable - query terms and their frequency, plus the 
@@ -148,6 +89,45 @@ namespace Assignment_2
             
         }
 
+        /* 
+         * The CRUD section of the Form methods start here.
+         */ 
+
+        // CREATE
+        private void AddEntry_Click(object sender, EventArgs e)
+        {
+            Database.AddEntry(AddEntryWord.Text, AddEntrySynonyms.Text, newWordsDataSet);
+            // Clear the entries
+            AddEntryWord.Text = "";
+            AddEntrySynonyms.Text = "";
+            // Update the Table adapter
+            wordsTableAdapter.Update(newWordsDataSet);
+        }
+
+        // READ
+        private void QueryEntry_Click(object sender, EventArgs e)
+        {
+            QueryEntrySynonyms.Text = Database.QueryEntry(QueryEntryWord.Text, newWordsDataSet);
+        }
+
+        // UPDATE
+        private void UpdateEntry_Click(object sender, EventArgs e)
+        {
+            Database.UpdateEntry(UpdateEntryWord.Text, UpdateEntrySynonyms.Text, newWordsDataSet);
+            // clear the entries
+            UpdateEntryWord.Text = "";
+            UpdateEntrySynonyms.Text = "";
+        }
+
+        // DELETE
+        private void DeleteEntry_Click(object sender, EventArgs e)
+        {
+            Database.DeleteEntry(DeleteEntryWord.Text, newWordsDataSet);
+            // Clear the entry
+            DeleteEntryWord.Text = "";          
+        }
+
+        // Automatically installed by Visual Studio
         private void wordsBindingNavigatorSaveItem_Click(object sender, EventArgs e)
         {
             this.Validate();
@@ -161,50 +141,6 @@ namespace Assignment_2
             // TODO: This line of code loads data into the 'newWordsDataSet.Words' table. You can move, or remove it, as needed.
             this.wordsTableAdapter.Fill(this.newWordsDataSet.Words);
 
-        }
-
-        private void AddEntry_Click(object sender, EventArgs e)
-        {
-            Database.AddEntry(AddEntryWord.Text, AddEntrySynonyms.Text, newWordsDataSet);
-            // Clear the entries
-            AddEntryWord.Text = "";
-            AddEntrySynonyms.Text = "";
-            // Update the Table adapter
-            wordsTableAdapter.Update(newWordsDataSet);
-        }
-
-        private void DeleteEntry_Click(object sender, EventArgs e)
-        {
-            Database.DeleteEntry(DeleteEntryWord.Text, newWordsDataSet);
-            // Clear the entry
-            DeleteEntryWord.Text = "";          
-        }
-
-        private void UpdateEntry_Click(object sender, EventArgs e)
-        {
-            Database.UpdateEntry(UpdateEntryWord.Text, UpdateEntrySynonyms.Text, newWordsDataSet);
-            // clear the entries
-            UpdateEntryWord.Text = "";
-            UpdateEntrySynonyms.Text = "";  
-        }
-
-        private void QueryEntry_Click(object sender, EventArgs e)
-        {
-            List<string> queryList = Database.GetSynonyms(QueryEntryWord.Text, newWordsDataSet);
-
-            if (queryList != null)
-            {
-                string str = "";
-                foreach (string s in queryList)
-                {
-                    str += s + "\r\n";
-                }
-                QueryEntrySynonyms.Text = str;
-            }
-            else
-            {
-                QueryEntrySynonyms.Text = "No results returned.";
-            }
         }
     }
 }

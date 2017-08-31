@@ -9,6 +9,28 @@ namespace Assignment_2
 {
     public static class HashtableOutput
     {
+        public static Hashtable GetHashtable(string folder)
+        {
+            Hashtable wf = new Hashtable();
+
+            string[] words = ScanFolder.GetWordCollection(folder);
+
+            foreach (string word in words)
+            {
+                // create the Hashtable for the collection
+                if (wf.ContainsKey(word))
+                {
+                    wf[word] = double.Parse(wf[word].ToString()) + 1;
+                }
+                else
+                {
+                    wf.Add(word, 1.0);
+                }
+            }
+
+            return wf;
+        }
+
         /**
          * Returns a string of the Key with the maxiumum frequency in Hashtable 
          */
