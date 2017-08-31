@@ -57,10 +57,10 @@ namespace Assignment_2
                  * Modularised methods to get querys
                  */
 
-                Hashtable wf = HashtableOutput.GetHashtable(folderPath); //the Hashtable generated on search.
+                Hashtable wf = HashtableUtilities.GetHashtable(folderPath); //the Hashtable generated on search.
 
                 // Get the files containing the search terms and output
-                List<string> containFiles = ScanFolder.GetFilesContainingTerms(folderPath, searchTerms, 
+                List<string> containFiles = SearchUtilities.GetFilesContainingTerms(folderPath, searchTerms, 
                                                                     CheckSynonyms.Checked, newWordsDataSet);
                 foreach(string file in containFiles)
                 {
@@ -73,9 +73,9 @@ namespace Assignment_2
                  */
 
                 // output the maximum frequency word
-                MostFrequentBox.Text = HashtableOutput.GetMax(wf);
+                MostFrequentBox.Text = HashtableUtilities.GetMax(wf);
                 // output the query terms frequency (if they exist)
-                FrequencyBox.Text = HashtableOutput.QueryFrequency(wf, searchTerms);
+                FrequencyBox.Text = HashtableUtilities.QueryFrequency(wf, searchTerms);
             }
             else
             {

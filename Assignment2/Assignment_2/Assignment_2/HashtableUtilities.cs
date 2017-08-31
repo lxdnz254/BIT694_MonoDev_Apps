@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Assignment_2
 {
-    public static class HashtableOutput
+    public static class HashtableUtilities
     {
         
         /*
@@ -17,7 +17,7 @@ namespace Assignment_2
         {
             Hashtable wf = new Hashtable();
 
-            string[] words = ScanFolder.GetWordCollection(folder);
+            string[] words = SearchUtilities.GetWordCollection(folder);
 
             foreach (string word in words)
             {

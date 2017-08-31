@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Assignment_2
 {
-    public static class ScanFolder
+    public static class SearchUtilities
     {
         /*
          * Returns the list of files inside folder that contains the search terms or synonyms (if it is checked)
