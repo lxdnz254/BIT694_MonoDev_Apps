@@ -62,7 +62,7 @@ namespace Assignment_2
         {
             string str;
 
-            List<string> queryList = Database.GetSynonyms(term, dataSet);
+            List<string> queryList = GetSynonyms(term, dataSet);
 
             if (queryList != null)
             {
@@ -82,6 +82,7 @@ namespace Assignment_2
 
         }
 
+        // seperate method to call list of synonyms from a word (can be used by any class)
         public static List<string> GetSynonyms(string term, NewWordsDataSet dataSet)
         {
             List<string> list = new List<string>();

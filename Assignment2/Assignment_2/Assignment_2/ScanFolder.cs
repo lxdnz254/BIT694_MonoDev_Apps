@@ -9,7 +9,9 @@ namespace Assignment_2
 {
     public static class ScanFolder
     {
-        
+        /*
+         * Returns the list of files inside folder that contains the search terms or synonyms (if it is checked)
+         */ 
         public static List<string> GetFilesContainingTerms(string folder, string[] terms, Boolean synonymsOn, NewWordsDataSet dataSet)
         {
             List<string> folders = GetFolders(folder);
@@ -17,6 +19,9 @@ namespace Assignment_2
             return ScanFiles(files, terms, synonymsOn, dataSet);
         }
 
+        /*
+         * Returns an array of all the words in the collection (folder)
+         */ 
         public static string[] GetWordCollection(string folder)
         {
             List<string> folders = GetFolders(folder);
@@ -24,6 +29,9 @@ namespace Assignment_2
             return ScanFilesForWords(files);
         }
 
+        /*
+         * Returns a list of folders inside the main folder & the main folder
+         */ 
         static List<string> GetFolders(string folder)
         {
             List<string> folders = new List<string> { folder };
@@ -36,6 +44,9 @@ namespace Assignment_2
             return folders;
         }
 
+        /*
+         * Returns the list of files in the collection (folders) 
+         */ 
         static List<string> GetFiles(List<string> folders)
         {
             List<string> files = new List<string>(); // list of files
@@ -52,7 +63,13 @@ namespace Assignment_2
             return files;
         }
 
-        static List<string> ScanFiles(List<string> files, string[] searchTerms, Boolean synonymsOn, NewWordsDataSet dataSet)
+        /*
+         * Scans files and searches for terms/synonyms in each file.
+         * Marks files true if all terms are found in file
+         * Returns tyhe list of files that are true
+         */ 
+        static List<string> ScanFiles(List<string> files, string[] searchTerms,
+                                        Boolean synonymsOn, NewWordsDataSet dataSet)
         {
             List<string> fileContainsTerm = new List<string>();
 
@@ -109,6 +126,9 @@ namespace Assignment_2
             return fileContainsTerm;
         }
 
+        /*
+         * Scans files in collection and returns all words into an array
+         */ 
         static string[] ScanFilesForWords(List<string> files)
         {
             List<string> words = new List<string>(); 

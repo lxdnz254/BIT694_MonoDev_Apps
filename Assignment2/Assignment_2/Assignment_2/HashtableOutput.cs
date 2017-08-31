@@ -9,6 +9,10 @@ namespace Assignment_2
 {
     public static class HashtableOutput
     {
+        
+        /*
+         * Returns a Hashtable of the collection
+         */ 
         public static Hashtable GetHashtable(string folder)
         {
             Hashtable wf = new Hashtable();
@@ -31,7 +35,7 @@ namespace Assignment_2
             return wf;
         }
 
-        /**
+        /*
          * Returns a string of the Key with the maxiumum frequency in Hashtable 
          */
         public static string GetMax(Hashtable h)
@@ -53,7 +57,6 @@ namespace Assignment_2
         /*
          * Returns a string of all terms in the Hashtable with their frequency
          */ 
-
         public static string QueryFrequency(Hashtable h, string[] terms)
         {
             string result = "";

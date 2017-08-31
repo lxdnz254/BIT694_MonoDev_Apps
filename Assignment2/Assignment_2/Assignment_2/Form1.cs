@@ -17,11 +17,13 @@ namespace Assignment_2
         public Form1()
         {
             InitializeComponent();
+            FileOutput.MouseDoubleClick += new MouseEventHandler(FileOutput_DoubleClick);
         }
 
         /*
-         * The search query section, select collection folder 
-         * & search for terms in collection
+         * The search query section, select collection folder, 
+         * search for terms in collection, output files with terms
+         * or synonyms of terms, allow file to be openable.
          */ 
 
         // Select collection Folder
@@ -65,10 +67,11 @@ namespace Assignment_2
                     FileOutput.Items.Add(file);
                 }
 
-                /*  Output from the Hashtable - query terms and their frequency, plus the 
-                    word in the entire collection with the highest frequency                        
-                */
-             
+                /*
+                 *  Output from the Hashtable - query terms and their frequency, plus the
+                 *  word in the entire collection with the highest frequency
+                 */
+
                 // output the maximum frequency word
                 MostFrequentBox.Text = HashtableOutput.GetMax(wf);
                 // output the query terms frequency (if they exist)
@@ -87,6 +90,21 @@ namespace Assignment_2
                 
             }
             
+        }
+
+        // Open the file on a mouse double click
+        private void FileOutput_DoubleClick(object sender, MouseEventArgs e)
+        {
+            int index = FileOutput.IndexFromPoint(e.Location);
+            if (index != System.Windows.Forms.ListBox.NoMatches)
+            {
+                System.Diagnostics.Process.Start(FileOutput.SelectedItem.ToString());
+            }
+        }
+
+        private void FileOutput_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
 
         /* 
