@@ -14,6 +14,10 @@ namespace Assignment_2
 {
     public partial class Form1 : Form
     {
+        private int searchCount = 0; // counts the number of searches performed
+        private int fileCount; // the number of files containing all queries found in a search
+        private double totalSearchTime = 0; // a running total of time spent searching
+
         public Form1()
         {
             InitializeComponent();
@@ -53,6 +57,13 @@ namespace Assignment_2
                 FileOutput.Items.Clear(); // clear the file ListBox
                 FrequencyBox.Clear(); // clear the frequency TextBox
 
+                // start the timer on a search, this timer includes generating Hashtable,
+                // searching the collection, and querying Hashtable for query frequencies
+                var watch = System.Diagnostics.Stopwatch.StartNew();
+                // increase searchCount
+                searchCount++;
+                // reset fileCount
+                fileCount = 0;
                 /*
                  * Modularised methods to get querys
                  */
@@ -65,6 +76,7 @@ namespace Assignment_2
                 foreach(string file in containFiles)
                 {
                     FileOutput.Items.Add(file);
+                    fileCount++;
                 }
 
                 /*
@@ -76,6 +88,17 @@ namespace Assignment_2
                 MostFrequentBox.Text = HashtableUtilities.GetMax(wf);
                 // output the query terms frequency (if they exist)
                 FrequencyBox.Text = HashtableUtilities.QueryFrequency(wf, searchTerms);
+                
+                // end of the search process
+                watch.Stop();
+                // get the results of stopWatch.
+                var elapsedTime = watch.ElapsedMilliseconds;
+                totalSearchTime += elapsedTime;
+                // Output search times and number of found files to the Form
+                SearchTime.Text = "Search Time: " + elapsedTime.ToString() + "ms";
+                AverageTime.Text = "Average Time: " + (totalSearchTime / searchCount).ToString("0") + "ms";
+                FoundFiles.Text = "Files Found: " + fileCount;
+
             }
             else
             {

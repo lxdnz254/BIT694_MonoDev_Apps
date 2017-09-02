@@ -85,6 +85,10 @@
             this.FrequencyBox = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.MostFrequentBox = new System.Windows.Forms.TextBox();
+            this.AverageTime = new System.Windows.Forms.Label();
+            this.SearchTime = new System.Windows.Forms.Label();
+            this.FoundFiles = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.newWordsDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.wordsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.wordsBindingNavigator)).BeginInit();
@@ -94,6 +98,7 @@
             this.DeleteEntryBox.SuspendLayout();
             this.UpdateEntryBox.SuspendLayout();
             this.QueryEntryBox.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -128,7 +133,7 @@
             this.FileOutput.Location = new System.Drawing.Point(40, 264);
             this.FileOutput.Name = "FileOutput";
             this.FileOutput.ScrollAlwaysVisible = true;
-            this.FileOutput.Size = new System.Drawing.Size(374, 121);
+            this.FileOutput.Size = new System.Drawing.Size(374, 108);
             this.FileOutput.TabIndex = 3;
             // 
             // label2
@@ -546,7 +551,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(43, 398);
+            this.label5.Location = new System.Drawing.Point(6, 15);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(88, 13);
             this.label5.TabIndex = 19;
@@ -554,7 +559,7 @@
             // 
             // FrequencyBox
             // 
-            this.FrequencyBox.Location = new System.Drawing.Point(40, 415);
+            this.FrequencyBox.Location = new System.Drawing.Point(7, 34);
             this.FrequencyBox.Multiline = true;
             this.FrequencyBox.Name = "FrequencyBox";
             this.FrequencyBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -564,7 +569,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(255, 398);
+            this.label11.Location = new System.Drawing.Point(203, 16);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(156, 13);
             this.label11.TabIndex = 21;
@@ -572,20 +577,59 @@
             // 
             // MostFrequentBox
             // 
-            this.MostFrequentBox.Location = new System.Drawing.Point(258, 426);
+            this.MostFrequentBox.Location = new System.Drawing.Point(206, 34);
             this.MostFrequentBox.Name = "MostFrequentBox";
             this.MostFrequentBox.Size = new System.Drawing.Size(153, 20);
             this.MostFrequentBox.TabIndex = 22;
+            // 
+            // AverageTime
+            // 
+            this.AverageTime.AutoSize = true;
+            this.AverageTime.Location = new System.Drawing.Point(43, 375);
+            this.AverageTime.Name = "AverageTime";
+            this.AverageTime.Size = new System.Drawing.Size(76, 13);
+            this.AverageTime.TabIndex = 23;
+            this.AverageTime.Text = "Average Time:";
+            // 
+            // SearchTime
+            // 
+            this.SearchTime.AutoSize = true;
+            this.SearchTime.Location = new System.Drawing.Point(176, 375);
+            this.SearchTime.Name = "SearchTime";
+            this.SearchTime.Size = new System.Drawing.Size(67, 13);
+            this.SearchTime.TabIndex = 24;
+            this.SearchTime.Text = "SearchTime:";
+            // 
+            // FoundFiles
+            // 
+            this.FoundFiles.AutoSize = true;
+            this.FoundFiles.Location = new System.Drawing.Point(299, 375);
+            this.FoundFiles.Name = "FoundFiles";
+            this.FoundFiles.Size = new System.Drawing.Size(64, 13);
+            this.FoundFiles.TabIndex = 25;
+            this.FoundFiles.Text = "Files Found:";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.MostFrequentBox);
+            this.groupBox1.Controls.Add(this.label11);
+            this.groupBox1.Controls.Add(this.FrequencyBox);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Location = new System.Drawing.Point(39, 391);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(375, 119);
+            this.groupBox1.TabIndex = 26;
+            this.groupBox1.TabStop = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(710, 511);
-            this.Controls.Add(this.MostFrequentBox);
-            this.Controls.Add(this.label11);
-            this.Controls.Add(this.FrequencyBox);
-            this.Controls.Add(this.label5);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.FoundFiles);
+            this.Controls.Add(this.SearchTime);
+            this.Controls.Add(this.AverageTime);
             this.Controls.Add(this.CheckSynonyms);
             this.Controls.Add(this.QueryEntryBox);
             this.Controls.Add(this.UpdateEntryBox);
@@ -617,6 +661,8 @@
             this.UpdateEntryBox.PerformLayout();
             this.QueryEntryBox.ResumeLayout(false);
             this.QueryEntryBox.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -679,6 +725,10 @@
         private System.Windows.Forms.TextBox FrequencyBox;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox MostFrequentBox;
+        private System.Windows.Forms.Label AverageTime;
+        private System.Windows.Forms.Label SearchTime;
+        private System.Windows.Forms.Label FoundFiles;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }
 
