@@ -8,20 +8,27 @@ using System.Windows.Forms;
 
 namespace Assignment_2
 {
-    public static class Database
+    public class Database
     {
+        private NewWordsDataSet nwDataSet;
 
-        public static void AddEntry(string word, string synonyms, NewWordsDataSet dataSet)
+        public Database(NewWordsDataSet dataSet)
+        {
+            this.nwDataSet = dataSet;
+        }
+
+
+        public void AddEntry(string word, string synonyms)
         {
             try
             {
-                DataRow newRow = dataSet.Tables["Words"].NewRow();
+                DataRow newRow = nwDataSet.Tables["Words"].NewRow();
                 // ToLower() ensures the new entry is inserted in lower case
                 newRow["Word"] = word.ToLower();
                 newRow["Synonyms"] = synonyms.ToLower();
                 
                 // Add the newRow
-                dataSet.Tables["Words"].Rows.Add(newRow);
+                nwDataSet.Tables["Words"].Rows.Add(newRow);
                 MessageBox.Show("New entry added to the database!");
             }
             catch (Exception error)
@@ -30,11 +37,11 @@ namespace Assignment_2
             }
         }
 
-        public static void DeleteEntry(string word, NewWordsDataSet dataSet)
+        public void DeleteEntry(string word)
         {
             try
             {
-                NewWordsDataSet.WordsRow wordsRow = dataSet.Words.FindByWord(word.ToLower());
+                NewWordsDataSet.WordsRow wordsRow = nwDataSet.Words.FindByWord(word.ToLower());
                 wordsRow.Delete();
                 MessageBox.Show("Deleted entry!");
             }
@@ -44,11 +51,11 @@ namespace Assignment_2
             }
         }
 
-        public static void UpdateEntry(string word, string synonyms, NewWordsDataSet dataSet)
+        public void UpdateEntry(string word, string synonyms)
         {
             try
             {
-                NewWordsDataSet.WordsRow wordsRow = dataSet.Words.FindByWord(word.ToLower());
+                NewWordsDataSet.WordsRow wordsRow = nwDataSet.Words.FindByWord(word.ToLower());
                 wordsRow.Synonyms = synonyms.ToLower();
                 MessageBox.Show("Updated entry!");
             }
@@ -58,11 +65,11 @@ namespace Assignment_2
             }
         }
 
-        public static string QueryEntry(string term, NewWordsDataSet dataSet)
+        public string QueryEntry(string term)
         {
             string str;
 
-            List<string> queryList = GetSynonyms(term, dataSet);
+            List<string> queryList = GetSynonyms(term);
 
             if (queryList != null)
             {
@@ -83,13 +90,13 @@ namespace Assignment_2
         }
 
         // seperate method to call list of synonyms from a word (can be used by any class)
-        public static List<string> GetSynonyms(string term, NewWordsDataSet dataSet)
+        public List<string> GetSynonyms(string term)
         {
             List<string> list = new List<string>();
             
             try
             {
-                NewWordsDataSet.WordsRow wordsRow = dataSet.Words.FindByWord(term);
+                NewWordsDataSet.WordsRow wordsRow = nwDataSet.Words.FindByWord(term);
 
                 if (wordsRow != null)
                 {

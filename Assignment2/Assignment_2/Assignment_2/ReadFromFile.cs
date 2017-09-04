@@ -9,9 +9,14 @@ using System.Windows.Forms;
 
 namespace Assignment_2
 {
-    public static class ReadFromFile
+    public class ReadFromFile
     {
-        public static List<string> GetWords(string file)
+        public ReadFromFile()
+        {
+
+        }
+
+        public List<string> GetWords(string file)
         {
             List<string> fileWords = new List<string>(); // the list of words from the file to return
             String myLine; // reading the file line by line

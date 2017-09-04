@@ -7,17 +7,23 @@ using System.Threading.Tasks;
 
 namespace Assignment_2
 {
-    public static class HashtableUtilities
+    public class HashtableUtilities
     {
+        private SearchUtilities search = new SearchUtilities();
+
+        public HashtableUtilities()
+        {
+
+        }
         
         /*
          * Returns a Hashtable of the collection
          */ 
-        public static Hashtable GetHashtable(string folder)
+        public Hashtable GetHashtable(string folder)
         {
             Hashtable wf = new Hashtable();
 
-            string[] words = SearchUtilities.GetWordCollection(folder);
+            string[] words = search.GetWordCollection(folder);
 
             foreach (string word in words)
             {
@@ -38,7 +44,7 @@ namespace Assignment_2
         /*
          * Returns a string of the Key with the maxiumum frequency in Hashtable 
          */
-        public static string GetMax(Hashtable h)
+        public string GetMax(Hashtable h)
         {
             double max = 0;
             string maxWord = "";
@@ -57,7 +63,7 @@ namespace Assignment_2
         /*
          * Returns a string of all terms in the Hashtable with their frequency
          */ 
-        public static string QueryFrequency(Hashtable h, string[] terms)
+        public string QueryFrequency(Hashtable h, string[] terms)
         {
             string result = "";
 

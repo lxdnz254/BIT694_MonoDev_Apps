@@ -7,12 +7,19 @@ using System.Threading.Tasks;
 
 namespace Assignment_2
 {
-    public static class SearchUtilities
+    public class SearchUtilities
     {
+        private Database db;
+        private ReadFromFile rf = new ReadFromFile();
+
+        public SearchUtilities()
+        {
+
+        }
         /*
          * Returns the list of files inside folder that contains the search terms or synonyms (if it is checked)
          */ 
-        public static List<string> GetFilesContainingTerms(string folder, string[] terms, Boolean synonymsOn, NewWordsDataSet dataSet)
+        public List<string> GetFilesContainingTerms(string folder, string[] terms, Boolean synonymsOn, NewWordsDataSet dataSet)
         {
             List<string> folders = GetFolders(folder);
             List<string> files = GetFiles(folders);
@@ -22,7 +29,7 @@ namespace Assignment_2
         /*
          * Returns an array of all the words in the collection (folder)
          */ 
-        public static string[] GetWordCollection(string folder)
+        public string[] GetWordCollection(string folder)
         {
             List<string> folders = GetFolders(folder);
             List<string> files = GetFiles(folders);
@@ -32,7 +39,7 @@ namespace Assignment_2
         /*
          * Returns a list of folders inside the main folder & the main folder
          */ 
-        static List<string> GetFolders(string folder)
+        private List<string> GetFolders(string folder)
         {
             List<string> folders = new List<string> { folder };
             // Add the folders inside the folder
@@ -47,7 +54,7 @@ namespace Assignment_2
         /*
          * Returns the list of files in the collection (folders) 
          */ 
-        static List<string> GetFiles(List<string> folders)
+        private List<string> GetFiles(List<string> folders)
         {
             List<string> files = new List<string>(); // list of files
 
@@ -68,15 +75,16 @@ namespace Assignment_2
          * Marks files true if all terms are found in file
          * Returns tyhe list of files that are true
          */ 
-        static List<string> ScanFiles(List<string> files, string[] searchTerms,
+        private List<string> ScanFiles(List<string> files, string[] searchTerms,
                                         Boolean synonymsOn, NewWordsDataSet dataSet)
         {
+            db = new Database(dataSet);
             List<string> fileContainsTerm = new List<string>();
 
             foreach (string file in files)
             {
                 bool[] isInFile = new bool[searchTerms.Length]; // array for true/false search terms
-                List<string> fileWords = ReadFromFile.GetWords(file); // Read the file and return list of words
+                List<string> fileWords = rf.GetWords(file); // Read the file and return list of words
 
                 foreach (string word in fileWords)
                 {
@@ -89,7 +97,7 @@ namespace Assignment_2
                         {
                             List<string> checkList = new List<string> { term.ToLower() };
                             // get list of synonyms
-                            List<string> synonyms = Database.GetSynonyms(term, dataSet);
+                            List<string> synonyms = db.GetSynonyms(term);
                             if (synonyms != null)
                             {
                                 foreach (string s in synonyms)
@@ -129,13 +137,13 @@ namespace Assignment_2
         /*
          * Scans files in collection and returns all words into an array
          */ 
-        static string[] ScanFilesForWords(List<string> files)
+        private string[] ScanFilesForWords(List<string> files)
         {
             List<string> words = new List<string>(); 
 
             foreach(string file in files)
             {
-                List<string> fileWords = ReadFromFile.GetWords(file);
+                List<string> fileWords = rf.GetWords(file);
                 foreach(string word in fileWords)
                 {
                     words.Add(word);

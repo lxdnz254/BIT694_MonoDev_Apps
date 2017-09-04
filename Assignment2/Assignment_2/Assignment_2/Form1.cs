@@ -17,11 +17,15 @@ namespace Assignment_2
         private int searchCount = 0; // counts the number of searches performed
         private int fileCount; // the number of files containing all queries found in a search
         private double totalSearchTime = 0; // a running total of time spent searching
-
+        private Database db;
+        private HashtableUtilities hashUtil = new HashtableUtilities();
+        private SearchUtilities search = new SearchUtilities();
+        
         public Form1()
         {
             InitializeComponent();
             FileOutput.MouseDoubleClick += new MouseEventHandler(FileOutput_DoubleClick);
+            db = new Database(newWordsDataSet);  
         }
 
         /*
@@ -68,10 +72,10 @@ namespace Assignment_2
                  * Modularised methods to get querys
                  */
 
-                Hashtable wf = HashtableUtilities.GetHashtable(folderPath); //the Hashtable generated on search.
+                Hashtable wf = hashUtil.GetHashtable(folderPath); //the Hashtable generated on search.
 
                 // Get the files containing the search terms and output
-                List<string> containFiles = SearchUtilities.GetFilesContainingTerms(folderPath, searchTerms, 
+                List<string> containFiles = search.GetFilesContainingTerms(folderPath, searchTerms, 
                                                                     CheckSynonyms.Checked, newWordsDataSet);
                 foreach(string file in containFiles)
                 {
@@ -85,9 +89,9 @@ namespace Assignment_2
                  */
 
                 // output the maximum frequency word
-                MostFrequentBox.Text = HashtableUtilities.GetMax(wf);
+                MostFrequentBox.Text = hashUtil.GetMax(wf);
                 // output the query terms frequency (if they exist)
-                FrequencyBox.Text = HashtableUtilities.QueryFrequency(wf, searchTerms);
+                FrequencyBox.Text = hashUtil.QueryFrequency(wf, searchTerms);
                 
                 // end of the search process
                 watch.Stop();
@@ -137,7 +141,7 @@ namespace Assignment_2
         // CREATE
         private void AddEntry_Click(object sender, EventArgs e)
         {
-            Database.AddEntry(AddEntryWord.Text, AddEntrySynonyms.Text, newWordsDataSet);
+            db.AddEntry(AddEntryWord.Text, AddEntrySynonyms.Text);
             // Clear the entries
             AddEntryWord.Text = "";
             AddEntrySynonyms.Text = "";
@@ -148,13 +152,13 @@ namespace Assignment_2
         // READ
         private void QueryEntry_Click(object sender, EventArgs e)
         {
-            QueryEntrySynonyms.Text = Database.QueryEntry(QueryEntryWord.Text, newWordsDataSet);
+            QueryEntrySynonyms.Text = db.QueryEntry(QueryEntryWord.Text);
         }
 
         // UPDATE
         private void UpdateEntry_Click(object sender, EventArgs e)
         {
-            Database.UpdateEntry(UpdateEntryWord.Text, UpdateEntrySynonyms.Text, newWordsDataSet);
+            db.UpdateEntry(UpdateEntryWord.Text, UpdateEntrySynonyms.Text);
             // clear the entries
             UpdateEntryWord.Text = "";
             UpdateEntrySynonyms.Text = "";
@@ -163,7 +167,7 @@ namespace Assignment_2
         // DELETE
         private void DeleteEntry_Click(object sender, EventArgs e)
         {
-            Database.DeleteEntry(DeleteEntryWord.Text, newWordsDataSet);
+            db.DeleteEntry(DeleteEntryWord.Text);
             // Clear the entry
             DeleteEntryWord.Text = "";          
         }
