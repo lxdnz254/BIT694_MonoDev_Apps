@@ -9,14 +9,11 @@ using System.Windows.Forms;
 
 namespace Assignment_2
 {
-    public class ReadFromFile
+    // This class is static as it not manipulating objects, only returning messages.
+    public static class ReadFromFile
     {
-        public ReadFromFile()
-        {
-
-        }
-
-        public List<string> GetWords(string file)
+        
+        public static List<string> GetWords(string file)
         {
             List<string> fileWords = new List<string>(); // the list of words from the file to return
             String myLine; // reading the file line by line

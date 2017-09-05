@@ -9,11 +9,12 @@ namespace Assignment_2
 {
     public class HashtableUtilities
     {
-        private SearchUtilities search = new SearchUtilities();
+        private SearchUtilities searchUtil; // A reference to the SearchUtilities class
 
+        // Constructor for the HashTableUtilities class
         public HashtableUtilities()
         {
-
+            
         }
         
         /*
@@ -22,8 +23,9 @@ namespace Assignment_2
         public Hashtable GetHashtable(string folder)
         {
             Hashtable wf = new Hashtable();
+            searchUtil = new SearchUtilities(); // instantiated in this method, as its the only method requiring SearchUtilites.
 
-            string[] words = search.GetWordCollection(folder);
+            string[] words = searchUtil.GetWordCollection(folder);
 
             foreach (string word in words)
             {

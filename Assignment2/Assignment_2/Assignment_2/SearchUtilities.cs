@@ -9,13 +9,14 @@ namespace Assignment_2
 {
     public class SearchUtilities
     {
-        private Database db;
-        private ReadFromFile rf = new ReadFromFile();
+        private Database db; // A reference to the Database class.
 
+        // Constructor for SearchUtitlies objects
         public SearchUtilities()
         {
 
         }
+
         /*
          * Returns the list of files inside folder that contains the search terms or synonyms (if it is checked)
          */ 
@@ -51,6 +52,8 @@ namespace Assignment_2
             return folders;
         }
 
+        // Private methods below here -  only available within the SearchUtilities class.
+
         /*
          * Returns the list of files in the collection (folders) 
          */ 
@@ -84,7 +87,7 @@ namespace Assignment_2
             foreach (string file in files)
             {
                 bool[] isInFile = new bool[searchTerms.Length]; // array for true/false search terms
-                List<string> fileWords = rf.GetWords(file); // Read the file and return list of words
+                List<string> fileWords = ReadFromFile.GetWords(file); // Read the file and return list of words
 
                 foreach (string word in fileWords)
                 {
@@ -128,7 +131,7 @@ namespace Assignment_2
 
                 if (isInFile.All(x => x)) // tests if ALL search terms are true
                 {
-                    fileContainsTerm.Add(file); // add file to the listBox if true
+                    fileContainsTerm.Add(file); // add file "string" to the List if true
                 }
             }
             return fileContainsTerm;
@@ -143,7 +146,7 @@ namespace Assignment_2
 
             foreach(string file in files)
             {
-                List<string> fileWords = rf.GetWords(file);
+                List<string> fileWords = ReadFromFile.GetWords(file);
                 foreach(string word in fileWords)
                 {
                     words.Add(word);

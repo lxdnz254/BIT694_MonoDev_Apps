@@ -14,18 +14,24 @@ namespace Assignment_2
 {
     public partial class Form1 : Form
     {
-        private int searchCount = 0; // counts the number of searches performed
+        private int searchCount; // counts the number of searches performed
         private int fileCount; // the number of files containing all queries found in a search
-        private double totalSearchTime = 0; // a running total of time spent searching
-        private Database db;
-        private HashtableUtilities hashUtil = new HashtableUtilities();
-        private SearchUtilities search = new SearchUtilities();
+        private double totalSearchTime; // a running total of time spent searching
+        private Database db; // a reference to the Database class
+        private HashtableUtilities hashUtil; // a reference to the HashtableUtilities class
+        private SearchUtilities searchUtil; // a reference to the SearchUtilities class
         
         public Form1()
         {
-            InitializeComponent();
+            InitializeComponent(); // Auto-created methods .. do not alter anything in this method
+
+            // Initialize or instantiate class objects or private variables for use in the form
             FileOutput.MouseDoubleClick += new MouseEventHandler(FileOutput_DoubleClick);
-            db = new Database(newWordsDataSet);  
+            db = new Database(newWordsDataSet);
+            hashUtil = new HashtableUtilities();
+            searchUtil = new SearchUtilities();
+            searchCount = 0;
+            totalSearchTime = 0;
         }
 
         /*
@@ -46,7 +52,6 @@ namespace Assignment_2
                 FolderOutput.Text += folderPath; // output folder to textBox
             }
         }
-
 
         // Search collection for terms
         private void Search_Click(object sender, EventArgs e)
@@ -75,7 +80,7 @@ namespace Assignment_2
                 Hashtable wf = hashUtil.GetHashtable(folderPath); //the Hashtable generated on search.
 
                 // Get the files containing the search terms and output
-                List<string> containFiles = search.GetFilesContainingTerms(folderPath, searchTerms, 
+                List<string> containFiles = searchUtil.GetFilesContainingTerms(folderPath, searchTerms, 
                                                                     CheckSynonyms.Checked, newWordsDataSet);
                 foreach(string file in containFiles)
                 {

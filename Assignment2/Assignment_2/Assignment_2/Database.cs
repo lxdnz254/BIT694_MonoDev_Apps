@@ -10,11 +10,12 @@ namespace Assignment_2
 {
     public class Database
     {
-        private NewWordsDataSet nwDataSet;
+        private NewWordsDataSet nwDataSet; // An instance variable pointing at the DataSet
 
+        // Constructor for Database class, requires a NewWordsDataSet to be passed as an argument
         public Database(NewWordsDataSet dataSet)
         {
-            this.nwDataSet = dataSet;
+            this.nwDataSet = dataSet; // instantiates the passed dataSet for the class methods to use
         }
 
 
@@ -89,7 +90,7 @@ namespace Assignment_2
 
         }
 
-        // seperate method to call list of synonyms from a word (can be used by any class)
+        // seperate method to call list of synonyms from a word (can be used by any class that has a Database class object)
         public List<string> GetSynonyms(string term)
         {
             List<string> list = new List<string>();
