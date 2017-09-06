@@ -19,8 +19,20 @@ namespace Assignment_2
 
         /*
          * Returns the list of files inside folder that contains the search terms or synonyms (if it is checked)
+         * Iterating by the terms given
          */ 
-        public List<string> GetFilesContainingTerms(string folder, string[] terms, Boolean synonymsOn, NewWordsDataSet dataSet)
+        public List<string> GetFilesContainingTermsByTerms(string folder, string[] terms, Boolean synonymsOn, NewWordsDataSet dataSet)
+        {
+            List<string> folders = GetFolders(folder);
+            List<string> files = GetFiles(folders);
+            return ScanFilesByTerms(files, terms, synonymsOn, dataSet);
+        }
+
+        /*
+         * Returns the list of files inside folder that contains the search terms or synonyms (if it is checked)
+         * Iterating by the files in the folder
+         */
+        public List<string> GetFilesContainingTermsByFiles(string folder, string[] terms, Boolean synonymsOn, NewWordsDataSet dataSet)
         {
             List<string> folders = GetFolders(folder);
             List<string> files = GetFiles(folders);
@@ -29,7 +41,7 @@ namespace Assignment_2
 
         /*
          * Returns an array of all the words in the collection (folder)
-         */ 
+         */
         public string[] GetWordCollection(string folder)
         {
             List<string> folders = GetFolders(folder);

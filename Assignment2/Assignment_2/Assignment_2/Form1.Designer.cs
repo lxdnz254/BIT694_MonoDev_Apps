@@ -37,7 +37,7 @@
             this.FileOutput = new System.Windows.Forms.ListBox();
             this.label2 = new System.Windows.Forms.Label();
             this.SearchTerms = new System.Windows.Forms.TextBox();
-            this.Search = new System.Windows.Forms.Button();
+            this.SearchByTerms = new System.Windows.Forms.Button();
             this.newWordsDataSet = new Assignment_2.NewWordsDataSet();
             this.wordsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.wordsTableAdapter = new Assignment_2.NewWordsDataSetTableAdapters.WordsTableAdapter();
@@ -89,6 +89,7 @@
             this.SearchTime = new System.Windows.Forms.Label();
             this.FoundFiles = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.SearchByFiles = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.newWordsDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.wordsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.wordsBindingNavigator)).BeginInit();
@@ -152,15 +153,15 @@
             this.SearchTerms.Size = new System.Drawing.Size(177, 20);
             this.SearchTerms.TabIndex = 5;
             // 
-            // Search
+            // SearchByTerms
             // 
-            this.Search.Location = new System.Drawing.Point(40, 232);
-            this.Search.Name = "Search";
-            this.Search.Size = new System.Drawing.Size(371, 23);
-            this.Search.TabIndex = 6;
-            this.Search.Text = "Search";
-            this.Search.UseVisualStyleBackColor = true;
-            this.Search.Click += new System.EventHandler(this.Search_Click);
+            this.SearchByTerms.Location = new System.Drawing.Point(40, 232);
+            this.SearchByTerms.Name = "SearchByTerms";
+            this.SearchByTerms.Size = new System.Drawing.Size(178, 23);
+            this.SearchByTerms.TabIndex = 6;
+            this.SearchByTerms.Text = "Search by Terms";
+            this.SearchByTerms.UseVisualStyleBackColor = true;
+            this.SearchByTerms.Click += new System.EventHandler(this.Search_Click);
             // 
             // newWordsDataSet
             // 
@@ -621,11 +622,22 @@
             this.groupBox1.TabIndex = 26;
             this.groupBox1.TabStop = false;
             // 
+            // SearchByFiles
+            // 
+            this.SearchByFiles.Location = new System.Drawing.Point(223, 232);
+            this.SearchByFiles.Name = "SearchByFiles";
+            this.SearchByFiles.Size = new System.Drawing.Size(188, 23);
+            this.SearchByFiles.TabIndex = 27;
+            this.SearchByFiles.Text = "Search by Files";
+            this.SearchByFiles.UseVisualStyleBackColor = true;
+            this.SearchByFiles.Click += new System.EventHandler(this.SearchByFiles_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(710, 511);
+            this.Controls.Add(this.SearchByFiles);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.FoundFiles);
             this.Controls.Add(this.SearchTime);
@@ -637,7 +649,7 @@
             this.Controls.Add(this.AddEntryBox);
             this.Controls.Add(this.wordsDataGridView);
             this.Controls.Add(this.wordsBindingNavigator);
-            this.Controls.Add(this.Search);
+            this.Controls.Add(this.SearchByTerms);
             this.Controls.Add(this.SearchTerms);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.FileOutput);
@@ -677,7 +689,7 @@
         private System.Windows.Forms.ListBox FileOutput;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox SearchTerms;
-        private System.Windows.Forms.Button Search;
+        private System.Windows.Forms.Button SearchByTerms;
         private NewWordsDataSet newWordsDataSet;
         private System.Windows.Forms.BindingSource wordsBindingSource;
         private NewWordsDataSetTableAdapters.WordsTableAdapter wordsTableAdapter;
@@ -729,6 +741,7 @@
         private System.Windows.Forms.Label SearchTime;
         private System.Windows.Forms.Label FoundFiles;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button SearchByFiles;
     }
 }
 

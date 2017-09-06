@@ -40,7 +40,9 @@ namespace Assignment_2
          * or synonyms of terms, allow file to be openable.
          */ 
 
-        // Select collection Folder
+        /*
+         * Select collection Folder
+         */ 
         private void SelectFolder_Click(object sender, EventArgs e)
         {
             DialogResult result = folderBrowserDialog1.ShowDialog();
@@ -53,7 +55,9 @@ namespace Assignment_2
             }
         }
 
-        // Search collection for terms
+        /*
+         *  Search collection for ALL query terms using the terms to iterate over
+         */
         private void Search_Click(object sender, EventArgs e)
         {
             string folderPath = FolderOutput.Text; // get the folderPath from output TextBox 
@@ -73,14 +77,15 @@ namespace Assignment_2
                 searchCount++;
                 // reset fileCount
                 fileCount = 0;
+                
                 /*
                  * Modularised methods to get querys
                  */
 
                 Hashtable wf = hashUtil.GetHashtable(folderPath); //the Hashtable generated on search.
 
-                // Get the files containing the search terms and output
-                List<string> containFiles = searchUtil.GetFilesContainingTerms(folderPath, searchTerms, 
+                // Get the files containing the search terms using iterating over terms method and output
+                List<string> containFiles = searchUtil.GetFilesContainingTermsByTerms(folderPath, searchTerms, 
                                                                     CheckSynonyms.Checked, newWordsDataSet);
                 foreach(string file in containFiles)
                 {
@@ -122,6 +127,79 @@ namespace Assignment_2
                 
             }
             
+        }
+
+        /*
+         * Search collection for ALL the query terms iterating over the files
+         */
+        private void SearchByFiles_Click(object sender, EventArgs e)
+        {
+            string folderPath = FolderOutput.Text; // get the folderPath from output TextBox 
+            string[] searchTerms = SearchTerms.Text.Split(' '); // Get the search terms
+
+
+            // check a folderPath is inputted and check a search query is inputted
+            if (folderPath != "" && !(searchTerms.Length < 2 && searchTerms[0] == ""))
+            {
+                FileOutput.Items.Clear(); // clear the file ListBox
+                FrequencyBox.Clear(); // clear the frequency TextBox
+
+                // start the timer on a search, this timer includes generating Hashtable,
+                // searching the collection, and querying Hashtable for query frequencies
+                var watch = System.Diagnostics.Stopwatch.StartNew();
+                // increase searchCount
+                searchCount++;
+                // reset fileCount
+                fileCount = 0;
+                
+                /*
+                 * Modularised methods to get querys
+                 */
+
+                Hashtable wf = hashUtil.GetHashtable(folderPath); //the Hashtable generated on search.
+
+                // Get the files containing the search terms by iterating over the files and output
+                List<string> containFiles = searchUtil.GetFilesContainingTermsByFiles(folderPath, searchTerms,
+                                                                    CheckSynonyms.Checked, newWordsDataSet);
+                foreach (string file in containFiles)
+                {
+                    FileOutput.Items.Add(file);
+                    fileCount++;
+                }
+
+                /*
+                 *  Output from the Hashtable - query terms and their frequency, plus the
+                 *  word in the entire collection with the highest frequency
+                 */
+
+                // output the maximum frequency word
+                MostFrequentBox.Text = hashUtil.GetMax(wf);
+                // output the query terms frequency (if they exist)
+                FrequencyBox.Text = hashUtil.QueryFrequency(wf, searchTerms);
+
+                // end of the search process
+                watch.Stop();
+                // get the results of stopWatch.
+                var elapsedTime = watch.ElapsedMilliseconds;
+                totalSearchTime += elapsedTime;
+                // Output search times and number of found files to the Form
+                SearchTime.Text = "Search Time: " + elapsedTime.ToString() + "ms";
+                AverageTime.Text = "Average Time: " + (totalSearchTime / searchCount).ToString("0") + "ms";
+                FoundFiles.Text = "Files Found: " + fileCount;
+
+            }
+            else
+            {
+                if (folderPath == "")
+                {
+                    MessageBox.Show("No folder has been selected!");
+                }
+                else
+                {
+                    MessageBox.Show("No search query entered");
+                }
+
+            }
         }
 
         // Open the file on a mouse double click
