@@ -24,7 +24,7 @@ namespace Assignment_2
         {
             List<string> folders = GetFolders(folder);
             List<string> files = GetFiles(folders);
-            return ScanFiles(files, terms, synonymsOn, dataSet);
+            return ScanFilesByFile(files, terms, synonymsOn, dataSet);
         }
 
         /*
@@ -37,9 +37,11 @@ namespace Assignment_2
             return ScanFilesForWords(files);
         }
 
+        // Private methods below here -  only available within the SearchUtilities class.
+
         /*
          * Returns a list of folders inside the main folder & the main folder
-         */ 
+         */
         private List<string> GetFolders(string folder)
         {
             List<string> folders = new List<string> { folder };
@@ -51,8 +53,6 @@ namespace Assignment_2
             }
             return folders;
         }
-
-        // Private methods below here -  only available within the SearchUtilities class.
 
         /*
          * Returns the list of files in the collection (folders) 
@@ -78,7 +78,7 @@ namespace Assignment_2
          * Marks files true if all terms are found in file
          * Returns tyhe list of files that are true
          */ 
-        private List<string> ScanFiles(List<string> files, string[] searchTerms,
+        private List<string> ScanFilesByFile(List<string> files, string[] searchTerms,
                                         Boolean synonymsOn, NewWordsDataSet dataSet)
         {
             db = new Database(dataSet);
@@ -135,6 +135,57 @@ namespace Assignment_2
                 }
             }
             return fileContainsTerm;
+        }
+
+        private List<string> ScanFilesByTerms(List<string> files, string[] searchTerms,
+                                            Boolean synonymsOn, NewWordsDataSet dataSet)
+        {
+            db = new Database(dataSet);
+            
+            List<string> searchFileList = files;
+            
+            for (int i=0; i < searchTerms.Length; i++)
+            {
+                List<string> fileHasTerm = new List<string>();
+
+                foreach (string file in searchFileList)
+                {
+                    bool hasTerm = false;
+                    List<string> fileWords = ReadFromFile.GetWords(file);
+                    
+                    foreach (string word in fileWords)
+                    {
+                        if (synonymsOn)
+                        {
+                            List<string> synonyms = db.GetSynonyms(searchTerms[i]);
+
+                            if (synonyms != null)
+                            {
+                                foreach (string s in synonyms)
+                                {
+                                    if (word.Equals(s))
+                                    {
+                                        hasTerm = true;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (word.Equals(searchTerms[i]))
+                        {
+                            hasTerm = true;
+                        }
+                    }
+
+                    if (hasTerm)
+                    {
+                        fileHasTerm.Add(file);
+                    }
+                }
+                searchFileList = fileHasTerm;
+                
+            }
+            return searchFileList;
         }
 
         /*
