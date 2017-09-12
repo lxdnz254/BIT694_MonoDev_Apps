@@ -10,6 +10,7 @@ namespace Assignment_3
     public class SearchUtilities
     {
         private Database db; // A reference to the Database class.
+        private PorterStemmer stemmer;
 
         // Constructor for SearchUtitlies objects
         public SearchUtilities()
@@ -47,6 +48,24 @@ namespace Assignment_3
             List<string> folders = GetFolders(folder);
             List<string> files = GetFiles(folders);
             return ScanFilesForWords(files);
+        }
+
+        /// <summary>
+        /// Returns an array of the stemmed collection
+        /// </summary>
+        /// <param name="folder"></param>
+        /// <returns></returns>
+        public string[] GetStemmedCollection(string folder)
+        {
+            stemmer = new PorterStemmer();
+            string[] collection = GetWordCollection(folder);
+            List<string> stemmedCollection = new List<string>();
+            foreach(string word in collection)
+            {
+                if (word.Length>2) { stemmedCollection.Add(stemmer.StemWord(word)); }
+            }
+
+            return stemmedCollection.ToArray();
         }
 
         // Private methods below here -  only available within the SearchUtilities class.
@@ -94,6 +113,7 @@ namespace Assignment_3
                                         Boolean synonymsOn, NewWordsDataSet dataSet)
         {
             db = new Database(dataSet);
+            stemmer = new PorterStemmer();
             List<string> fileContainsTerm = new List<string>();
 
             foreach (string file in files)
@@ -130,13 +150,12 @@ namespace Assignment_3
                                 }
                             }
                         }
-                        else
+
+                        if (stemmer.StemWord(word).Equals(stemmer.StemWord(term.ToLower())))
                         {
-                            if (word.Equals(term.ToLower()))
-                            {
-                                isInFile[counter] = true; // mark this term as true
-                            }
+                            isInFile[counter] = true; // mark this term as true
                         }
+
                         counter++;
                     }
                 }
@@ -153,7 +172,7 @@ namespace Assignment_3
                                             Boolean synonymsOn, NewWordsDataSet dataSet)
         {
             db = new Database(dataSet);
-            
+            stemmer = new PorterStemmer();
             List<string> searchFileList = files;
             
             for (int i=0; i < searchTerms.Length; i++)
@@ -183,7 +202,7 @@ namespace Assignment_3
                             }
                         }
 
-                        if (word.Equals(searchTerms[i]))
+                        if (stemmer.StemWord(word).Equals(stemmer.StemWord(searchTerms[i])))
                         {
                             hasTerm = true;
                         }

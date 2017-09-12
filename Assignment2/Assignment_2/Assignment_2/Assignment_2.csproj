@@ -67,6 +67,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>NewWordsDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="PorterStemmer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadFromFile.cs" />
