@@ -15,6 +15,9 @@ using iTextSharp.text.pdf.parser;
 // doc parser file
 using Code7248.word_reader;
 
+// xls parser file
+using ExcelDataReader;
+
 namespace Assignment_3
 {
     // This class is static as it not manipulating objects, only returning messages.
@@ -29,7 +32,7 @@ namespace Assignment_3
             if (ext.Equals(".txt")) { fileWords = ReadTxtFile(file); }       
             if (ext.Equals(".pdf")) { fileWords = ReadPDFFile(file); }
             if (ext.Equals(".doc") || ext.Equals(".docx")) { fileWords = ReadDocFile(file); }
-            if (ext.Equals(".xls")) { fileWords = ReadXlsFile(file); }
+            if (ext.Equals(".xls") || ext.Equals(".xlsx")) { fileWords = ReadXlsFile(file); }
 
             return fileWords;
         }
@@ -90,10 +93,43 @@ namespace Assignment_3
         // read a .xls file
         static List<string> ReadXlsFile(string file)
         {
-            List<string> fileWords = new List<string>();
+            string text = "";
 
+            using (var stream = File.Open(file, FileMode.Open, FileAccess.Read))
+            {
 
-            return fileWords;
+                // Auto-detect format, supports:
+                //  - Binary Excel files (2.0-2003 format; *.xls)
+                //  - OpenXml Excel files (2007 format; *.xlsx)
+                using (var reader = ExcelReaderFactory.CreateReader(stream))
+                {
+
+                    // 1. Use the reader methods
+                    do
+                    {
+                        while (reader.Read())
+                        {
+                            // reader.GetDouble(0);
+                            Type type = reader.GetFieldType(0);
+                            if (type != null)
+                            {
+                                if (type.Name.Equals("String"))
+                                {
+                                    text += reader.GetString(0) + " ";
+                                }
+                            }
+                            
+                           
+                        }
+                    } while (reader.NextResult());
+
+                   
+
+                    // The result of each spreadsheet is in result.Tables
+                }
+            }
+
+            return addTextToList(text) ;
         }
 
         private static List<string> addTextToList(string text)
