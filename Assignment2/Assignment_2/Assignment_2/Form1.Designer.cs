@@ -1,4 +1,4 @@
-﻿namespace Assignment_2
+﻿namespace Assignment_3
 {
     partial class Form1
     {
@@ -38,10 +38,10 @@
             this.label2 = new System.Windows.Forms.Label();
             this.SearchTerms = new System.Windows.Forms.TextBox();
             this.SearchByTerms = new System.Windows.Forms.Button();
-            this.newWordsDataSet = new Assignment_2.NewWordsDataSet();
+            this.newWordsDataSet = new Assignment_3.NewWordsDataSet();
             this.wordsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.wordsTableAdapter = new Assignment_2.NewWordsDataSetTableAdapters.WordsTableAdapter();
-            this.tableAdapterManager = new Assignment_2.NewWordsDataSetTableAdapters.TableAdapterManager();
+            this.wordsTableAdapter = new Assignment_3.NewWordsDataSetTableAdapters.WordsTableAdapter();
+            this.tableAdapterManager = new Assignment_3.NewWordsDataSetTableAdapters.TableAdapterManager();
             this.wordsBindingNavigator = new System.Windows.Forms.BindingNavigator(this.components);
             this.bindingNavigatorAddNewItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorCountItem = new System.Windows.Forms.ToolStripLabel();
@@ -180,7 +180,7 @@
             // tableAdapterManager
             // 
             this.tableAdapterManager.BackupDataSetBeforeUpdate = false;
-            this.tableAdapterManager.UpdateOrder = Assignment_2.NewWordsDataSetTableAdapters.TableAdapterManager.UpdateOrderOption.InsertUpdateDelete;
+            this.tableAdapterManager.UpdateOrder = Assignment_3.NewWordsDataSetTableAdapters.TableAdapterManager.UpdateOrderOption.InsertUpdateDelete;
             this.tableAdapterManager.WordsTableAdapter = this.wordsTableAdapter;
             // 
             // wordsBindingNavigator

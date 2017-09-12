@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Assignment_2.Properties {
+namespace Assignment_3.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

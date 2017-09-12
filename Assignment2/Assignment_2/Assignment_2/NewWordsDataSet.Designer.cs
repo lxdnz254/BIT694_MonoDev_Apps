@@ -10,7 +10,7 @@
 
 #pragma warning disable 1591
 
-namespace Assignment_2 {
+namespace Assignment_3 {
     
     
     /// <summary>
@@ -635,7 +635,7 @@ namespace Assignment_2 {
         }
     }
 }
-namespace Assignment_2.NewWordsDataSetTableAdapters {
+namespace Assignment_3.NewWordsDataSetTableAdapters {
     
     
     /// <summary>
@@ -786,7 +786,7 @@ namespace Assignment_2.NewWordsDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         private void InitConnection() {
             this._connection = new global::System.Data.OleDb.OleDbConnection();
-            this._connection.ConnectionString = global::Assignment_2.Properties.Settings.Default.NewWordsConnectionString;
+            this._connection.ConnectionString = global::Assignment_3.Properties.Settings.Default.NewWordsConnectionString;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

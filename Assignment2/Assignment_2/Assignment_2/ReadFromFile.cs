@@ -7,13 +7,32 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Assignment_2
+//pdf parser files
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.parser;
+
+namespace Assignment_3
 {
     // This class is static as it not manipulating objects, only returning messages.
     public static class ReadFromFile
     {
         
-        public static List<string> GetWords(string file)
+        public static List<string> GetWords(string file) //main entry point for Reading files
+        {
+            List<string> fileWords = new List<string>(); // List of words to return
+            string ext = System.IO.Path.GetExtension(file); // determine the extension of a file
+
+            if (ext.Equals(".txt")) { fileWords = ReadTxtFile(file); }       
+            if (ext.Equals(".pdf")) { fileWords = ReadPDFFile(file); }
+            if (ext.Equals(".doc")) { fileWords = ReadDocFile(file); }
+            if (ext.Equals(".xls")) { fileWords = ReadXlsFile(file); }
+
+            return fileWords;
+        }
+
+        // Read a .txt file
+        static List<string> ReadTxtFile(string file)
         {
             List<string> fileWords = new List<string>(); // the list of words from the file to return
             String myLine; // reading the file line by line
@@ -38,7 +57,7 @@ namespace Assignment_2
                         {
                             fileWords.Add(word);
                         }
-                       
+
                     }
 
                 } // end of reading the file
@@ -47,7 +66,59 @@ namespace Assignment_2
             {
                 MessageBox.Show("File not found: " + error);
             }
-            
+
+
+            return fileWords;
+        }
+
+        // read a .pdf file
+        static List<string> ReadPDFFile(string file)
+        {
+            List<string> fileWords = new List<string>();
+            String[] words;
+
+            StringBuilder text = new StringBuilder();
+            using (PdfReader reader = new PdfReader(file))
+            {
+                for (int i = 1; i <= reader.NumberOfPages; i++)
+                {
+                    text.Append(PdfTextExtractor.GetTextFromPage(reader, i));
+                }
+            }
+
+            string newText = Regex.Replace(text.ToString(), "[\\p{P}+]", "");
+            newText = newText.ToLower();
+
+            words = newText.Split(' ');
+
+            foreach (string word in words)
+            {
+                if (word != "")
+                {
+                    fileWords.Add(word);
+                }
+
+            }
+
+            return fileWords;
+        }
+
+
+        // read a .doc file
+        static List<string> ReadDocFile(string file)
+        {
+            List<string> fileWords = new List<string>();
+
+
+            return fileWords;
+        }
+
+
+        // read a .xls file
+        static List<string> ReadXlsFile(string file)
+        {
+            List<string> fileWords = new List<string>();
+
 
             return fileWords;
         }
