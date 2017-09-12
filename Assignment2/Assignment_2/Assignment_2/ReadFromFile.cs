@@ -12,6 +12,9 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 
+// doc parser file
+using Code7248.word_reader;
+
 namespace Assignment_3
 {
     // This class is static as it not manipulating objects, only returning messages.
@@ -25,7 +28,7 @@ namespace Assignment_3
 
             if (ext.Equals(".txt")) { fileWords = ReadTxtFile(file); }       
             if (ext.Equals(".pdf")) { fileWords = ReadPDFFile(file); }
-            if (ext.Equals(".doc")) { fileWords = ReadDocFile(file); }
+            if (ext.Equals(".doc") || ext.Equals(".docx")) { fileWords = ReadDocFile(file); }
             if (ext.Equals(".xls")) { fileWords = ReadXlsFile(file); }
 
             return fileWords;
@@ -45,20 +48,7 @@ namespace Assignment_3
                 while ((myLine = tr.ReadLine()) != null)
 
                 {
-                    // remove punctuation from each line and make lower case
-                    string newLine = Regex.Replace(myLine, "[\\p{P}+]", "");
-                    newLine = newLine.ToLower();
-
-                    words = newLine.Split(' '); //Splitting a line into an array of words
-
-                    foreach (string word in words)
-                    {
-                        if (word != "")
-                        {
-                            fileWords.Add(word);
-                        }
-
-                    }
+                    fileWords = addTextToList(myLine);
 
                 } // end of reading the file
             }
@@ -73,10 +63,7 @@ namespace Assignment_3
 
         // read a .pdf file
         static List<string> ReadPDFFile(string file)
-        {
-            List<string> fileWords = new List<string>();
-            String[] words;
-
+        {  
             StringBuilder text = new StringBuilder();
             using (PdfReader reader = new PdfReader(file))
             {
@@ -86,10 +73,37 @@ namespace Assignment_3
                 }
             }
 
+            return addTextToList(text.ToString());
+        }
+
+
+        // read a .doc file
+        static List<string> ReadDocFile(string file)
+        {
+            TextExtractor extractor = new TextExtractor(file);
+            string text = extractor.ExtractText(); //The string 'text' is now loaded with the text from the Word Document
+
+            return addTextToList(text);
+        }
+
+
+        // read a .xls file
+        static List<string> ReadXlsFile(string file)
+        {
+            List<string> fileWords = new List<string>();
+
+
+            return fileWords;
+        }
+
+        private static List<string> addTextToList(string text)
+        {
+            List<string> fileWords = new List<string>();
+            // remove punctuation from each line and make lower case
             string newText = Regex.Replace(text.ToString(), "[\\p{P}+]", "");
             newText = newText.ToLower();
 
-            words = newText.Split(' ');
+            String[] words = newText.Split(' '); //Splitting a line into an array of words
 
             foreach (string word in words)
             {
@@ -99,26 +113,6 @@ namespace Assignment_3
                 }
 
             }
-
-            return fileWords;
-        }
-
-
-        // read a .doc file
-        static List<string> ReadDocFile(string file)
-        {
-            List<string> fileWords = new List<string>();
-
-
-            return fileWords;
-        }
-
-
-        // read a .xls file
-        static List<string> ReadXlsFile(string file)
-        {
-            List<string> fileWords = new List<string>();
-
 
             return fileWords;
         }
