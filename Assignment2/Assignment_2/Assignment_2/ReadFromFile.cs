@@ -42,7 +42,7 @@ namespace Assignment_3
         {
             List<string> fileWords = new List<string>(); // the list of words from the file to return
             String myLine; // reading the file line by line
-            String[] words; // the list of words
+          
 
             try
             {
@@ -51,7 +51,7 @@ namespace Assignment_3
                 while ((myLine = tr.ReadLine()) != null)
 
                 {
-                    fileWords = addTextToList(myLine);
+                    fileWords = AddTextToList(myLine);
 
                 } // end of reading the file
             }
@@ -76,7 +76,7 @@ namespace Assignment_3
                 }
             }
 
-            return addTextToList(text.ToString());
+            return AddTextToList(text.ToString());
         }
 
 
@@ -86,7 +86,7 @@ namespace Assignment_3
             TextExtractor extractor = new TextExtractor(file);
             string text = extractor.ExtractText(); //The string 'text' is now loaded with the text from the Word Document
 
-            return addTextToList(text);
+            return AddTextToList(text);
         }
 
 
@@ -129,14 +129,23 @@ namespace Assignment_3
                 }
             }
 
-            return addTextToList(text) ;
+            return AddTextToList(text) ;
         }
 
-        private static List<string> addTextToList(string text)
+        private static List<string> AddTextToList(string text)
         {
             List<string> fileWords = new List<string>();
+            
+            // clean the files first
+
+            //replace carriage returns "\r \n etc" with a space
+            text.Replace(Environment.NewLine, " ");
+
+            // remove stopwords
+            text = StopWords.RemoveStopwords(text);
+
             // remove punctuation from each line and make lower case
-            string newText = Regex.Replace(text.ToString(), "[\\p{P}+]", "");
+            string newText = Regex.Replace(text, "[\\p{P}+]", "");
             newText = newText.ToLower();
 
             String[] words = newText.Split(' '); //Splitting a line into an array of words

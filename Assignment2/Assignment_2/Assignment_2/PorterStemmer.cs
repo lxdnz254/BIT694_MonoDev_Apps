@@ -32,6 +32,32 @@ namespace Assignment_3
         // Index of the (potential) end of the stem word in the char array.
         private int stemIndex;
 
+        // List of exceptional words that need their own stem returned before any lemminization
+        private readonly Dictionary<string, string> _exceptions = new Dictionary<string, string>
+            {
+                {"skis", "ski"},
+                {"skies", "sky"},
+                {"dying", "die"},
+                {"lying", "lie"},
+                {"tying", "tie"},
+                {"idly", "idl"},
+                {"gently", "gentl"},
+                {"ugly", "ugli"},
+                {"early", "earli"},
+                {"only", "onli"},
+                {"singly", "singl"},
+                {"sky", "sky"},
+                {"news", "news"},
+                {"howe", "howe"},
+                {"atlas", "atlas"},
+                {"cosmos", "cosmos"},
+                {"bias", "bias"},
+                {"andes", "andes"},
+                {"international", "internt" },
+                {"intern", "intrn" }
+            };
+
+        
         /// <summary>
         /// Stem the passed in word.
         /// </summary>
@@ -42,6 +68,12 @@ namespace Assignment_3
 
             // Do nothing for empty strings or short words.
             if (string.IsNullOrWhiteSpace(word) || word.Length <= 2) return word;
+
+            // Some word exceptions that need their own stem
+            if (_exceptions.TryGetValue(word, out string excpt))
+            {
+                return excpt;
+            }
 
             wordArray = word.ToCharArray();
 
