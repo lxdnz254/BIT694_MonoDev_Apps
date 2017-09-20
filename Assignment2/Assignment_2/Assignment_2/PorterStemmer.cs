@@ -130,7 +130,7 @@ namespace Assignment_3
             }
             if (EndsWith("eed"))
             {
-                if (MeasureConsontantSequence() > 0)
+                if (MeasureConsonantSequence() > 0)
                     endIndex--;
             }
             else if ((EndsWith("ed") || EndsWith("ing")) && VowelInStem())
@@ -142,14 +142,14 @@ namespace Assignment_3
                     SetEnd("ble");
                 else if (EndsWith("iz"))
                     SetEnd("ize");
-                else if (IsDoubleConsontant(endIndex))
+                else if (IsDoubleConsonant(endIndex))
                 {
                     endIndex--;
                     int ch = wordArray[endIndex];
                     if (ch == 'l' || ch == 's' || ch == 'z')
                         endIndex++;
                 }
-                else if (MeasureConsontantSequence() == 1 && IsCVC(endIndex)) SetEnd("e");
+                else if (MeasureConsonantSequence() == 1 && IsCVC(endIndex)) SetEnd("e");
             }
         }
 
@@ -279,7 +279,7 @@ namespace Assignment_3
                 default:
                     return;
             }
-            if (MeasureConsontantSequence() > 1)
+            if (MeasureConsonantSequence() > 1)
                 endIndex = stemIndex;
         }
 
@@ -290,11 +290,11 @@ namespace Assignment_3
 
             if (wordArray[endIndex] == 'e')
             {
-                var a = MeasureConsontantSequence();
+                var a = MeasureConsonantSequence();
                 if (a > 1 || a == 1 && !IsCVC(endIndex - 1))
                     endIndex--;
             }
-            if (wordArray[endIndex] == 'l' && IsDoubleConsontant(endIndex) && MeasureConsontantSequence() > 1)
+            if (wordArray[endIndex] == 'l' && IsDoubleConsonant(endIndex) && MeasureConsonantSequence() > 1)
                 endIndex--;
         }
 
@@ -316,7 +316,7 @@ namespace Assignment_3
 			  <c>vcvc<v>   gives 2
 			  <c>vcvcvc<v> gives 3
 			  ....		*/
-        private int MeasureConsontantSequence()
+        private int MeasureConsonantSequence()
         {
             var n = 0;
             var index = 0;
@@ -358,7 +358,7 @@ namespace Assignment_3
         }
 
         // Returns true if the char at the specified index and the one preceeding it are the same consonants.
-        private bool IsDoubleConsontant(int index)
+        private bool IsDoubleConsonant(int index)
         {
             if (index < 1) return false;
             return wordArray[index] == wordArray[index - 1] && IsConsonant(index);
@@ -409,7 +409,7 @@ namespace Assignment_3
         // Conditionally replace the end of the word
         private void ReplaceEnd(string s)
         {
-            if (MeasureConsontantSequence() > 0) SetEnd(s);
+            if (MeasureConsonantSequence() > 0) SetEnd(s);
         }
     }
 }

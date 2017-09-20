@@ -73,7 +73,7 @@ namespace Assignment_3
         /*
          * Returns a list of folders inside the main folder & the main folder
          */
-        private List<string> GetFolders(string folder)
+        public List<string> GetFolders(string folder)
         {
             List<string> folders = new List<string> { folder };
             // Add the folders inside the folder
@@ -88,7 +88,7 @@ namespace Assignment_3
         /*
          * Returns the list of files in the collection (folders) 
          */ 
-        private List<string> GetFiles(List<string> folders)
+        public List<string> GetFiles(List<string> folders)
         {
             List<string> files = new List<string>(); // list of files
 

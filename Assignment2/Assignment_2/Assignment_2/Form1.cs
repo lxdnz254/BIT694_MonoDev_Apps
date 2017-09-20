@@ -20,6 +20,8 @@ namespace Assignment_3
         private Database db; // a reference to the Database class
         private HashtableUtilities hashUtil; // a reference to the HashtableUtilities class
         private SearchUtilities searchUtil; // a reference to the SearchUtilities class
+        private Dictionary<string, List<string>> invertedIndex; // a reference to the invertedIndex
+        private bool isIndexCreated; // a pointer for inverted index creation
         
         public Form1()
         {
@@ -32,6 +34,7 @@ namespace Assignment_3
             searchUtil = new SearchUtilities();
             searchCount = 0;
             totalSearchTime = 0;
+            isIndexCreated = false;
         }
 
         /*
@@ -131,12 +134,13 @@ namespace Assignment_3
 
         /*
          * Search collection for ALL the query terms iterating over the files
+         * This is now searching the Inverted Index
          */
         private void SearchByFiles_Click(object sender, EventArgs e)
         {
             string folderPath = FolderOutput.Text; // get the folderPath from output TextBox 
             string[] searchTerms = SearchTerms.Text.Split(' '); // Get the search terms
-
+            List<string> containFiles = new List<string>();
 
             // check a folderPath is inputted and check a search query is inputted
             if (folderPath != "" && !(searchTerms.Length < 2 && searchTerms[0] == ""))
@@ -157,15 +161,33 @@ namespace Assignment_3
                  */
 
                 Hashtable wf = hashUtil.GetHashtable(folderPath); //the Hashtable generated on search.
-
-                // Get the files containing the search terms by iterating over the files and output
-                List<string> containFiles = searchUtil.GetFilesContainingTermsByFiles(folderPath, searchTerms,
-                                                                    CheckSynonyms.Checked, newWordsDataSet);
-                foreach (string file in containFiles)
+                
+                //Check the inverted index is created
+                if (!isIndexCreated) { CreateInvertedIndex_Click(sender, e); }
+                
+                // Get the files containing the search terms by reading the inverted index
+                if (CheckSynonyms.Checked)
                 {
-                    FileOutput.Items.Add(file);
-                    fileCount++;
+                    containFiles = hashUtil.GetFilesFromIndexWithSynonyms(invertedIndex, searchTerms, newWordsDataSet);
                 }
+                else
+                {
+                    containFiles = hashUtil.GetFilesFromIndex(invertedIndex, searchTerms);
+                }
+                
+                if (containFiles != null)
+                {
+                    foreach (string file in containFiles)
+                    {
+                        FileOutput.Items.Add(file);
+                        fileCount++;
+                    }
+                }
+                else
+                {
+                    FileOutput.Items.Add("No search results found");
+                }
+                
 
                 /*
                  *  Output from the Hashtable - query terms and their frequency, plus the
@@ -208,7 +230,11 @@ namespace Assignment_3
             int index = FileOutput.IndexFromPoint(e.Location);
             if (index != System.Windows.Forms.ListBox.NoMatches)
             {
-                System.Diagnostics.Process.Start(FileOutput.SelectedItem.ToString());
+                if (!FileOutput.SelectedItem.ToString().Equals("No search results found"))
+                {
+                    System.Diagnostics.Process.Start(FileOutput.SelectedItem.ToString());
+                }
+                
             }
         }
 
@@ -217,9 +243,16 @@ namespace Assignment_3
 
         }
 
+        private void CreateInvertedIndex_Click(object sender, EventArgs e)
+        {
+            invertedIndex = hashUtil.InvertedIndex(FolderOutput.Text);
+            isIndexCreated = true;
+            CreateInvertedIndex.Text = "Refresh Index";
+        }
+
         /* 
          * The CRUD section of the Form methods start here.
-         */ 
+         */
 
         // CREATE
         private void AddEntry_Click(object sender, EventArgs e)
