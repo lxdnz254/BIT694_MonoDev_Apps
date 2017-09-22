@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -22,7 +23,9 @@ namespace Assignment_3
         private SearchUtilities searchUtil; // a reference to the SearchUtilities class
         private Dictionary<string, List<string>> invertedIndex; // a reference to the invertedIndex
         private bool isIndexCreated; // a pointer for inverted index creation
-        
+        private Thread thread;
+        private ThreadStart tStart;
+
         public Form1()
         {
             InitializeComponent(); // Auto-created methods .. do not alter anything in this method
@@ -32,6 +35,8 @@ namespace Assignment_3
             db = new Database(newWordsDataSet);
             hashUtil = new HashtableUtilities();
             searchUtil = new SearchUtilities();
+            tStart = new ThreadStart(buildIndex);
+            thread = new Thread(tStart);
             searchCount = 0;
             totalSearchTime = 0;
             isIndexCreated = false;
@@ -145,69 +150,79 @@ namespace Assignment_3
             // check a folderPath is inputted and check a search query is inputted
             if (folderPath != "" && !(searchTerms.Length < 2 && searchTerms[0] == ""))
             {
-                FileOutput.Items.Clear(); // clear the file ListBox
-                FrequencyBox.Clear(); // clear the frequency TextBox
-
-                // start the timer on a search, this timer includes generating Hashtable,
-                // searching the collection, and querying Hashtable for query frequencies
-                var watch = System.Diagnostics.Stopwatch.StartNew();
-                // increase searchCount
-                searchCount++;
-                // reset fileCount
-                fileCount = 0;
-                
-                /*
-                 * Modularised methods to get querys
-                 */
-
-                Hashtable wf = hashUtil.GetHashtable(folderPath); //the Hashtable generated on search.
-                
-                //Check the inverted index is created
-                if (!isIndexCreated) { CreateInvertedIndex_Click(sender, e); }
-                
-                // Get the files containing the search terms by reading the inverted index
-                if (CheckSynonyms.Checked)
+                // checks if thread building index is running
+                if (thread.IsAlive)
                 {
-                    containFiles = hashUtil.GetFilesFromIndexWithSynonyms(invertedIndex, searchTerms, newWordsDataSet);
+                    MessageBox.Show("The index is currently rebuilding. Try again later");
                 }
                 else
                 {
-                    containFiles = hashUtil.GetFilesFromIndex(invertedIndex, searchTerms);
-                }
-                
-                if (containFiles != null)
-                {
-                    foreach (string file in containFiles)
+                    FileOutput.Items.Clear(); // clear the file ListBox
+                    FrequencyBox.Clear(); // clear the frequency TextBox
+
+
+
+                    // start the timer on a search, this timer includes generating Hashtable,
+                    // searching the collection, and querying Hashtable for query frequencies
+                    var watch = System.Diagnostics.Stopwatch.StartNew();
+                    // increase searchCount
+                    searchCount++;
+                    // reset fileCount
+                    fileCount = 0;
+
+                    /*
+                     * Modularised methods to get querys
+                     */
+
+                    Hashtable wf = hashUtil.GetHashtable(folderPath); //the Hashtable generated on search.
+
+                    //Check the inverted index is created
+                    if (!isIndexCreated) { CreateInvertedIndex_Click(sender, e); }
+
+                    // Get the files containing the search terms by reading the inverted index
+                    if (CheckSynonyms.Checked)
                     {
-                        FileOutput.Items.Add(file);
-                        fileCount++;
+                        containFiles = hashUtil.GetFilesFromIndexWithSynonyms(invertedIndex, searchTerms, newWordsDataSet);
                     }
+                    else
+                    {
+                        containFiles = hashUtil.GetFilesFromIndex(invertedIndex, searchTerms);
+                    }
+
+                    if (containFiles != null)
+                    {
+                        foreach (string file in containFiles)
+                        {
+                            FileOutput.Items.Add(file);
+                            fileCount++;
+                        }
+                    }
+                    else
+                    {
+                        FileOutput.Items.Add("No search results found");
+                    }
+
+
+                    /*
+                     *  Output from the Hashtable - query terms and their frequency, plus the
+                     *  word in the entire collection with the highest frequency
+                     */
+
+                    // output the maximum frequency word
+                    MostFrequentBox.Text = hashUtil.GetMax(wf);
+                    // output the query terms frequency (if they exist)
+                    FrequencyBox.Text = hashUtil.QueryFrequency(wf, searchTerms);
+
+                    // end of the search process
+                    watch.Stop();
+                    // get the results of stopWatch.
+                    var elapsedTime = watch.ElapsedMilliseconds;
+                    totalSearchTime += elapsedTime;
+                    // Output search times and number of found files to the Form
+                    SearchTime.Text = "Search Time: " + elapsedTime.ToString() + "ms";
+                    AverageTime.Text = "Average Time: " + (totalSearchTime / searchCount).ToString("0") + "ms";
+                    FoundFiles.Text = "Files Found: " + fileCount;
                 }
-                else
-                {
-                    FileOutput.Items.Add("No search results found");
-                }
-                
-
-                /*
-                 *  Output from the Hashtable - query terms and their frequency, plus the
-                 *  word in the entire collection with the highest frequency
-                 */
-
-                // output the maximum frequency word
-                MostFrequentBox.Text = hashUtil.GetMax(wf);
-                // output the query terms frequency (if they exist)
-                FrequencyBox.Text = hashUtil.QueryFrequency(wf, searchTerms);
-
-                // end of the search process
-                watch.Stop();
-                // get the results of stopWatch.
-                var elapsedTime = watch.ElapsedMilliseconds;
-                totalSearchTime += elapsedTime;
-                // Output search times and number of found files to the Form
-                SearchTime.Text = "Search Time: " + elapsedTime.ToString() + "ms";
-                AverageTime.Text = "Average Time: " + (totalSearchTime / searchCount).ToString("0") + "ms";
-                FoundFiles.Text = "Files Found: " + fileCount;
 
             }
             else
@@ -245,9 +260,15 @@ namespace Assignment_3
 
         private void CreateInvertedIndex_Click(object sender, EventArgs e)
         {
-            invertedIndex = hashUtil.InvertedIndex(FolderOutput.Text);
+            thread = new Thread(tStart); // re-instantiates the thread if it already exists
+            thread.Start(); // calls buildIndex on a new Thread
             isIndexCreated = true;
             CreateInvertedIndex.Text = "Refresh Index";
+        }
+
+        private void buildIndex()
+        {
+            invertedIndex = hashUtil.InvertedIndex(FolderOutput.Text);
         }
 
         /* 
