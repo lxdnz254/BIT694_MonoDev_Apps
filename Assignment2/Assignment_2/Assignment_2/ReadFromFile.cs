@@ -29,7 +29,7 @@ namespace Assignment_3
             List<string> fileWords = new List<string>(); // List of words to return
             string ext = System.IO.Path.GetExtension(file); // determine the extension of a file
 
-            if (ext.Equals(".txt")) { fileWords = ReadTxtFile(file); }       
+            if (ext.Equals(".txt") || ext.Equals(""))  { fileWords = ReadTxtFile(file); }       
             if (ext.Equals(".pdf")) { fileWords = ReadPDFFile(file); }
             if (ext.Equals(".doc") || ext.Equals(".docx")) { fileWords = ReadDocFile(file); }
             if (ext.Equals(".xls") || ext.Equals(".xlsx")) { fileWords = ReadXlsFile(file); }
