@@ -11,11 +11,12 @@ namespace Assignment_3
     {
         private SearchUtilities searchUtil; // A reference to the SearchUtilities class
         private PorterStemmer stemmer; // A reference to the PorterStemmer class
+        private Converter converter;
 
         // Constructor for the HashTableUtilities class
         public HashtableUtilities()
         {
-            
+            converter = new Converter();
         }
         
         /*
@@ -90,15 +91,18 @@ namespace Assignment_3
         ///<summary>Creates an Hashtable that is an Inverted index oif the collection</summary>
         ///<param name="folder">The folder containing the collection</param>
         ///<returns>A Hashtable of the collection</returns>
-        public Dictionary<string, List<string>> InvertedIndex(string folder)
+        public Dictionary<string, List<int>> InvertedIndex(string folder)
         {
-            Dictionary<string, List<string>> index = new Dictionary<string, List<string>>();
+            Dictionary<string, List<int>> index = new Dictionary<string, List<int>>();
             searchUtil = new SearchUtilities();
-            List<string> fileList = new List<string>();
+            
+            List<int> fileList = new List<int>();
             stemmer = new PorterStemmer();
 
             foreach (string file in searchUtil.GetFiles(searchUtil.GetFolders(folder)))
             {
+                int fileID = converter.AssignId(file);
+                
                 foreach (string word in ReadFromFile.GetWords(file))
                 {
                     // stem the word
@@ -108,9 +112,9 @@ namespace Assignment_3
                     {
                         fileList = index[stemmedWord].ToList();
                         // check if the file is already in the list or not
-                        if (!fileList.Contains(file))
+                        if (!fileList.Contains(fileID))
                         {
-                            fileList.Add(file);
+                            fileList.Add(fileID);
                         }
                         
                         index[stemmedWord] = fileList;
@@ -118,7 +122,7 @@ namespace Assignment_3
                     else
                     {
                         // create a new key and start new List of files for the key
-                        fileList = new List<string>() { file };
+                        fileList = new List<int>() { fileID };
                         index.Add(stemmedWord, fileList);
                     }
                 }
@@ -132,10 +136,11 @@ namespace Assignment_3
         ///<param name="dictionary">Recieve the inverted index</param>
         ///<param name="querys">The query list</param>
         ///<return>A List of files</return>
-        public List<string> GetFilesFromIndex(Dictionary<string, List<string>> dictionary, string[] querys)
+        public List<string> GetFilesFromIndex(Dictionary<string, List<int>> dictionary, string[] querys)
         {
             List<string> files = new List<string>();
             stemmer = new PorterStemmer();
+            
             List<string>[] lists = new List<string>[querys.Length];
             int counter = 0;
 
@@ -145,9 +150,9 @@ namespace Assignment_3
                 lists[counter] = new List<string>();
                 if (dictionary.ContainsKey(stemmedQuery))
                 {
-                    foreach (string file in dictionary[stemmedQuery])
+                    foreach (int fileID in dictionary[stemmedQuery])
                     { 
-                        lists[counter].Add(file);
+                        lists[counter].Add(converter.GetPath(fileID));
                     }
                 }
                 counter++;
@@ -176,11 +181,12 @@ namespace Assignment_3
         /// <param name="querys">The array of querys</param>
         /// <param name="dataSet">The dataset to draw synoyms from</param>
         /// <returns></returns>
-        public List<string> GetFilesFromIndexWithSynonyms (Dictionary<string, List<string>> dictionary,
+        public List<string> GetFilesFromIndexWithSynonyms (Dictionary<string, List<int>> dictionary,
                                                             string[] querys, NewWordsDataSet dataSet)
         {
             List<string> files = new List<string>();
             stemmer = new PorterStemmer();
+            
             Database database = new Database(dataSet);
             List<string>[] lists = new List<string>[querys.Length];
             int counter = 0;
@@ -191,9 +197,9 @@ namespace Assignment_3
                 lists[counter] = new List<string>();
                 if (dictionary.ContainsKey(stemmedQuery))
                 {
-                    foreach (string file in dictionary[stemmedQuery])
+                    foreach (int fileID in dictionary[stemmedQuery])
                     {
-                        lists[counter].Add(file);
+                        lists[counter].Add(converter.GetPath(fileID));
                     }
                 }
                 List<string> synonmys = database.GetSynonyms(query);
@@ -202,9 +208,9 @@ namespace Assignment_3
                     string stemmedSynonym = stemmer.StemWord(synonym);
                     if (dictionary.ContainsKey(stemmedSynonym))
                     {
-                        foreach (string file in dictionary[stemmedSynonym])
+                        foreach (int fileID in dictionary[stemmedSynonym])
                         {
-                            lists[counter].Add(file);
+                            lists[counter].Add(converter.GetPath(fileID));
                         }
                     }
                 }

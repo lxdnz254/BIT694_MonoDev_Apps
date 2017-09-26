@@ -21,7 +21,7 @@ namespace Assignment_3
         private Database db; // a reference to the Database class
         private HashtableUtilities hashUtil; // a reference to the HashtableUtilities class
         private SearchUtilities searchUtil; // a reference to the SearchUtilities class
-        private Dictionary<string, List<string>> invertedIndex; // a reference to the invertedIndex
+        private Dictionary<string, List<int>> invertedIndex; // a reference to the invertedIndex
         private bool isIndexCreated; // a pointer for inverted index creation
         private Thread thread;
         private ThreadStart tStart;
@@ -35,7 +35,7 @@ namespace Assignment_3
             db = new Database(newWordsDataSet);
             hashUtil = new HashtableUtilities();
             searchUtil = new SearchUtilities();
-            tStart = new ThreadStart(buildIndex);
+            tStart = new ThreadStart(BuildIndex);
             thread = new Thread(tStart);
             searchCount = 0;
             totalSearchTime = 0;
@@ -260,13 +260,20 @@ namespace Assignment_3
 
         private void CreateInvertedIndex_Click(object sender, EventArgs e)
         {
-            thread = new Thread(tStart); // re-instantiates the thread if it already exists
-            thread.Start(); // calls buildIndex on a new Thread
-            isIndexCreated = true;
-            CreateInvertedIndex.Text = "Refresh Index";
+            if (thread.IsAlive)
+            {
+                MessageBox.Show("The index is currently busy. Please try again later");
+            }
+            else
+            {
+                thread = new Thread(tStart); // re-instantiates the thread if it already exists
+                thread.Start(); // calls buildIndex on a new Thread
+                isIndexCreated = true;
+                CreateInvertedIndex.Text = "Refresh Index";
+            } 
         }
 
-        private void buildIndex()
+        private void BuildIndex()
         {
             invertedIndex = hashUtil.InvertedIndex(FolderOutput.Text);
         }
