@@ -21,7 +21,7 @@ namespace Assignment_3
         private Database db; // a reference to the Database class
         private HashtableUtilities hashUtil; // a reference to the HashtableUtilities class
         private SearchUtilities searchUtil; // a reference to the SearchUtilities class
-        private Dictionary<string, List<int>> invertedIndex; // a reference to the invertedIndex
+        private Dictionary<string, Dictionary<int, double>> invertedIndex; // a reference to the invertedIndex
         private bool isIndexCreated; // a pointer for inverted index creation
         private Thread thread;
         private ThreadStart tStart;
@@ -174,7 +174,7 @@ namespace Assignment_3
                      * Modularised methods to get querys
                      */
 
-                    Hashtable wf = hashUtil.GetHashtable(folderPath); //the Hashtable generated on search.
+                    // Hashtable wf = hashUtil.GetHashtable(folderPath); //the Hashtable generated on search.
 
                     //Check the inverted index is created
                     if (!isIndexCreated) { CreateInvertedIndex_Click(sender, e); }
@@ -209,9 +209,9 @@ namespace Assignment_3
                      */
 
                     // output the maximum frequency word
-                    MostFrequentBox.Text = hashUtil.GetMax(wf);
+                    MostFrequentBox.Text = hashUtil.GetInvertedIndexMax(invertedIndex);
                     // output the query terms frequency (if they exist)
-                    FrequencyBox.Text = hashUtil.QueryFrequency(wf, searchTerms);
+                    FrequencyBox.Text = hashUtil.GetQueryFrequencyFromIndex(invertedIndex, searchTerms);
 
                     // end of the search process
                     watch.Stop();

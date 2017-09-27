@@ -91,12 +91,12 @@ namespace Assignment_3
         ///<summary>Creates an Hashtable that is an Inverted index oif the collection</summary>
         ///<param name="folder">The folder containing the collection</param>
         ///<returns>A Hashtable of the collection</returns>
-        public Dictionary<string, List<int>> InvertedIndex(string folder)
+        public Dictionary<string, Dictionary<int, double>> InvertedIndex(string folder)
         {
-            Dictionary<string, List<int>> index = new Dictionary<string, List<int>>();
+            Dictionary<string, Dictionary<int, double>> index = new Dictionary<string, Dictionary<int, double>>();
             searchUtil = new SearchUtilities();
             
-            List<int> fileList = new List<int>();
+            Dictionary<int, double> fileList = new Dictionary<int, double>();
             stemmer = new PorterStemmer();
 
             foreach (string file in searchUtil.GetFiles(searchUtil.GetFolders(folder)))
@@ -110,11 +110,15 @@ namespace Assignment_3
                     // create the Dictionary for the collection
                     if (index.ContainsKey(stemmedWord))
                     {
-                        fileList = index[stemmedWord].ToList();
+                        fileList = index[stemmedWord];
                         // check if the file is already in the list or not
-                        if (!fileList.Contains(fileID))
+                        if (fileList.ContainsKey(fileID))
                         {
-                            fileList.Add(fileID);
+                            fileList[fileID] = double.Parse(fileList[fileID].ToString()) + 1;
+                        }
+                        else
+                        {
+                            fileList.Add(fileID, 1.0);
                         }
                         
                         index[stemmedWord] = fileList;
@@ -122,7 +126,10 @@ namespace Assignment_3
                     else
                     {
                         // create a new key and start new List of files for the key
-                        fileList = new List<int>() { fileID };
+                        fileList = new Dictionary<int, double>
+                        {
+                            { fileID, 1.0 }
+                        };
                         index.Add(stemmedWord, fileList);
                     }
                 }
@@ -136,7 +143,7 @@ namespace Assignment_3
         ///<param name="dictionary">Recieve the inverted index</param>
         ///<param name="querys">The query list</param>
         ///<return>A List of files</return>
-        public List<string> GetFilesFromIndex(Dictionary<string, List<int>> dictionary, string[] querys)
+        public List<string> GetFilesFromIndex(Dictionary<string, Dictionary<int, double>> dictionary, string[] querys)
         {
             List<string> files = new List<string>();
             stemmer = new PorterStemmer();
@@ -150,8 +157,15 @@ namespace Assignment_3
                 lists[counter] = new List<string>();
                 if (dictionary.ContainsKey(stemmedQuery))
                 {
-                    foreach (int fileID in dictionary[stemmedQuery])
-                    { 
+                    var innerKeysAndValues = from inner in dictionary[stemmedQuery]
+                                            select new
+                                            {
+                                                NewKey = inner.Key,
+                                                NewValue = inner.Value
+                                            };
+                    foreach (var innerKeyAndValue in innerKeysAndValues)
+                    {
+                        int fileID = innerKeyAndValue.NewKey;
                         lists[counter].Add(converter.GetPath(fileID));
                     }
                 }
@@ -181,7 +195,7 @@ namespace Assignment_3
         /// <param name="querys">The array of querys</param>
         /// <param name="dataSet">The dataset to draw synoyms from</param>
         /// <returns></returns>
-        public List<string> GetFilesFromIndexWithSynonyms (Dictionary<string, List<int>> dictionary,
+        public List<string> GetFilesFromIndexWithSynonyms (Dictionary<string, Dictionary<int, double>> dictionary,
                                                             string[] querys, NewWordsDataSet dataSet)
         {
             List<string> files = new List<string>();
@@ -197,8 +211,15 @@ namespace Assignment_3
                 lists[counter] = new List<string>();
                 if (dictionary.ContainsKey(stemmedQuery))
                 {
-                    foreach (int fileID in dictionary[stemmedQuery])
+                    var innerKeysAndValues = from inner in dictionary[stemmedQuery]
+                                             select new
+                                             {
+                                                 NewKey = inner.Key,
+                                                 NewValue = inner.Value
+                                             };
+                    foreach (var innerKeyAndValue in innerKeysAndValues)
                     {
+                        int fileID = innerKeyAndValue.NewKey;
                         lists[counter].Add(converter.GetPath(fileID));
                     }
                 }
@@ -208,8 +229,15 @@ namespace Assignment_3
                     string stemmedSynonym = stemmer.StemWord(synonym);
                     if (dictionary.ContainsKey(stemmedSynonym))
                     {
-                        foreach (int fileID in dictionary[stemmedSynonym])
+                        var innerKeysAndValues = from inner in dictionary[stemmedSynonym]
+                                                 select new
+                                                 {
+                                                     NewKey = inner.Key,
+                                                     NewValue = inner.Value
+                                                 };
+                        foreach (var innerKeyAndValue in innerKeysAndValues)
                         {
+                            int fileID = innerKeyAndValue.NewKey;
                             lists[counter].Add(converter.GetPath(fileID));
                         }
                     }
@@ -233,5 +261,61 @@ namespace Assignment_3
             return files;
         }
 
+
+        public string GetInvertedIndexMax(Dictionary<string, Dictionary<int, double>> dictionary)
+        {
+            double max = 0;
+            string maxWord = "";
+
+            foreach (string term in dictionary.Keys)
+            {
+                double wordCount = 0;
+                var totalValues = from inner in dictionary[term]
+                                  select new
+                                  {
+                                      NewKey = inner.Key,
+                                      NewValue = inner.Value
+                                  };
+                foreach (var sumTotalValues in totalValues)
+                {
+                    wordCount += sumTotalValues.NewValue;
+                }
+                if (wordCount > max)
+                {
+                    max = wordCount;
+                    maxWord = term;
+                }
+            }
+            return maxWord + ": " + max;
+        }
+
+        public string GetQueryFrequencyFromIndex(Dictionary <string, Dictionary<int, double>> dictionary, string[] terms)
+        {
+            string result = "";
+            stemmer = new PorterStemmer();
+
+            foreach (string word in dictionary.Keys)
+            {
+                for (int i = 0; i< terms.Length; i++)
+                {
+                    if(word.Equals(stemmer.StemWord(terms[i]))) {
+
+                        double freqCount = 0;
+                        var frequency = from inner in dictionary[word]
+                                        select new
+                                        {
+                                            NewKey = inner.Key, NewValue = inner.Value
+                                        };
+                        foreach (var count in frequency)
+                        {
+                            freqCount += count.NewValue;
+                        }
+                        result += terms[i].ToLower() + ": " + freqCount + "\r\n";
+                    }
+                }
+            }
+
+            return result;
+        }
     }
 }
