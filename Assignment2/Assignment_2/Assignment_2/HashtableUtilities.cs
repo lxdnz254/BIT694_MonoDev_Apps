@@ -148,13 +148,13 @@ namespace Assignment_3
             List<string> files = new List<string>();
             stemmer = new PorterStemmer();
             
-            List<string>[] lists = new List<string>[querys.Length];
+            Dictionary<string, double>[] lists = new Dictionary<string, double>[querys.Length];
             int counter = 0;
 
             foreach(string query in querys)
             {
                 string stemmedQuery = stemmer.StemWord(query);
-                lists[counter] = new List<string>();
+                lists[counter] = new Dictionary<string, double>();
                 if (dictionary.ContainsKey(stemmedQuery))
                 {
                     var innerKeysAndValues = from inner in dictionary[stemmedQuery]
@@ -166,7 +166,7 @@ namespace Assignment_3
                     foreach (var innerKeyAndValue in innerKeysAndValues)
                     {
                         int fileID = innerKeyAndValue.NewKey;
-                        lists[counter].Add(converter.GetPath(fileID));
+                        lists[counter].Add(converter.GetPath(fileID), innerKeyAndValue.NewValue);
                     }
                 }
                 counter++;
@@ -175,14 +175,23 @@ namespace Assignment_3
             if (querys.Length > 1)
             {
                 for (int i = querys.Length - 1; i > 0; i--)
-                { 
-                    lists[i] = lists[i].Intersect(lists[i - 1]).ToList(); 
+                {
+                    var dict = lists[i];
+                    var nextDict = lists[i - 1];
+                    var result = dict
+                        .Where(x => nextDict.ContainsKey(x.Key))
+                        .ToDictionary(x => x.Key, x => x.Value);
+                    lists[i] = result;
                 }
-                files = lists[1];
+                files = lists[1].OrderByDescending(x => x.Value)
+                    .ToDictionary(x => x.Key, x => x.Value)
+                    .Keys.ToList();
             }
             else
             {
-                files = lists[0];
+                files = lists[0].OrderByDescending(x => x.Value)
+                    .ToDictionary(x => x.Key, x => x.Value)
+                    .Keys.ToList();
             }
             return files;
         }
@@ -202,13 +211,13 @@ namespace Assignment_3
             stemmer = new PorterStemmer();
             
             Database database = new Database(dataSet);
-            List<string>[] lists = new List<string>[querys.Length];
+            Dictionary<string, double>[] lists = new Dictionary<string, double>[querys.Length];
             int counter = 0;
 
             foreach (string query in querys)
             {
                 string stemmedQuery = stemmer.StemWord(query);
-                lists[counter] = new List<string>();
+                lists[counter] = new Dictionary<string, double>();
                 if (dictionary.ContainsKey(stemmedQuery))
                 {
                     var innerKeysAndValues = from inner in dictionary[stemmedQuery]
@@ -220,28 +229,35 @@ namespace Assignment_3
                     foreach (var innerKeyAndValue in innerKeysAndValues)
                     {
                         int fileID = innerKeyAndValue.NewKey;
-                        lists[counter].Add(converter.GetPath(fileID));
+                        lists[counter].Add(converter.GetPath(fileID), innerKeyAndValue.NewValue);
                     }
                 }
                 List<string> synonmys = database.GetSynonyms(query);
-                foreach (string synonym in synonmys)
+                if (synonmys != null)
                 {
-                    string stemmedSynonym = stemmer.StemWord(synonym);
-                    if (dictionary.ContainsKey(stemmedSynonym))
+                    foreach (string synonym in synonmys)
                     {
-                        var innerKeysAndValues = from inner in dictionary[stemmedSynonym]
-                                                 select new
-                                                 {
-                                                     NewKey = inner.Key,
-                                                     NewValue = inner.Value
-                                                 };
-                        foreach (var innerKeyAndValue in innerKeysAndValues)
+                        string stemmedSynonym = stemmer.StemWord(synonym);
+                        if (dictionary.ContainsKey(stemmedSynonym))
                         {
-                            int fileID = innerKeyAndValue.NewKey;
-                            lists[counter].Add(converter.GetPath(fileID));
+                            var innerKeysAndValues = from inner in dictionary[stemmedSynonym]
+                                                     select new
+                                                     {
+                                                         NewKey = inner.Key,
+                                                         NewValue = inner.Value
+                                                     };
+                            foreach (var innerKeyAndValue in innerKeysAndValues)
+                            {
+                                string path = converter.GetPath(innerKeyAndValue.NewKey);
+                                if (!lists[counter].ContainsKey(path))
+                                {
+                                    lists[counter].Add(path, innerKeyAndValue.NewValue);
+                                }                               
+                            }
                         }
                     }
                 }
+                
                 counter++;
             }
 
@@ -249,13 +265,22 @@ namespace Assignment_3
             {
                 for (int i = querys.Length - 1; i > 0; i--)
                 {
-                    lists[i] = lists[i].Intersect(lists[i - 1]).ToList();
+                    var dict = lists[i];
+                    var nextDict = lists[i - 1];
+                    var result = dict
+                        .Where(x => nextDict.ContainsKey(x.Key))
+                        .ToDictionary(x => x.Key, x => x.Value);
+                    lists[i] = result;
                 }
-                files = lists[1];
+                files = lists[1].OrderByDescending(x => x.Value)
+                    .ToDictionary(x => x.Key, x => x.Value)
+                    .Keys.ToList();
             }
             else
             {
-                files = lists[0];
+                files = lists[0].OrderByDescending(x => x.Value)
+                    .ToDictionary(x => x.Key, x => x.Value)
+                    .Keys.ToList();
             }
 
             return files;

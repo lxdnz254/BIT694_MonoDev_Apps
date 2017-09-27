@@ -89,8 +89,8 @@
             this.SearchTime = new System.Windows.Forms.Label();
             this.FoundFiles = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.SearchInvertedIndex = new System.Windows.Forms.Button();
             this.CreateInvertedIndex = new System.Windows.Forms.Button();
+            this.SearchInvertedIndex = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.newWordsDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.wordsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.wordsBindingNavigator)).BeginInit();
@@ -160,7 +160,7 @@
             this.SearchByTerms.Name = "SearchByTerms";
             this.SearchByTerms.Size = new System.Drawing.Size(178, 23);
             this.SearchByTerms.TabIndex = 6;
-            this.SearchByTerms.Text = "Search by Terms";
+            this.SearchByTerms.Text = "Search by Forward Indexing";
             this.SearchByTerms.UseVisualStyleBackColor = true;
             this.SearchByTerms.Click += new System.EventHandler(this.Search_Click);
             // 
@@ -624,16 +624,6 @@
             this.groupBox1.TabIndex = 26;
             this.groupBox1.TabStop = false;
             // 
-            // SearchInvertedIndex
-            // 
-            this.SearchInvertedIndex.Location = new System.Drawing.Point(223, 232);
-            this.SearchInvertedIndex.Name = "SearchInvertedIndex";
-            this.SearchInvertedIndex.Size = new System.Drawing.Size(188, 23);
-            this.SearchInvertedIndex.TabIndex = 27;
-            this.SearchInvertedIndex.Text = "Search by Inverted Index";
-            this.SearchInvertedIndex.UseVisualStyleBackColor = true;
-            this.SearchInvertedIndex.Click += new System.EventHandler(this.SearchByFiles_Click);
-            // 
             // CreateInvertedIndex
             // 
             this.CreateInvertedIndex.Location = new System.Drawing.Point(206, 60);
@@ -643,6 +633,16 @@
             this.CreateInvertedIndex.Text = "Create Index";
             this.CreateInvertedIndex.UseVisualStyleBackColor = true;
             this.CreateInvertedIndex.Click += new System.EventHandler(this.CreateInvertedIndex_Click);
+            // 
+            // SearchInvertedIndex
+            // 
+            this.SearchInvertedIndex.Location = new System.Drawing.Point(223, 232);
+            this.SearchInvertedIndex.Name = "SearchInvertedIndex";
+            this.SearchInvertedIndex.Size = new System.Drawing.Size(188, 23);
+            this.SearchInvertedIndex.TabIndex = 27;
+            this.SearchInvertedIndex.Text = "Search by Inverted Index";
+            this.SearchInvertedIndex.UseVisualStyleBackColor = true;
+            this.SearchInvertedIndex.Click += new System.EventHandler(this.SearchByFiles_Click);
             // 
             // Form1
             // 
