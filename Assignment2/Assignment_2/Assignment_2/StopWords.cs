@@ -108,7 +108,8 @@ namespace Assignment_3
         ' ',
         ',',
         ';',
-        '.'
+        ':',
+        '-'
         };
 
         /// <summary>
@@ -127,20 +128,37 @@ namespace Assignment_3
             // Loop through all words
             foreach (string currentWord in words)
             {
-                // 4
-                // Convert to lowercase
-                string lowerWord = currentWord.ToLower();
-                // 5
-                // If this is a usable word, add it
-                if (!_stops.ContainsKey(lowerWord))
+                //3.5 check for garbage data
+                if (!isErroneous(currentWord))
                 {
-                    builder.Append(currentWord).Append(' ');
-                   
+                    // 4
+                    // Convert to lowercase
+                    string lowerWord = currentWord.ToLower();
+                    // 5
+                    // If this is a usable word, add it
+                    if (!_stops.ContainsKey(lowerWord))
+                    {
+                        builder.Append(currentWord).Append(' ');
+
+                    }
                 }
+               
             }
             // 6
             // Return string with words removed
             return builder.ToString().Trim();
+        }
+
+        private static bool isErroneous(string word)
+        {
+            // remove garbage data here.. return true if it doesnt meet criteria
+            if (word.Length <= 2 || word.Length > 45) { return true; }
+            if (word.Any(char.IsDigit)) { return true; }
+            if (word.Any(char.IsSymbol)) { return true; }
+            if (word.Any(char.IsControl)) { return true; }
+            if (word.Contains(".com") || word.Contains(".net") || word.Contains(".edu")) { return true; }
+
+            return false;
         }
     }
 }

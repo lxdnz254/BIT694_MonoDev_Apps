@@ -11,12 +11,12 @@ namespace Assignment_3
     {
         private SearchUtilities searchUtil; // A reference to the SearchUtilities class
         private PorterStemmer stemmer; // A reference to the PorterStemmer class
-        private Converter converter;
+        private MyComponent.Converter converter; // A reference to the MyComponent.Converter class
 
         // Constructor for the HashTableUtilities class
         public HashtableUtilities()
         {
-            converter = new Converter();
+            converter = new MyComponent.Converter();
         }
         
         /*
@@ -99,7 +99,7 @@ namespace Assignment_3
             Dictionary<int, double> fileList = new Dictionary<int, double>();
             stemmer = new PorterStemmer();
 
-            foreach (string file in searchUtil.GetFiles(searchUtil.GetFolders(folder)))
+            foreach (string file in searchUtil.IndexingFolders(folder))
             {
                 int fileID = converter.AssignId(file);
                 

@@ -40,7 +40,7 @@ namespace Assignment_3
         // Read a .txt file
         static List<string> ReadTxtFile(string file)
         {
-            List<string> fileWords = new List<string>(); // the list of words from the file to return
+            string fileWords = ""; // the list of words from the file to return
             String myLine; // reading the file line by line
           
 
@@ -51,7 +51,7 @@ namespace Assignment_3
                 while ((myLine = tr.ReadLine()) != null)
 
                 {
-                    fileWords = AddTextToList(myLine);
+                    fileWords += myLine + " ";
 
                 } // end of reading the file
             }
@@ -61,7 +61,7 @@ namespace Assignment_3
             }
 
 
-            return fileWords;
+            return AddTextToList(fileWords);
         }
 
         // read a .pdf file
@@ -144,8 +144,8 @@ namespace Assignment_3
             // remove stopwords
             text = StopWords.RemoveStopwords(text);
 
-            // remove punctuation from each line and make lower case
-            string newText = Regex.Replace(text, "[\\p{P}+]", "");
+            // remove numbers, punctuation & special characters from each line and make lower case
+            string newText = Regex.Replace(text, "[^a-zA-Z\\s+]", "");
             newText = newText.ToLower();
 
             String[] words = newText.Split(' '); //Splitting a line into an array of words

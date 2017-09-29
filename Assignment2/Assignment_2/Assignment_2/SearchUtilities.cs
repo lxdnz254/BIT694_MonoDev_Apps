@@ -237,5 +237,10 @@ namespace Assignment_3
 
             return words.ToArray();
         }
+
+        public List<string> IndexingFolders(string folder)
+        {
+            return Directory.GetFiles(folder, "*", SearchOption.AllDirectories).ToList();
+        }
     }
 }

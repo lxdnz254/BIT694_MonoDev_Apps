@@ -275,7 +275,11 @@ namespace Assignment_3
 
         private void BuildIndex()
         {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            watch.Start();
             invertedIndex = hashUtil.InvertedIndex(FolderOutput.Text);
+            watch.Stop();
+            //IndexTime.Text = "Index Time: " + (watch.ElapsedMilliseconds / 1000).ToString() + "s";
         }
 
         /* 
