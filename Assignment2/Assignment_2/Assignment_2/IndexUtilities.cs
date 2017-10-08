@@ -4,17 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Assignment_3
 {
-    public class HashtableUtilities
+    public class IndexUtilities
     {
         private SearchUtilities searchUtil; // A reference to the SearchUtilities class
         private PorterStemmer stemmer; // A reference to the PorterStemmer class
         private MyComponent.Converter converter; // A reference to the MyComponent.Converter class
+        internal Dictionary<string, Dictionary<int, double>> internalIndex; // A reference to the invertedIndex available in all classes in the assembly
+        internal int indexCount;
 
         // Constructor for the HashTableUtilities class
-        public HashtableUtilities()
+        public IndexUtilities()
         {
             converter = new MyComponent.Converter();
         }
@@ -93,24 +96,26 @@ namespace Assignment_3
         ///<returns>A Hashtable of the collection</returns>
         public Dictionary<string, Dictionary<int, double>> InvertedIndex(string folder)
         {
-            Dictionary<string, Dictionary<int, double>> index = new Dictionary<string, Dictionary<int, double>>();
-            searchUtil = new SearchUtilities();
+            internalIndex = new Dictionary<string, Dictionary<int, double>>(); // the invertedIndex to be returned
+            searchUtil = new SearchUtilities(); // instantiate SearchUtilities class object
+            dynamic form1 = Application.OpenForms[0]; // will create a reference to the Main Form object
+            indexCount = 0; // a counter for how large the inverted index is.
             
-            Dictionary<int, double> fileList = new Dictionary<int, double>();
-            stemmer = new PorterStemmer();
+            Dictionary<int, double> fileList = new Dictionary<int, double>(); // a list to populate the files that match a term
+            stemmer = new PorterStemmer(); // instantiate a PorterStemmer object to stem words from files
 
             foreach (string file in searchUtil.IndexingFolders(folder))
             {
-                int fileID = converter.AssignId(file);
+                int fileID = converter.AssignId(file); // create an Id from the string of the file and store in HashMap Converter.paths
                 
                 foreach (string word in ReadFromFile.GetWords(file))
                 {
                     // stem the word
                     string stemmedWord = stemmer.StemWord(word);
                     // create the Dictionary for the collection
-                    if (index.ContainsKey(stemmedWord))
+                    if (internalIndex.ContainsKey(stemmedWord))
                     {
-                        fileList = index[stemmedWord];
+                        fileList = internalIndex[stemmedWord];
                         // check if the file is already in the list or not
                         if (fileList.ContainsKey(fileID))
                         {
@@ -121,7 +126,7 @@ namespace Assignment_3
                             fileList.Add(fileID, 1.0);
                         }
                         
-                        index[stemmedWord] = fileList;
+                        internalIndex[stemmedWord] = fileList;
                     }
                     else
                     {
@@ -130,20 +135,20 @@ namespace Assignment_3
                         {
                             { fileID, 1.0 }
                         };
-                        index.Add(stemmedWord, fileList);
+                        internalIndex.Add(stemmedWord, fileList);
+                        indexCount++;
                     }
                 }
+                form1.ShowIndexLength(); // cross thread method to keep a running total of the index size on the Main form.
             }
-
-
-            return index;
+            return internalIndex;
         }
 
         ///<summary>Search the InvertedIndex and return the files</summary>
         ///<param name="dictionary">Recieve the inverted index</param>
         ///<param name="querys">The query list</param>
         ///<return>A List of files</return>
-        public List<string> GetFilesFromIndex(Dictionary<string, Dictionary<int, double>> dictionary, string[] querys)
+        public List<string> GetFilesFromIndex(string[] querys)
         {
             List<string> files = new List<string>();
             stemmer = new PorterStemmer();
@@ -155,9 +160,9 @@ namespace Assignment_3
             {
                 string stemmedQuery = stemmer.StemWord(query);
                 lists[counter] = new Dictionary<string, double>();
-                if (dictionary.ContainsKey(stemmedQuery))
+                if (internalIndex.ContainsKey(stemmedQuery))
                 {
-                    var innerKeysAndValues = from inner in dictionary[stemmedQuery]
+                    var innerKeysAndValues = from inner in internalIndex[stemmedQuery]
                                             select new
                                             {
                                                 NewKey = inner.Key,
@@ -204,8 +209,7 @@ namespace Assignment_3
         /// <param name="querys">The array of querys</param>
         /// <param name="dataSet">The dataset to draw synoyms from</param>
         /// <returns></returns>
-        public List<string> GetFilesFromIndexWithSynonyms (Dictionary<string, Dictionary<int, double>> dictionary,
-                                                            string[] querys, NewWordsDataSet dataSet)
+        public List<string> GetFilesFromIndexWithSynonyms (string[] querys, NewWordsDataSet dataSet)
         {
             List<string> files = new List<string>();
             stemmer = new PorterStemmer();
@@ -218,9 +222,9 @@ namespace Assignment_3
             {
                 string stemmedQuery = stemmer.StemWord(query);
                 lists[counter] = new Dictionary<string, double>();
-                if (dictionary.ContainsKey(stemmedQuery))
+                if (internalIndex.ContainsKey(stemmedQuery))
                 {
-                    var innerKeysAndValues = from inner in dictionary[stemmedQuery]
+                    var innerKeysAndValues = from inner in internalIndex[stemmedQuery]
                                              select new
                                              {
                                                  NewKey = inner.Key,
@@ -238,9 +242,9 @@ namespace Assignment_3
                     foreach (string synonym in synonmys)
                     {
                         string stemmedSynonym = stemmer.StemWord(synonym);
-                        if (dictionary.ContainsKey(stemmedSynonym))
+                        if (internalIndex.ContainsKey(stemmedSynonym))
                         {
-                            var innerKeysAndValues = from inner in dictionary[stemmedSynonym]
+                            var innerKeysAndValues = from inner in internalIndex[stemmedSynonym]
                                                      select new
                                                      {
                                                          NewKey = inner.Key,
@@ -286,16 +290,20 @@ namespace Assignment_3
             return files;
         }
 
-
-        public string GetInvertedIndexMax(Dictionary<string, Dictionary<int, double>> dictionary)
+        /// <summary>
+        /// Scans the inverted index (internalIndex) and returns the term with largest count,
+        /// in the scanned folder
+        /// </summary>
+        /// <returns></returns>
+        public string GetInvertedIndexMax()
         {
             double max = 0;
             string maxWord = "";
 
-            foreach (string term in dictionary.Keys)
+            foreach (string term in internalIndex.Keys)
             {
                 double wordCount = 0;
-                var totalValues = from inner in dictionary[term]
+                var totalValues = from inner in internalIndex[term]
                                   select new
                                   {
                                       NewKey = inner.Key,
@@ -314,19 +322,24 @@ namespace Assignment_3
             return maxWord + ": " + max;
         }
 
-        public string GetQueryFrequencyFromIndex(Dictionary <string, Dictionary<int, double>> dictionary, string[] terms)
+        /// <summary>
+        /// Returns the frequency of search terms from the index.
+        /// </summary>
+        /// <param name="terms"></param>
+        /// <returns></returns>
+        public string GetQueryFrequencyFromIndex(string[] terms)
         {
             string result = "";
             stemmer = new PorterStemmer();
 
-            foreach (string word in dictionary.Keys)
+            foreach (string word in internalIndex.Keys)
             {
                 for (int i = 0; i< terms.Length; i++)
                 {
                     if(word.Equals(stemmer.StemWord(terms[i]))) {
 
                         double freqCount = 0;
-                        var frequency = from inner in dictionary[word]
+                        var frequency = from inner in internalIndex[word]
                                         select new
                                         {
                                             NewKey = inner.Key, NewValue = inner.Value
@@ -339,7 +352,6 @@ namespace Assignment_3
                     }
                 }
             }
-
             return result;
         }
     }

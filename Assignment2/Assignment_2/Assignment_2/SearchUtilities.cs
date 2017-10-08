@@ -238,6 +238,12 @@ namespace Assignment_3
             return words.ToArray();
         }
 
+        /// <summary>
+        /// Returns all files (including hidden ones, and files with no .ext) from
+        /// all directories under the given folder path
+        /// </summary>
+        /// <param name="folder"></param>
+        /// <returns></returns>
         public List<string> IndexingFolders(string folder)
         {
             return Directory.GetFiles(folder, "*", SearchOption.AllDirectories).ToList();

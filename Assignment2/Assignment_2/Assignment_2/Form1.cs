@@ -19,9 +19,9 @@ namespace Assignment_3
         private int fileCount; // the number of files containing all queries found in a search
         private double totalSearchTime; // a running total of time spent searching
         private Database db; // a reference to the Database class
-        private HashtableUtilities hashUtil; // a reference to the HashtableUtilities class
+        private IndexUtilities indexUtils; // a reference to the IndexUtilities class
         private SearchUtilities searchUtil; // a reference to the SearchUtilities class
-        private Dictionary<string, Dictionary<int, double>> invertedIndex; // a reference to the invertedIndex
+        //private Dictionary<string, Dictionary<int, double>> invertedIndex; // a reference to the invertedIndex
         private bool isIndexCreated; // a pointer for inverted index creation
         private Thread thread;
         private ThreadStart tStart;
@@ -33,7 +33,7 @@ namespace Assignment_3
             // Initialize or instantiate class objects or private variables for use in the form
             FileOutput.MouseDoubleClick += new MouseEventHandler(FileOutput_DoubleClick);
             db = new Database(newWordsDataSet);
-            hashUtil = new HashtableUtilities();
+            indexUtils = new IndexUtilities();
             searchUtil = new SearchUtilities();
             tStart = new ThreadStart(BuildIndex);
             thread = new Thread(tStart);
@@ -90,7 +90,7 @@ namespace Assignment_3
                  * Modularised methods to get querys
                  */
 
-                Hashtable wf = hashUtil.GetHashtable(folderPath); //the Hashtable generated on search.
+                Hashtable wf = indexUtils.GetHashtable(folderPath); //the Hashtable generated on search.
 
                 // Get the files containing the search terms using iterating over terms method and output
                 List<string> containFiles = searchUtil.GetFilesContainingTermsByTerms(folderPath, searchTerms, 
@@ -107,9 +107,9 @@ namespace Assignment_3
                  */
 
                 // output the maximum frequency word
-                MostFrequentBox.Text = hashUtil.GetMax(wf);
+                MostFrequentBox.Text = indexUtils.GetMax(wf);
                 // output the query terms frequency (if they exist)
-                FrequencyBox.Text = hashUtil.QueryFrequency(wf, searchTerms);
+                FrequencyBox.Text = indexUtils.QueryFrequency(wf, searchTerms);
                 
                 // end of the search process
                 watch.Stop();
@@ -182,11 +182,11 @@ namespace Assignment_3
                     // Get the files containing the search terms by reading the inverted index
                     if (CheckSynonyms.Checked)
                     {
-                        containFiles = hashUtil.GetFilesFromIndexWithSynonyms(invertedIndex, searchTerms, newWordsDataSet);
+                        containFiles = indexUtils.GetFilesFromIndexWithSynonyms(searchTerms, newWordsDataSet);
                     }
                     else
                     {
-                        containFiles = hashUtil.GetFilesFromIndex(invertedIndex, searchTerms);
+                        containFiles = indexUtils.GetFilesFromIndex(searchTerms);
                     }
 
                     if (containFiles != null)
@@ -209,9 +209,9 @@ namespace Assignment_3
                      */
 
                     // output the maximum frequency word
-                    MostFrequentBox.Text = hashUtil.GetInvertedIndexMax(invertedIndex);
+                    MostFrequentBox.Text = indexUtils.GetInvertedIndexMax();
                     // output the query terms frequency (if they exist)
-                    FrequencyBox.Text = hashUtil.GetQueryFrequencyFromIndex(invertedIndex, searchTerms);
+                    FrequencyBox.Text = indexUtils.GetQueryFrequencyFromIndex(searchTerms);
 
                     // end of the search process
                     watch.Stop();
@@ -258,6 +258,7 @@ namespace Assignment_3
 
         }
 
+        
         private void CreateInvertedIndex_Click(object sender, EventArgs e)
         {
             if (thread.IsAlive)
@@ -274,12 +275,19 @@ namespace Assignment_3
         }
 
         private void BuildIndex()
+        {          
+            indexUtils.internalIndex = indexUtils.InvertedIndex(FolderOutput.Text);
+            ShowIndexLength();
+        }
+
+        internal void ShowIndexLength()
         {
-            var watch = System.Diagnostics.Stopwatch.StartNew();
-            watch.Start();
-            invertedIndex = hashUtil.InvertedIndex(FolderOutput.Text);
-            watch.Stop();
-            //IndexTime.Text = "Index Time: " + (watch.ElapsedMilliseconds / 1000).ToString() + "s";
+            // outputs the number of terms in the invertedIndex if it exists
+            if (indexUtils.internalIndex != null)
+            {
+                Action action = () => IndexLength.Text = "Index Size: " + indexUtils.indexCount;
+                this.Invoke(action);
+            }
         }
 
         /* 

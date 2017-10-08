@@ -77,8 +77,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="HashtableUtilities.cs" />
-    <Compile Include="Item.cs" />
+    <Compile Include="IndexUtilities.cs" />
     <Compile Include="NewWordsDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
