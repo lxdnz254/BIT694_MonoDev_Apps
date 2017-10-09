@@ -202,6 +202,8 @@ namespace Assignment_3
                 files = lists[0].OrderByDescending(x => x.Value)
                     .ToDictionary(x => x.Key, x => x.Value)
                     .Keys.ToList();
+
+                //List<string> orderedFileList = lists[0].OrderByDescending(x => (x.Value.ToString()).Sum(y => y.Value)).Select(x => x.Key).ToList();
             }
             return files;
         }
