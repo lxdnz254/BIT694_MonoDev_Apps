@@ -270,22 +270,41 @@ namespace Assignment_3
                 thread = new Thread(tStart); // re-instantiates the thread if it already exists
                 thread.Start(); // calls buildIndex on a new Thread
                 isIndexCreated = true;
-                CreateInvertedIndex.Text = "Refresh Index";
+       
             } 
         }
 
         private void BuildIndex()
         {          
             indexUtils.internalIndex = indexUtils.InvertedIndex(FolderOutput.Text);
-            ShowIndexLength();
+            ShowIndexLength(true);
         }
 
-        internal void ShowIndexLength()
+        internal void ShowIndexLength(Boolean finished)
         {
             // outputs the number of terms in the invertedIndex if it exists
             if (indexUtils.internalIndex != null)
             {
-                Action action = () => IndexLength.Text = "Index Size: " + indexUtils.indexCount;
+                Action action = () =>
+                {
+                    if (finished)
+                    {
+                        CreateInvertedIndex.Text = "Refresh Index";
+                        CreateInvertedIndex.TextAlign = ContentAlignment.MiddleCenter;
+                    }
+                    else
+                    {
+                        CreateInvertedIndex.Text = "Indexing";
+                        CreateInvertedIndex.TextAlign = ContentAlignment.MiddleLeft;
+                        int j = indexUtils.indexCount % 20;
+                        for(int i = 0; i<=j; i++)
+                        {
+                            CreateInvertedIndex.Text += ".";
+                        }
+
+                    }
+                    IndexLength.Text = "Index Size: " + indexUtils.indexCount;
+                };
                 this.Invoke(action);
             }
         }

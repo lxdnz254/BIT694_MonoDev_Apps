@@ -96,6 +96,7 @@ namespace Assignment_3
         ///<returns>A Hashtable of the collection</returns>
         public Dictionary<string, Dictionary<int, double>> InvertedIndex(string folder)
         {
+            if (internalIndex != null) { internalIndex.Clear(); } // clears the memory usage of exisitng Index
             internalIndex = new Dictionary<string, Dictionary<int, double>>(); // the invertedIndex to be returned
             searchUtil = new SearchUtilities(); // instantiate SearchUtilities class object
             dynamic form1 = Application.OpenForms[0]; // will create a reference to the Main Form object
@@ -139,7 +140,7 @@ namespace Assignment_3
                         indexCount++;
                     }
                 }
-                form1.ShowIndexLength(); // cross thread method to keep a running total of the index size on the Main form.
+                form1.ShowIndexLength(false); // cross thread method to keep a running total of the index size on the Main form.
             }
             return internalIndex;
         }
