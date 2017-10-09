@@ -42,23 +42,25 @@ namespace Assignment_3
         {
             string fileWords = ""; // the list of words from the file to return
             String myLine; // reading the file line by line
-          
 
+            TextReader tr = new StreamReader(file); // make sure you added "using System IO"
             try
             {
-                TextReader tr = new StreamReader(file); // make sure you added "using System IO"
-
                 while ((myLine = tr.ReadLine()) != null)
 
                 {
                     fileWords += myLine + " ";
 
                 } // end of reading the file
-                tr.Close();
+                
             }
             catch (FileNotFoundException error)
             {
                 MessageBox.Show("File not found: " + error);
+            }
+            finally
+            {
+                tr.Close(); // close the TextReader
             }
 
 
@@ -135,6 +137,11 @@ namespace Assignment_3
             return AddTextToList(text) ;
         }
 
+        /// <summary>
+        /// Returns a list of strings parsed from the input variable
+        /// </summary>
+        /// <param name="text">the striugn of text to parse</param>
+        /// <returns></returns>
         private static List<string> AddTextToList(string text)
         {
             List<string> fileWords = new List<string>();

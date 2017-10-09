@@ -68,7 +68,6 @@ namespace Assignment_3
             return stemmedCollection.ToArray();
         }
 
-        // Private methods below here -  only available within the SearchUtilities class.
 
         /*
          * Returns a list of folders inside the main folder & the main folder
@@ -104,11 +103,24 @@ namespace Assignment_3
             return files;
         }
 
+        /// <summary>
+        /// Returns all files (including hidden ones, and files with no .ext) from
+        /// all directories under the given folder path
+        /// </summary>
+        /// <param name="folder"></param>
+        /// <returns></returns>
+        public List<string> IndexingFolders(string folder)
+        {
+            return Directory.GetFiles(folder, "*", SearchOption.AllDirectories).ToList();
+        }
+
+        // Private methods below here -  only available within the SearchUtilities class.
+
         /*
          * Scans files and searches for terms/synonyms in each file.
          * Marks files true if all terms are found in file
          * Returns tyhe list of files that are true
-         */ 
+         */
         private List<string> ScanFilesByFile(List<string> files, string[] searchTerms,
                                         Boolean synonymsOn, NewWordsDataSet dataSet)
         {
@@ -168,6 +180,15 @@ namespace Assignment_3
             return fileContainsTerm;
         }
 
+
+        /// <summary>
+        /// Scans each file in collection by terms
+        /// </summary>
+        /// <param name="files">The list of files</param>
+        /// <param name="searchTerms">the array of search terms</param>
+        /// <param name="synonymsOn">check if synonym checking is on</param>
+        /// <param name="dataSet">The dataset to retrieve synonyms from</param>
+        /// <returns></returns>
         private List<string> ScanFilesByTerms(List<string> files, string[] searchTerms,
                                             Boolean synonymsOn, NewWordsDataSet dataSet)
         {
@@ -236,17 +257,6 @@ namespace Assignment_3
             }
 
             return words.ToArray();
-        }
-
-        /// <summary>
-        /// Returns all files (including hidden ones, and files with no .ext) from
-        /// all directories under the given folder path
-        /// </summary>
-        /// <param name="folder"></param>
-        /// <returns></returns>
-        public List<string> IndexingFolders(string folder)
-        {
-            return Directory.GetFiles(folder, "*", SearchOption.AllDirectories).ToList();
         }
     }
 }

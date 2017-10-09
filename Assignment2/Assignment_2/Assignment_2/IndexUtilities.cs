@@ -91,9 +91,13 @@ namespace Assignment_3
             return result;
         }
 
-        ///<summary>Creates an Hashtable that is an Inverted index oif the collection</summary>
+        ///<summary>
+        ///Creates an Hashtable that is an Inverted index oif the collection
+        ///</summary>
         ///<param name="folder">The folder containing the collection</param>
-        ///<returns>A Hashtable of the collection</returns>
+        ///<returns>
+        ///A Hashtable of the collection
+        ///</returns>
         public Dictionary<string, Dictionary<int, double>> InvertedIndex(string folder)
         {
             if (internalIndex != null) { internalIndex.Clear(); } // clears the memory usage of exisitng Index

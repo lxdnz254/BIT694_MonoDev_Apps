@@ -210,6 +210,11 @@ namespace Assignment_3
             }
         }
 
+        /// <summary>
+        /// Private method to search the Inverted index and popluate the Form
+        /// with the returned values.
+        /// </summary>
+        /// <param name="searchTerms">A string array of search terms inputted by the user</param>
         private void searchInvertedIndex(string[] searchTerms)
         {
             List<string> containFiles;
@@ -269,7 +274,11 @@ namespace Assignment_3
 
         }
 
-        
+        /// <summary>
+        /// The click method to start creating the invertedIndex
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CreateInvertedIndex_Click(object sender, EventArgs e)
         {
             if (thread.IsAlive)
@@ -283,12 +292,21 @@ namespace Assignment_3
             } 
         }
 
+        /// <summary>
+        /// The method launched on the new thread to build the inverted index
+        /// </summary>
         private void BuildIndex()
         {          
             indexUtils.internalIndex = indexUtils.InvertedIndex(FolderOutput.Text);
             ShowIndexLength(true);
         }
 
+        /// <summary>
+        /// A cross-thread method to show the user the inverted index is building
+        /// </summary>
+        /// <param name="finished">boolean value to indicate if the thread has finished
+        /// and the inverted index has been built
+        /// </param>
         internal void ShowIndexLength(Boolean finished)
         {
             // outputs the number of terms in the invertedIndex if it exists
