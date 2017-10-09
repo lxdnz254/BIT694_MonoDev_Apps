@@ -24,8 +24,8 @@ namespace Assignment_3
          */ 
         public List<string> GetFilesContainingTermsByTerms(string folder, string[] terms, Boolean synonymsOn, NewWordsDataSet dataSet)
         {
-            List<string> folders = GetFolders(folder);
-            List<string> files = GetFiles(folders);
+            //List<string> folders = GetFolders(folder);
+            List<string> files = IndexingFolders(folder);
             return ScanFilesByTerms(files, terms, synonymsOn, dataSet);
         }
 
@@ -35,8 +35,8 @@ namespace Assignment_3
          */
         public List<string> GetFilesContainingTermsByFiles(string folder, string[] terms, Boolean synonymsOn, NewWordsDataSet dataSet)
         {
-            List<string> folders = GetFolders(folder);
-            List<string> files = GetFiles(folders);
+           // List<string> folders = GetFolders(folder);
+            List<string> files = IndexingFolders(folder);
             return ScanFilesByFile(files, terms, synonymsOn, dataSet);
         }
 

@@ -160,8 +160,6 @@ namespace Assignment_3
                     FileOutput.Items.Clear(); // clear the file ListBox
                     FrequencyBox.Clear(); // clear the frequency TextBox
 
-
-
                     // start the timer on a search, this timer includes generating Hashtable,
                     // searching the collection, and querying Hashtable for query frequencies
                     var watch = System.Diagnostics.Stopwatch.StartNew();
@@ -173,47 +171,20 @@ namespace Assignment_3
                     /*
                      * Modularised methods to get querys
                      */
-
-                    // Hashtable wf = hashUtil.GetHashtable(folderPath); //the Hashtable generated on search.
-
+                 
                     //Check the inverted index is created
-                    if (!isIndexCreated) { CreateInvertedIndex_Click(sender, e); }
-
-                    // Get the files containing the search terms by reading the inverted index
-                    if (CheckSynonyms.Checked)
+                    if (!isIndexCreated)
                     {
-                        containFiles = indexUtils.GetFilesFromIndexWithSynonyms(searchTerms, newWordsDataSet);
+                        // No index exists so create one first.
+                        CreateInvertedIndex_Click(sender, e); 
                     }
                     else
                     {
-                        containFiles = indexUtils.GetFilesFromIndex(searchTerms);
+                        // search for the files in the index matching the terms
+                        searchInvertedIndex(searchTerms);
                     }
 
-                    if (containFiles != null)
-                    {
-                        foreach (string file in containFiles)
-                        {
-                            FileOutput.Items.Add(file);
-                            fileCount++;
-                        }
-                    }
-                    else
-                    {
-                        FileOutput.Items.Add("No search results found");
-                    }
-
-
-                    /*
-                     *  Output from the Hashtable - query terms and their frequency, plus the
-                     *  word in the entire collection with the highest frequency
-                     */
-
-                    // output the maximum frequency word
-                    MostFrequentBox.Text = indexUtils.GetInvertedIndexMax();
-                    // output the query terms frequency (if they exist)
-                    FrequencyBox.Text = indexUtils.GetQueryFrequencyFromIndex(searchTerms);
-
-                    // end of the search process
+                    // stop the watch
                     watch.Stop();
                     // get the results of stopWatch.
                     var elapsedTime = watch.ElapsedMilliseconds;
@@ -237,6 +208,46 @@ namespace Assignment_3
                 }
 
             }
+        }
+
+        private void searchInvertedIndex(string[] searchTerms)
+        {
+            List<string> containFiles;
+            // Get the files containing the search terms by reading the inverted index
+            if (CheckSynonyms.Checked)
+            {
+                containFiles = indexUtils.GetFilesFromIndexWithSynonyms(searchTerms, newWordsDataSet);
+            }
+            else
+            {
+                containFiles = indexUtils.GetFilesFromIndex(searchTerms);
+            }
+
+            if (containFiles != null)
+            {
+                foreach (string file in containFiles)
+                {
+                    FileOutput.Items.Add(file);
+                    fileCount++;
+                }
+            }
+            else
+            {
+                FileOutput.Items.Add("No search results found");
+            }
+
+
+            /*
+             *  Output from the Inverted Inbdex - stemmed query terms and their frequency, plus the
+             *  stemmed word in the entire collection with the highest frequency
+             */
+
+            // output the maximum frequency word
+            MostFrequentBox.Text = indexUtils.GetInvertedIndexMax();
+            // output the query terms frequency (if they exist)
+            FrequencyBox.Text = indexUtils.GetQueryFrequencyFromIndex(searchTerms);
+
+            // end of the search process
         }
 
         // Open the file on a mouse double click
@@ -269,8 +280,6 @@ namespace Assignment_3
             {
                 thread = new Thread(tStart); // re-instantiates the thread if it already exists
                 thread.Start(); // calls buildIndex on a new Thread
-                isIndexCreated = true;
-       
             } 
         }
 
@@ -291,6 +300,7 @@ namespace Assignment_3
                     {
                         CreateInvertedIndex.Text = "Refresh Index";
                         CreateInvertedIndex.TextAlign = ContentAlignment.MiddleCenter;
+                        isIndexCreated = true;
                     }
                     else
                     {

@@ -54,6 +54,7 @@ namespace Assignment_3
                     fileWords += myLine + " ";
 
                 } // end of reading the file
+                tr.Close();
             }
             catch (FileNotFoundException error)
             {
@@ -74,6 +75,7 @@ namespace Assignment_3
                 {
                     text.Append(PdfTextExtractor.GetTextFromPage(reader, i));
                 }
+                reader.Close();
             }
 
             return AddTextToList(text.ToString());
@@ -85,7 +87,7 @@ namespace Assignment_3
         {
             TextExtractor extractor = new TextExtractor(file);
             string text = extractor.ExtractText(); //The string 'text' is now loaded with the text from the Word Document
-
+            
             return AddTextToList(text);
         }
 
@@ -127,6 +129,7 @@ namespace Assignment_3
 
                     // The result of each spreadsheet is in result.Tables
                 }
+                stream.Close();
             }
 
             return AddTextToList(text) ;
