@@ -129,7 +129,7 @@ namespace Assignment_3
             foreach (string currentWord in words)
             {
                 //3.5 check for garbage data
-                if (!isErroneous(currentWord))
+                if (!IsErroneous(currentWord))
                 {
                     // 4
                     // Convert to lowercase
@@ -149,7 +149,7 @@ namespace Assignment_3
             return builder.ToString().Trim();
         }
 
-        private static bool isErroneous(string word)
+        private static bool IsErroneous(string word)
         {
             // remove garbage data here.. return true if it doesnt meet criteria
             if (word.Length <= 2 || word.Length > 45) { return true; }

@@ -188,24 +188,28 @@ namespace Assignment_3
                 {
                     var dict = lists[i];
                     var nextDict = lists[i - 1];
-                    var result = dict
-                        .Where(x => nextDict.ContainsKey(x.Key))
-                        .ToDictionary(x => x.Key, x => x.Value);
-                    lists[i] = result;
-                }
-                files = lists[1].OrderByDescending(x => x.Value)
-                    .ToDictionary(x => x.Key, x => x.Value)
-                    .Keys.ToList();
-            }
-            else
-            {
-                files = lists[0].OrderByDescending(x => x.Value)
-                    .ToDictionary(x => x.Key, x => x.Value)
-                    .Keys.ToList();
+                    var joined = from kvp1 in dict
+                                 join kvp2 in nextDict on kvp1.Key equals kvp2.Key
+                                 select new { kvp1.Key, Value = kvp1.Value + kvp2.Value };
 
-                //List<string> orderedFileList = lists[0].OrderByDescending(x => (x.Value.ToString()).Sum(y => y.Value)).Select(x => x.Key).ToList();
+                    var result = joined.ToDictionary(t => t.Key, t => t.Value);
+                    lists[i-1] = result;
+                }
+                
             }
-            return files;
+            return ListOrderByDescending(lists);
+        }
+
+        /// <summary>
+        /// Helper method to List results in descesnding order
+        /// </summary>
+        /// <param name="lists"></param>
+        /// <returns></returns>
+        private static List<string> ListOrderByDescending(Dictionary<string, double>[] lists)
+        {
+            return lists[0].OrderByDescending(x => x.Value)
+                .ToDictionary(x => x.Key, x => x.Value)
+                .Keys.ToList();
         }
 
         /// <summary>
@@ -278,23 +282,17 @@ namespace Assignment_3
                 {
                     var dict = lists[i];
                     var nextDict = lists[i - 1];
-                    var result = dict
-                        .Where(x => nextDict.ContainsKey(x.Key))
-                        .ToDictionary(x => x.Key, x => x.Value);
-                    lists[i] = result;
-                }
-                files = lists[1].OrderByDescending(x => x.Value)
-                    .ToDictionary(x => x.Key, x => x.Value)
-                    .Keys.ToList();
-            }
-            else
-            {
-                files = lists[0].OrderByDescending(x => x.Value)
-                    .ToDictionary(x => x.Key, x => x.Value)
-                    .Keys.ToList();
-            }
+                    var joined = from kvp1 in dict
+                                 join kvp2 in nextDict on kvp1.Key equals kvp2.Key
+                                 select new { kvp1.Key, Value = kvp1.Value + kvp2.Value };
 
-            return files;
+                    var result = joined.ToDictionary(t => t.Key, t => t.Value);
+                    lists[i-1] = result;
+                }
+                
+            }
+            
+            return ListOrderByDescending(lists);
         }
 
         /// <summary>
