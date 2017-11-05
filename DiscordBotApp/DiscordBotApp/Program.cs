@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.Net.WebSocket;
+using System.Configuration;
 
 namespace DiscordBotApp
 {
@@ -22,7 +23,7 @@ namespace DiscordBotApp
             
             discord = new DiscordClient(new DiscordConfiguration
             {
-                Token = "MzY2ODg1MjcyMjc0NzMxMDA5.DLzYHQ.nNwY_5OA4GqE-cBEiCl3fniCttg",
+                Token = ConfigurationManager.AppSettings["Token"],
                 TokenType = TokenType.Bot
             });
 

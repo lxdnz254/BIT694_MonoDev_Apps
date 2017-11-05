@@ -20,7 +20,7 @@ namespace DiscordBotApp
             if (message.Contains("gerd"))
                 return "Oh no, the Gerds are coming!";
             if (message.Contains("help"))
-                return "Commands are \"??(word)\" returns list of synonyms, \"?+(word) synonym1 synomym2 ...\" sends request to moderation.";
+                return "Commands are \"??*word*\" returns list of synonyms, \"?+*word* synonym1 synomym2 ...\" sends request to moderation.";
 
             // remove the ?? at start of message
             string newMessage = message.Substring(2);
