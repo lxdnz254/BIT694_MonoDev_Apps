@@ -10,8 +10,8 @@ namespace DiscordBotApp
 {
     class Database
     {
-       
-        
+
+        internal static OleDbDataAdapter da;
         /// <summary>
         /// Checks the synonym Database for a the term provided
         /// </summary>
@@ -48,8 +48,8 @@ namespace DiscordBotApp
                     {
                         // Fill the table with all the dataSet
                         OleDbCommand cmd = new OleDbCommand(strAccessSelect, conn);
-                        OleDbDataAdapter ada = new OleDbDataAdapter(cmd);
-                        ada.Fill(myDataSet, "Words");
+                        da = new OleDbDataAdapter(cmd);
+                        da.Fill(myDataSet, "Words");
                     }
                     catch (Exception ex)
                     {
@@ -90,7 +90,6 @@ namespace DiscordBotApp
             }
             catch (Exception ex)
             {
-                conn.Close();
                 wordsArray = "not connected: " + ex.Message;
                 return wordsArray;
             }
@@ -101,6 +100,118 @@ namespace DiscordBotApp
             }
             // return the string
             return wordsArray;       
+        }
+
+        internal static String AddToDB(string word, string synonyms)
+        {
+            // Initialise some user objects
+            OleDbConnection conn = new OleDbConnection();
+            String response = "";
+            
+            // Import the NewWords database into the project firs "Project -> Add New Data Source"
+            // Set Access connection and select strings.
+            // The path to NewWords.MDB must be changed if you build 
+            // the sample from the command line:
+#if USINGPROJECTSYSTEM
+            string strAccessConn = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=..\\..\\NewWords.MDB";
+#else
+            string strAccessConn = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=NewWords.MDB";
+#endif
+            string strAccessInsert = "INSERT INTO Words(Word,Synonyms)VALUES('"+word+"','"+synonyms+"')";
+
+            // Create the dataset and add the Words table to it:
+            try
+            {
+                // Open the connection
+                conn.ConnectionString = strAccessConn;
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
+                {
+
+                    try
+                    {
+                        // Fill the table with all the dataSet
+                        OleDbCommand cmd = new OleDbCommand(strAccessInsert, conn);
+                        cmd.ExecuteNonQuery();
+                        response = "Added - " + word + " with synonyms: "+synonyms;
+                    }
+                    catch (Exception ex)
+                    {
+                        return response = "Dataset error: " + ex.Message;
+                    }
+
+                }
+                else
+                {
+                    response = "Disconnected:";
+                }
+            }
+            catch (Exception ex)
+            {
+                return response = "not connected: " + ex.Message;
+            }
+
+            finally
+            {
+                conn.Close();
+            }
+            return response;
+        }
+
+
+        internal static String UpdateToDB(string word, string synonyms)
+        {
+            // Initialise some user objects
+            OleDbConnection conn = new OleDbConnection();
+            String response = "";
+
+            // Import the NewWords database into the project firs "Project -> Add New Data Source"
+            // Set Access connection and select strings.
+            // The path to NewWords.MDB must be changed if you build 
+            // the sample from the command line:
+#if USINGPROJECTSYSTEM
+            string strAccessConn = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=..\\..\\NewWords.MDB";
+#else
+            string strAccessConn = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=NewWords.MDB";
+#endif
+            
+            // Create the dataset and add the Words table to it:
+            try
+            {
+                // Open the connection
+                conn.ConnectionString = strAccessConn;
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
+                {
+
+                    try
+                    {
+                        // Fill the table with all the dataSet
+                        OleDbCommand cmd = new OleDbCommand("UPDATE Words SET Synonyms = '"+synonyms+"' WHERE Word = '"+word+"'", conn);
+                        cmd.ExecuteNonQuery();
+                        response = "Updated - " + word + " with synonyms: " + synonyms;
+                    }
+                    catch (Exception ex)
+                    {
+                        return response = "Dataset error: " + ex.Message;
+                    }
+
+                }
+                else
+                {
+                    response = "Disconnected:";
+                }
+            }
+            catch (Exception ex)
+            {
+                return response = "not connected: " + ex.Message;
+            }
+
+            finally
+            {
+                conn.Close();
+            }
+            return response;
         }
 
     }
