@@ -19,6 +19,8 @@ namespace DiscordBotApp
                 return "No way, !next";
             if (message.Contains("gerd"))
                 return "Oh no, the Gerds are coming!";
+            if (message.Contains("help"))
+                return "Commands are \"??(word)\" returns list of synonyms, \"?+(word) synonym1 synomym2 ...\" sends request to moderation.";
 
             // remove the ?? at start of message
             string newMessage = message.Substring(2);
@@ -48,5 +50,89 @@ namespace DiscordBotApp
             // otherwise return default message
             return "I have a message for you :" + message;
         }
+
+        /// <summary>
+        /// Master adds an entry
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        internal static String BotAdd(String message)
+        {
+            string newMessage = message.Substring(2);
+            string[] splitWords = newMessage.Split(' ');
+            string synonyms = "";
+            for(int i=1; i < splitWords.Length; i++)
+            {
+                synonyms += splitWords[i] + ',';
+            }
+             return Database.AddToDB(splitWords[0], synonyms.TrimEnd(','));
+        }
+
+        /// <summary>
+        /// Master deletes the entry
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        internal static String BotDelete(String message)
+        {
+            string response = "";
+
+            return response;
+        }
+
+        internal static String BotUpdate(String message)
+        {
+            string newMessage = message.Substring(2);
+            string[] splitWords = newMessage.Split(' ');
+            string synonyms = "";
+            for (int i = 1; i < splitWords.Length; i++)
+            {
+                synonyms += splitWords[i] + ',';
+            }
+            return Database.UpdateToDB(splitWords[0], synonyms.TrimEnd(','));
+        }
+
+        internal static String BotUserAdd(String message)
+        {
+            string newMessage = message.Substring(2);
+            string[] splitWords = newMessage.Split(' ');
+            string synonyms = "";
+            for (int i = 1; i < splitWords.Length; i++)
+            {
+                synonyms += splitWords[i] + ',';
+            }
+            Moderation.Add(splitWords[0], synonyms.TrimEnd(','));
+            return "but your request has been sent to moderation";
+        }
+
+        internal static String BotUserDelete()
+        {
+            return "??You are an imposter, you may not delete the data, it is only permissible by lxdnz";
+        }
+
+        internal static String BotUserUpdate()
+        {
+            return "??I don't recognize your query, but it has been added to the moderation list for my master lxdnz";
+        }
+
+        internal static String GetModeration()
+        {
+            return Moderation.Get();
+        }
+
+        internal static String ApproveModeration()
+        {
+            Moderation.Approve();
+            return "The serfs appreciate your approval.";
+        }
+
+        internal static String DeleteModeration(string message)
+        {
+            string newMessage = message.Substring(2);
+            Moderation.Delete(newMessage);
+            return newMessage + " has been removed from moderation";
+        }
     }
+
+    
 }
