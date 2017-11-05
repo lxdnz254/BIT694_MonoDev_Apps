@@ -5,3 +5,4 @@ bin/
 .vs/
 
 *.ide
+/DiscordBotApp/DiscordBotApp/Bot.config
