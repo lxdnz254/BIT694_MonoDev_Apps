@@ -1,5 +1,5 @@
-﻿<Properties StartupItem="Assignment1.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+﻿<Properties StartupItem="DiscordBotApp/DiscordBotApp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
